@@ -35,7 +35,7 @@ public class GrupoController {
     @PostMapping("/criar")
     @Operation(summary = "Registro de novo grupo", description = "Endpoint para a criacao de novo objeto grupo")
     public ResponseEntity<GrupoDTOResponse> criar(
-        @Valid @RequestBody GrupoDTORequest dtoRequest) {
+        @RequestBody GrupoDTORequest dtoRequest) {
         GrupoDTOResponse dtoResponse = this.service.criar(dtoRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(dtoResponse);
     }
@@ -73,7 +73,7 @@ public class GrupoController {
     @Operation(summary = "Alterações em um grupo", description = "Endpoint para alterar nome e cor de um grupo")
     public ResponseEntity<GrupoAtualizarDTOResponse> atualizar(
             @Valid @PathVariable Integer id,
-            @Valid @RequestBody AlterarGrupoDTORequest dtoRequest) {
+            @RequestBody AlterarGrupoDTORequest dtoRequest) {
         GrupoAtualizarDTOResponse dtoResponse = this.service.atualizarGrupo(id, dtoRequest);
         return ResponseEntity.ok(dtoResponse);
     }
@@ -82,7 +82,7 @@ public class GrupoController {
     @Operation(summary = "Atualizaçao de grupo", description = "Endpoint para atualização lógica de um grupo")
     public ResponseEntity<AlterarStatusDTOResponse> atualizarStatus(
         @Valid @PathVariable Integer id,
-        @Valid @RequestBody AlterarStatusDTORequest dtoRequest
+        @RequestBody AlterarStatusDTORequest dtoRequest
     ) {
         AlterarStatusDTOResponse statusResponse = this.service.atualizarStatus(id, dtoRequest);
         if (statusResponse != null){

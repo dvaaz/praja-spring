@@ -1,7 +1,6 @@
 package projt4.praja.entity.dto.request.fichaTecnica;
 
 
-
 public class FichaTecnicaDTORequest {
     private String nome;
     private String descricao;

@@ -27,7 +27,7 @@ public class FichaTecnicaController {
     @PostMapping("/criar")
     @Operation(summary ="Criar nova Ficha Tecnica", description = "Endpoint para o registro de nova ficha tecnica")
     public ResponseEntity<FichaTecnicaDTOResponse> criar(
-        @Valid @RequestBody FichaTecnicaDTORequest dtoRequest) {
+        @RequestBody FichaTecnicaDTORequest dtoRequest) {
         FichaTecnicaDTOResponse dtoResponse = this.service.criar(dtoRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(dtoResponse);
     }

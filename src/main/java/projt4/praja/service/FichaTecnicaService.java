@@ -54,7 +54,7 @@ public class FichaTecnicaService {
         Grupo grupo = this.grupoRepository.buscarPorId(dtoRequest.getGrupo())
                 .orElseGet(() -> this.grupoService.buscarOuCriarGrupoFichaTecnica());
         FichaTecnica fichaTecnica = new FichaTecnica();
-        fichaTecnica.setNome(fichaTecnica.getNome());
+        fichaTecnica.setNome(dtoRequest.getNome());
         fichaTecnica.setDescricao(dtoRequest.getDescricao());
         fichaTecnica.setGrupo(grupo);
         fichaTecnica.setStatus(ativo);
