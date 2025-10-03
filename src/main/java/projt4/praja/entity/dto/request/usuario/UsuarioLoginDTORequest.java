@@ -1,6 +1,6 @@
 package projt4.praja.entity.dto.request.usuario;
 
-public class UsuarioLoginDTORequest {
+public class  UsuarioLoginDTORequest {
   private String telefone;
   private String senha;
 

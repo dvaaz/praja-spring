@@ -1,13 +1,10 @@
 package projt4.praja.entity.dto.request.fichaTecnica;
 
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
+
 
 public class FichaTecnicaDTORequest {
-    @NotBlank(message = "O nome não pode estar em branco")
     private String nome;
     private String descricao;
-    @NotNull(message = "É necessário que haja um grupo")
     private Integer grupo;
 
     public String getNome() {

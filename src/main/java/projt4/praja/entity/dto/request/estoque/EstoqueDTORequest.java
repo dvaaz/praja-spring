@@ -1,18 +1,10 @@
 package projt4.praja.entity.dto.request.estoque;
 
-//import gerenciamentorestaurante.projeto1.validation.anotation.OrdemDasDatas;
-
-import jakarta.validation.constraints.Future;
-import jakarta.validation.constraints.NotEmpty;
 
 import java.util.Date;
 
 public class EstoqueDTORequest {
-   @NotEmpty
-//   @OrdemDasDatas(primeiraData = "dia", segundaData = "validade", message = "Entrada não pode ser anterior à fabricação")
     private Date entrada;
-    @NotEmpty
-    @Future
     private Date validade;
     private Integer qtd;
     private Integer ingrediente;

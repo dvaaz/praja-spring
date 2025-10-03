@@ -1,15 +1,11 @@
 package projt4.praja.entity.dto.request.grupo;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotBlank;
 
 public class GrupoDTORequest {
-	@NotBlank
+
 	private String nome;
 	private String cor;
-	@Min(1)
-	@Max(2)
+
 	private Integer tipo;
 
 	public String getNome() {

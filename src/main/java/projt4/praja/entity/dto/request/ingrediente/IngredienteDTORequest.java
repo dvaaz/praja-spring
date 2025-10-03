@@ -1,9 +1,8 @@
 package projt4.praja.entity.dto.request.ingrediente;
 
-import jakarta.validation.constraints.NotBlank;
 
 public class IngredienteDTORequest {
-    @NotBlank
+
 		private String nome;
     private String descricao;
     private Integer grupo;

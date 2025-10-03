@@ -4,8 +4,6 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 
 public class AlterarStatusDTORequest {
-    @Min(0)
-    @Max(1)
     private Integer status;
 
     public Integer getStatus() {
