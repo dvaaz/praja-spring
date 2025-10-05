@@ -216,7 +216,7 @@ public class GrupoService {
 
         // Remaneja os itens presentes nos grupos para seus devidos grupos padrões.
         if (grupo.getTipo() == grupoIngrNum) {
-            List<Ingrediente> listaIngredientes = this.ingredienteRepository.listarIngredientesPorGrupo(grupoId);
+            List<Ingrediente> listaIngredientes = this.ingredienteRepository.listarPorGrupo(grupoId);
             if (!listaIngredientes.isEmpty()) {
                 Grupo grupoPadrao = this.grupoRepository.buscarGrupoPadrao(grupoIngrNum, grupoIngrNome)
                     .orElseGet(this::criarGrupoPadraoIngrediente);
@@ -226,7 +226,7 @@ public class GrupoService {
                 }
             }
         } else if (grupo.getTipo() == grupoFichaNum) {
-            List<FichaTecnica> listaFichasTecnicas = this.fichaTecnicaRepository.listarFichasTecnicasPorGrupo(grupoId);
+            List<FichaTecnica> listaFichasTecnicas = this.fichaTecnicaRepository.listarPorGrupo(grupoId);
             if (!listaFichasTecnicas.isEmpty()) {
                 Grupo grupoPadrao = this.grupoRepository.buscarGrupoPadrao(grupoFichaNum, grupoIngrNome)
                     .orElseGet(this::criarGrupoPadraoFichaTecnica);

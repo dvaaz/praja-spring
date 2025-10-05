@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import projt4.praja.entity.dto.request.fichaTecnica.FichaTecnicaDTORequest;
-import projt4.praja.entity.dto.response.fichaTecnica.IngredienteDTOResponse;
+import projt4.praja.entity.dto.response.fichaTecnica.FichaTecnicaDTOResponse;
 import projt4.praja.entity.dto.response.fichaTecnica.ListaFichasDeGrupoDTO;
 import projt4.praja.service.FichaTecnicaService;
 
@@ -25,34 +25,37 @@ public class FichaTecnicaController {
 
     @PostMapping("/criar")
     @Operation(summary ="Criar nova Ficha Tecnica", description = "Endpoint para o registro de nova ficha tecnica")
-    public ResponseEntity<IngredienteDTOResponse> criar(
+    public ResponseEntity<FichaTecnicaDTOResponse> criar(
         @RequestBody FichaTecnicaDTORequest dtoRequest) {
-        IngredienteDTOResponse dtoResponse = this.service.criar(dtoRequest);
+        FichaTecnicaDTOResponse dtoResponse = this.service.criar(dtoRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(dtoResponse);
     }
 
     @GetMapping("/listar")
     @Operation(summary ="Listar Ficha Tecnica", description = "Endpoint para listar fichas tecnicas")
-    public ResponseEntity<List<IngredienteDTOResponse>> listar() {
-        List<IngredienteDTOResponse> dtoResponse = this.service.listar();
+    public ResponseEntity<List<FichaTecnicaDTOResponse>> listar() {
+        List<FichaTecnicaDTOResponse> dtoResponse = this.service.listar();
         return ResponseEntity.status(HttpStatus.OK).body(dtoResponse);
     }
 
-    @GetMapping("/listar/{id}grupo/")
-    @Operation(summary ="Listar Ficha Tecnica em um grupo", description = "Endpoint para listar fichas tecnicas de um grupo")
+    @GetMapping("/listar/grupo/{id}/")
+    @Operation(summary ="Listar Fichas Tecnicas de um grupo", description = "Endpoint para listar fichas tecnicas de um grupo")
     public ResponseEntity<ListaFichasDeGrupoDTO> listarFichasPorGrupo(
         @PathVariable Integer id
     ){
-        ListaFichasDeGrupoDTO dtoResponse = this.service.listarFichasDeGrupo(id);
+        ListaFichasDeGrupoDTO dtoResponse = this.service.listarPorGrupo(id);
         return ResponseEntity.status(HttpStatus.OK).body(dtoResponse);
     }
 
+		@GetMapping("/alterar/grupo/{id}")
+		@Operation(summary = "Alterar o grupo", description = "Endpoint para alterar o grupo de uma ficha tecnica")
+
     @GetMapping("/buscar/{id}")
-    @Operation(summary ="Bustar Ficha Tecnica", description = "Endpoint para buscar ficha tecnica")
-    public ResponseEntity<IngredienteDTOResponse> buscarPorId(
+    @Operation(summary ="Buscar Ficha Tecnica", description = "Endpoint para buscar ficha tecnica")
+    public ResponseEntity<FichaTecnicaDTOResponse> buscarPorId(
         @PathVariable Integer id
     ){
-        IngredienteDTOResponse dtoResponse = this.service.buscarPorId(id);
+        FichaTecnicaDTOResponse dtoResponse = this.service.buscarPorId(id);
         return ResponseEntity.status(HttpStatus.OK).body(dtoResponse);
     }
 

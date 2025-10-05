@@ -18,11 +18,11 @@ public interface IngredienteRepository extends JpaRepository<Ingrediente, Intege
 	void updateStatus(@Param("id") Integer ingredieneId, @Param("status") int status);
 
 	@Query("SELECT i FROM Ingrediente i WHERE i.status>=0")
-	List<Ingrediente> listarIngredientes();
+	List<Ingrediente> listar();
 
 	@Query("SELECT i FROM Ingrediente i WHERE i.id = :id AND i.status>=0")
 	Optional<Ingrediente> buscarPorId(@Param("id") Integer ingredienteId);
 
 	@Query("SELECT i FROM Ingrediente i WHERE i.grupo.id = :grupoId")
-	List<Ingrediente> listarIngredientesPorGrupo(@Param("grupoId") Integer grupo);
+	List<Ingrediente> listarPorGrupo(@Param("grupoId") Integer grupo);
 }

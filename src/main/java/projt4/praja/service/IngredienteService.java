@@ -47,7 +47,7 @@ public class IngredienteService {
 		 * @return ingredienteDTOResponse
 		 */
 		@Transactional
-		public projt4.praja.entity.dto.response.ingrediente.IngredienteDTOResponse criarIngrediente(IngredienteDTORequest dtoRequest) {
+		public projt4.praja.entity.dto.response.ingrediente.IngredienteDTOResponse criar(IngredienteDTORequest dtoRequest) {
 				// Verifica a existencia do um grupo
 				Grupo grupo = grupoRepository.buscarPorIdETipo(dtoRequest.getGrupo(), grupoIngrediente)
 						.orElseGet(() -> this.grupoService.buscarOuCriarGrupoIngrediente());
@@ -80,8 +80,8 @@ public class IngredienteService {
 		 * Lista Ingredientes
 		 * @return List
 		 */
-		public List<projt4.praja.entity.dto.response.ingrediente.IngredienteDTOResponse> listarIngredientes(){
-			List<Ingrediente> ingredientes = ingredienteRepository.listarIngredientes();
+		public List<projt4.praja.entity.dto.response.ingrediente.IngredienteDTOResponse> listar(){
+			List<Ingrediente> ingredientes = ingredienteRepository.listar();
 
 			if(ingredientes.isEmpty()){
 					throw new IngredienteException("Não há nenum ingrediente a ser listado.");
@@ -105,14 +105,14 @@ public class IngredienteService {
 		 * @param grupoId
 		 * @return
 		 */
-		public ListaIngredienteDeGrupoDTO listarFichasDeGrupo(Integer grupoId){
+		public ListaIngredienteDeGrupoDTO listarPorGrupo(Integer grupoId){
 				Grupo grupo = this.grupoRepository.buscarPorId(grupoId)
 						.orElseThrow(() -> new GrupoException("Grupo com o ID: "+grupoId +" não encontrado"));
-				List<Ingrediente> ingredientes = this.ingredienteRepository.listarIngredientesPorGrupo(grupo.getId());
+				List<Ingrediente> ingredientes = this.ingredienteRepository.listarPorGrupo(grupo.getId());
 				if (ingredientes.isEmpty()){
-						throw new IngredienteException("Não há fichas no grupo : ( "+grupo.getId()+" ) -> "+grupo.getNome());
+						throw new IngredienteException("Não há ingredientes no grupo : ( "+grupo.getId()+" ) -> "+grupo.getNome());
 				}
-				// transforma as fichas em dto especifico
+				// transforma as ingredientes em dto especifico
 				List<projt4.praja.entity.dto.response.ingrediente.IngredienteDTOResponse> ingredientesDTO = new ArrayList<>();
 				for (Ingrediente ingrediente: ingredientes){
 						projt4.praja.entity.dto.response.ingrediente.IngredienteDTOResponse temp = new projt4.praja.entity.dto.response.ingrediente.IngredienteDTOResponse();
@@ -137,7 +137,7 @@ public class IngredienteService {
 		 */
 		public IngredienteDTOResponse buscarPorId(Integer ingredienteId){
 				Ingrediente ingrediente = this.ingredienteRepository.buscarPorId(ingredienteId)
-						.orElseThrow(() -> new IngredienteException("Ingrediente com o ID: " + ingredienteId + " não encontrada"));
+						.orElseThrow(() -> new IngredienteException("Ingrediente com o ID: " + ingredienteId + " não encontrado"));
 
 				IngredienteDTOResponse dtoResponse = new IngredienteDTOResponse();
 				dtoResponse.setId(ingrediente.getId());
@@ -158,7 +158,7 @@ public class IngredienteService {
 		@Transactional
 		public AlterarStatusDTOResponse alterarStatus(Integer ingredienteId, AlterarStatusDTORequest dtoRequest){
 				Ingrediente ingrediente = this.ingredienteRepository.buscarPorId(ingredienteId)
-						.orElseThrow(() -> new IngredienteException("Ingrediente com o ID: " + ingredienteId + " não encontrada"));
+						.orElseThrow(() -> new IngredienteException("Ingrediente com o ID: " + ingredienteId + " não encontrado"));
 				ingrediente.setStatus(dtoRequest.getStatus());
 
 				try{
@@ -186,7 +186,7 @@ public class IngredienteService {
 
 				Ingrediente ingrediente
 						= this.ingredienteRepository.buscarPorId(ingredienteId)
-						.orElseThrow(() -> new IngredienteException("Ingrediente com o ID: " + ingredienteId + " não encontrada"));
+						.orElseThrow(() -> new IngredienteException("Ingrediente com o ID: " + ingredienteId + " não encontrado"));
 
 				ingrediente.setGrupo(grupo);
 
@@ -205,7 +205,7 @@ public class IngredienteService {
 		}
 
 		/**
-		 * Alterar várias fichas tecnicas de um grupo para outro
+		 * Alterar várias ingredientes tecnicas de um grupo para outro
 		 * @param grupoId
 		 * @param dtoRequest
 		 * @return
@@ -214,13 +214,13 @@ public class IngredienteService {
 		public MudarDeGrupoEmLoteDTOResponse mudarDeGrupoEmLote(Integer grupoId, MudarDeGrupoDTORequest dtoRequest){
 				Grupo grupo = this.grupoRepository.buscarPorId(grupoId)
 						.orElseThrow(() -> new GrupoException("Grupo com o id: "+grupoId+" não encontrado"));
-				List<Ingrediente> fichas = this.ingredienteRepository.listarIngredientesPorGrupo(grupoId);
+				List<Ingrediente> ingredientes = this.ingredienteRepository.listarPorGrupo(grupoId);
 
-				if (fichas.isEmpty()){
-						throw new IngredienteException("Não há fichas tecnicas no grupo: ( "+grupoId+" )-> "+grupo.getNome());
+				if (ingredientes.isEmpty()){
+						throw new IngredienteException("Não há ingredientes tecnicas no grupo: ( "+grupoId+" )-> "+grupo.getNome());
 				}
 				try {
-						for (Ingrediente ingrediente : fichas) {
+						for (Ingrediente ingrediente : ingredientes) {
 								ingrediente.setGrupo(grupo);
 								Ingrediente salvo = ingredienteRepository.save(ingrediente);
 						}
@@ -228,7 +228,7 @@ public class IngredienteService {
 						MudarDeGrupoEmLoteDTOResponse dtoResponse = new MudarDeGrupoEmLoteDTOResponse();
 						dtoResponse.setIdGrupo(grupo.getId());
 						dtoResponse.setNomeDosItens(
-								fichas.stream()
+								ingredientes.stream()
 										.map(Ingrediente::getNome)
 										.collect(Collectors.toList()));
 						return dtoResponse;
@@ -236,5 +236,50 @@ public class IngredienteService {
 				} catch (DataIntegrityViolationException ex){
 						throw new  RuntimeException("Erro ao salvar alteracões.", ex);
 				}
+		}
+
+		/**
+		 * Inativa o ingrediente
+		 * ou ter sido descontinuado
+		 * @param ingredienteId
+		 * @return
+		 */
+		@Transactional
+		public boolean desativar(Integer ingredienteId){
+				Ingrediente ingrediente = this.ingredienteRepository.buscarPorId(ingredienteId)
+						.orElseThrow(() -> new IngredienteException("Ingrediente com o ID: " + ingredienteId + " não encontrado"));
+				this.ingredienteRepository.updateStatus(ingrediente.getId(), inativo);
+
+				return true;
+		}
+
+		/**
+		 * Apaga de forma lógica
+		 * @param ingredienteId
+		 * @return
+		 */
+		@jakarta.transaction.Transactional
+		public boolean apagar(Integer ingredienteId){
+				Ingrediente ingrediente = this.ingredienteRepository.buscarPorId(ingredienteId)
+						.orElseThrow(() -> new IngredienteException("Ingrediente com o ID: " + ingredienteId + " não encontrado"));
+				this.ingredienteRepository.updateStatus(ingrediente.getId(), apagado);
+				return true;
+		}
+
+		/**
+		 * Destroi objeto que tenha sido apagado
+		 * @param ingredienteId
+		 * @return
+		 */
+		@jakarta.transaction.Transactional
+		public boolean destroy(Integer ingredienteId) {
+				Ingrediente ingrediente = this.ingredienteRepository.findById(ingredienteId)
+						.orElseThrow(() -> new IngredienteException("Ingrediente com o ID: " + ingredienteId + " não encontrado"));
+
+				if (ingrediente.getStatus() == apagado){
+						ingredienteRepository.delete(ingrediente);
+						return true;
+				}
+				return false;
 		}
 }
