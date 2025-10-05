@@ -12,7 +12,7 @@ public class FichaTecnica {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="ficha_tecnica_id")
 	private Integer id;
-	@Column(name="ficha_tecnica_nome", nullable = false)
+	@Column(name="ficha_tecnica_nome")
 	private String nome;
 	@Column(name="ficha_tecnica_descricao")
 	private String descricao;
@@ -20,57 +20,57 @@ public class FichaTecnica {
 	private Integer status;
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "grupo_id", nullable = false)
+	@JoinColumn(name = "grupo_id")
 	private Grupo grupo;
 
 	@OneToMany(mappedBy = "fichaTecnica")
 	private Set<IngredienteFichaTecnica> fichaTecnicaSet;
 
-	public Integer getId() {
-		return id;
-	}
+		public Integer getId() {
+				return id;
+		}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+		public void setId(Integer id) {
+				this.id = id;
+		}
 
-	public String getNome() {
-		return nome;
-	}
+		public String getNome() {
+				return nome;
+		}
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+		public void setNome(String nome) {
+				this.nome = nome;
+		}
 
-	public String getDescricao() {
-		return descricao;
-	}
+		public String getDescricao() {
+				return descricao;
+		}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+		public void setDescricao(String descricao) {
+				this.descricao = descricao;
+		}
 
-	public Integer getStatus() {
-		return status;
-	}
+		public Integer getStatus() {
+				return status;
+		}
 
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
+		public void setStatus(Integer status) {
+				this.status = status;
+		}
 
-	public Grupo getGrupo() {
-		return grupo;
-	}
+		public Grupo getGrupo() {
+				return grupo;
+		}
 
-	public void setGrupo(Grupo grupo) {
-		this.grupo = grupo;
-	}
+		public void setGrupo(Grupo grupo) {
+				this.grupo = grupo;
+		}
 
-	public Set<IngredienteFichaTecnica> getFichaTecnicaSet() {
-		return fichaTecnicaSet;
-	}
+		public Set<IngredienteFichaTecnica> getFichaTecnicaSet() {
+				return fichaTecnicaSet;
+		}
 
-	public void setFichaTecnicaSet(Set<IngredienteFichaTecnica> fichaTecnicaSet) {
-		this.fichaTecnicaSet = fichaTecnicaSet;
-	}
+		public void setFichaTecnicaSet(Set<IngredienteFichaTecnica> fichaTecnicaSet) {
+				this.fichaTecnicaSet = fichaTecnicaSet;
+		}
 }

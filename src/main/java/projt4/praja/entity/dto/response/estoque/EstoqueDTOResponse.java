@@ -1,7 +1,5 @@
 package projt4.praja.entity.dto.response.estoque;
 
-//import gerenciamentorestaurante.projeto1.validation.anotation.OrdemDasDatas;
-
 import java.util.Date;
 
 public class EstoqueDTOResponse {

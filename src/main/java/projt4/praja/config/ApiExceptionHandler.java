@@ -38,9 +38,19 @@ public class ApiExceptionHandler {
 	public record ApiError(String code, String message) {}
 
 	// capturar exceptions ainda não projetadas
+		@ExceptionHandler
+		@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ApiError handleAnyException(Exception ex){
+			System.err.println(ex.getMessage());
     return new ApiError("erro_interno", "Ocorreu um erro inesperado.");
 	}
 
+		@ExceptionHandler(org.hibernate.PropertyValueException.class)
+		@ResponseStatus(HttpStatus.BAD_REQUEST) // 400 para erros de validação/dados
+		public ApiError handlePropertyValueException(org.hibernate.PropertyValueException ex){
+				// A mensagem do Hibernate é feia, crie uma melhor para o usuário
+				String campo = ex.getPropertyName();
+				return new ApiError("campo_obrigatorio_nulo", "O campo '" + campo + "' é obrigatório e não foi fornecido ou está nulo.");
+		}
 }
 

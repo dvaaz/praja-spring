@@ -1,5 +1,6 @@
 package projt4.praja.service;
 
+import org.hibernate.PropertyValueException;
 import projt4.praja.Enum.GrupoEnum;
 import projt4.praja.Enum.StatusEnum;
 import projt4.praja.entity.FichaTecnica;
@@ -28,18 +29,15 @@ public class GrupoService {
     private final GrupoRepository grupoRepository;
     private final IngredienteRepository ingredienteRepository;
     private final FichaTecnicaRepository fichaTecnicaRepository;
-    private final ModelMapper modelMapper;
 
     // Enums
 
     public GrupoService(GrupoRepository grupoRepository,
                         IngredienteRepository ingredienteRepository,
-                        FichaTecnicaRepository fichaTecnicaRepository,
-                        ModelMapper modelMapper) {
+                        FichaTecnicaRepository fichaTecnicaRepository) {
         this.grupoRepository = grupoRepository;
         this.ingredienteRepository = ingredienteRepository;
         this.fichaTecnicaRepository = fichaTecnicaRepository;
-        this.modelMapper = modelMapper;
     }
 
     // Enuns a serem utilizados na classe
@@ -52,6 +50,26 @@ public class GrupoService {
             apagado = StatusEnum.APAGADO.getStatus();
 
     // Inicio dos métodos
+		/**
+		 * Conversao manual sem uso de model mapper
+		 * @param grupo
+		 * @return dtoResponse
+		 */
+	public GrupoDTOResponse conversaoDtoResponse (Grupo grupo){
+			if (grupo == null) {
+					throw new GrupoException("Grupo não pode ser NULL");
+			}
+			GrupoDTOResponse dtoResponse = new GrupoDTOResponse();
+
+			// Atribuição Manual de Propriedades:
+			dtoResponse.setId(grupo.getId());
+			dtoResponse.setNome(grupo.getNome());
+			dtoResponse.setCor(grupo.getCor());
+			dtoResponse.setTipo(grupo.getTipo());
+			dtoResponse.setStatus(grupo.getStatus());
+
+			return dtoResponse;
+	}
 
     /**
      * Cria um novo grupo de acordo com a regra unique name
@@ -60,15 +78,19 @@ public class GrupoService {
      */
     @Transactional
     public GrupoDTOResponse criar(GrupoDTORequest dtoRequest) {
-        Grupo grupo = modelMapper.map(dtoRequest, Grupo.class);
-        grupo.setStatus(ativo);
+		    if (dtoRequest.getTipo() != grupoIngrNum || dtoRequest.getTipo() != grupoFichaNum) {
+				    return null;
+		    }
 
-        if (grupo.getTipo() != grupoIngrNum || grupo.getTipo() != grupoFichaNum) {
-            return null;
-        }
+				Grupo grupo = new Grupo();
+				grupo.setNome(dtoRequest.getNome());
+				grupo.setCor(dtoRequest.getCor());
+				grupo.setTipo(dtoRequest.getTipo());
+        grupo.setStatus(ativo);
             try {
                 Grupo salvo = grupoRepository.save(grupo);
-                return modelMapper.map(salvo, GrupoDTOResponse.class);
+
+								return this.conversaoDtoResponse(salvo); // conversao manual no proprio método, evitando model mapper
             } catch (DataIntegrityViolationException ex) {
                 throw new RuntimeException("Erro ao gravar grupo ", ex);
             }
@@ -93,6 +115,8 @@ public class GrupoService {
         return save;
 				} catch (DataIntegrityViolationException ex) {
 						throw new RuntimeException("Erro ao gravar grupo padrão de ingredientes", ex);
+				} catch (PropertyValueException ex) {
+						throw new RuntimeException("Campo obrigatório não preenchido na Entidade.", ex);
 				}
     }
 
@@ -145,9 +169,7 @@ public class GrupoService {
         Grupo grupo = this.grupoRepository.buscarPorId(id)
             .orElseThrow(() -> new GrupoException("Grupo com o ID: " + id + " não encontrado"));
 
-        GrupoDTOResponse dtoResponse = this.modelMapper.map(grupo, GrupoDTOResponse.class);
-
-        return dtoResponse;
+		    return this.conversaoDtoResponse(grupo); // conversao manual no proprio método, evitando model mapper
     }
 
     /**
@@ -163,8 +185,8 @@ public class GrupoService {
         }
 
         return grupos.stream()
-            .map(grupo -> modelMapper.map(grupo, GrupoDTOResponse.class))
-            .toList();
+            .map(this::conversaoDtoResponse )
+		        .toList();
     }
 
     /**
@@ -180,9 +202,9 @@ public class GrupoService {
             throw new GrupoException("Não há nenhum grupo de " + grupoEnum + " criado.");
         }
 
-        return grupos.stream()
-            .map(grupo -> modelMapper.map(grupo, GrupoDTOResponse.class))
-            .toList();
+		    return grupos.stream()
+				    .map(this::conversaoDtoResponse )
+				    .toList();
     }
 
     @Transactional
@@ -198,7 +220,12 @@ public class GrupoService {
         }
         try {
             Grupo save = grupoRepository.save(grupo);
-            return modelMapper.map(save, GrupoAtualizarDTOResponse.class);
+						GrupoAtualizarDTOResponse dtoResponse = new GrupoAtualizarDTOResponse();
+						dtoResponse.setId(save.getId());
+						dtoResponse.setNome(save.getNome());
+						dtoResponse.setCor(save.getCor());
+
+						return dtoResponse;
         } catch (DataIntegrityViolationException ex) {
             throw new RuntimeException("Um objeto com este nome já existe: " + dtoRequest.getNome(), ex);
         }
@@ -246,7 +273,11 @@ public class GrupoService {
 
         grupo.setStatus(dtoRequest.getStatus());
         Grupo tempResponse = grupoRepository.save(grupo);
-        return modelMapper.map(tempResponse, AlterarStatusDTOResponse.class);
+
+				AlterarStatusDTOResponse dtoResponse = new AlterarStatusDTOResponse();
+				dtoResponse.setId(tempResponse.getId());
+				dtoResponse.setStatus(tempResponse.getStatus());
+				return dtoResponse;
     }
 
     // Incluir lógica para remanejar os itens que estejam dentro do grupo

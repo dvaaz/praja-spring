@@ -10,7 +10,6 @@ import projt4.praja.entity.dto.response.shared.AlterarStatusDTOResponse;
 import projt4.praja.service.GrupoService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,7 +36,7 @@ public class GrupoController {
     public ResponseEntity<GrupoDTOResponse> criar(
         @RequestBody GrupoDTORequest dtoRequest) {
         GrupoDTOResponse dtoResponse = this.service.criar(dtoRequest);
-        return ResponseEntity.status(HttpStatus.CREATED).body(dtoResponse);
+		    return ResponseEntity.status(HttpStatus.CREATED).body(dtoResponse);
     }
 
     @GetMapping("/listar")
@@ -64,7 +63,7 @@ public class GrupoController {
     @GetMapping("/buscar/{id}")
     @Operation(summary = "listar um grupo", description = "Endpoint para obter um grupo por id")
     public ResponseEntity<GrupoDTOResponse> buscarPorID(
-        @Valid @PathVariable Integer id) {
+         @PathVariable Integer id) {
         GrupoDTOResponse dtoResponse = this.service.buscarPorID(id);
         return ResponseEntity.ok(dtoResponse);
     }
@@ -72,7 +71,7 @@ public class GrupoController {
     @PatchMapping("/alterar/{id}")
     @Operation(summary = "Alterações em um grupo", description = "Endpoint para alterar nome e cor de um grupo")
     public ResponseEntity<GrupoAtualizarDTOResponse> alterarDetalhes(
-            @Valid @PathVariable Integer id,
+             @PathVariable Integer id,
             @RequestBody AlterarGrupoDTORequest dtoRequest) {
         GrupoAtualizarDTOResponse dtoResponse = this.service.alterarDetalhes(id, dtoRequest);
         return ResponseEntity.ok(dtoResponse);
@@ -81,7 +80,7 @@ public class GrupoController {
     @PatchMapping("/alterarstatus/{id}")
     @Operation(summary = "Atualizaçao de grupo", description = "Endpoint para atualização lógica de um grupo")
     public ResponseEntity<AlterarStatusDTOResponse> atualizarStatus(
-        @Valid @PathVariable Integer id,
+         @PathVariable Integer id,
         @RequestBody AlterarStatusDTORequest dtoRequest
     ) {
         AlterarStatusDTOResponse statusResponse = this.service.atualizarStatus(id, dtoRequest);
@@ -93,7 +92,7 @@ public class GrupoController {
     @DeleteMapping("/apagar/{id}")
     @Operation(summary = "Remover grupo", description = "Endpoint para remoção lógica de um grupo")
     public ResponseEntity apagar(
-            @Valid @PathVariable Integer id
+             @PathVariable Integer id
     ){
         boolean apagado = this.service.apagar(id);
         if (apagado) {

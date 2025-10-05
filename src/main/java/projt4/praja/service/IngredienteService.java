@@ -1,6 +1,8 @@
 package projt4.praja.service;
 
+import org.hibernate.PropertyValueException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projt4.praja.Enum.GrupoEnum;
 import projt4.praja.Enum.StatusEnum;
@@ -23,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Service
 public class IngredienteService {
 		private final IngredienteRepository ingredienteRepository;
 		private final GrupoRepository grupoRepository;
@@ -47,7 +50,7 @@ public class IngredienteService {
 		 * @return ingredienteDTOResponse
 		 */
 		@Transactional
-		public projt4.praja.entity.dto.response.ingrediente.IngredienteDTOResponse criar(IngredienteDTORequest dtoRequest) {
+		public IngredienteDTOResponse criar(IngredienteDTORequest dtoRequest) {
 				// Verifica a existencia do um grupo
 				Grupo grupo = grupoRepository.buscarPorIdETipo(dtoRequest.getGrupo(), grupoIngrediente)
 						.orElseGet(() -> this.grupoService.buscarOuCriarGrupoIngrediente());
@@ -62,7 +65,7 @@ public class IngredienteService {
 				try {
 				Ingrediente ingredienteSave = ingredienteRepository.save(novoIngrediente);
 
-				projt4.praja.entity.dto.response.ingrediente.IngredienteDTOResponse dtoResponse= new projt4.praja.entity.dto.response.ingrediente.IngredienteDTOResponse();
+				IngredienteDTOResponse dtoResponse= new IngredienteDTOResponse();
 				dtoResponse.setId(ingredienteSave.getId());
 				dtoResponse.setNome(ingredienteSave.getNome());
 				dtoResponse.setDescricao(ingredienteSave.getDescricao());
@@ -73,6 +76,8 @@ public class IngredienteService {
 				return dtoResponse;
 				} catch (DataIntegrityViolationException ex) {
 						throw new RuntimeException("Erro ao gravar Ingrediente", ex);
+				} catch (PropertyValueException ex) {
+						throw new RuntimeException("Campo obrigatório não preenchido na Entidade.", ex);
 				}
 		}
 
@@ -80,7 +85,7 @@ public class IngredienteService {
 		 * Lista Ingredientes
 		 * @return List
 		 */
-		public List<projt4.praja.entity.dto.response.ingrediente.IngredienteDTOResponse> listar(){
+		public List<IngredienteDTOResponse> listar(){
 			List<Ingrediente> ingredientes = ingredienteRepository.listar();
 
 			if(ingredientes.isEmpty()){
@@ -113,9 +118,9 @@ public class IngredienteService {
 						throw new IngredienteException("Não há ingredientes no grupo : ( "+grupo.getId()+" ) -> "+grupo.getNome());
 				}
 				// transforma as ingredientes em dto especifico
-				List<projt4.praja.entity.dto.response.ingrediente.IngredienteDTOResponse> ingredientesDTO = new ArrayList<>();
+				List<IngredienteDTOResponse> ingredientesDTO = new ArrayList<>();
 				for (Ingrediente ingrediente: ingredientes){
-						projt4.praja.entity.dto.response.ingrediente.IngredienteDTOResponse temp = new projt4.praja.entity.dto.response.ingrediente.IngredienteDTOResponse();
+						IngredienteDTOResponse temp = new IngredienteDTOResponse();
 						temp.setId(ingrediente.getId());
 						temp.setNome(ingrediente.getNome());
 						temp.setDescricao(ingrediente.getDescricao());
@@ -161,15 +166,15 @@ public class IngredienteService {
 						.orElseThrow(() -> new IngredienteException("Ingrediente com o ID: " + ingredienteId + " não encontrado"));
 				ingrediente.setStatus(dtoRequest.getStatus());
 
-				try{
+//				try{
 						ingredienteRepository.save(ingrediente);
 						AlterarStatusDTOResponse dtoResponse = new AlterarStatusDTOResponse();
 						dtoResponse.setId(ingrediente.getId());
 						dtoResponse.setStatus(ingrediente.getStatus());
 						return dtoResponse;
-				} catch (DataIntegrityViolationException ex){
-						throw new  RuntimeException("Erro ao salvar alteracões.", ex);
-				}
+//				} catch (DataIntegrityViolationException ex){
+//						throw new  RuntimeException("Erro ao salvar alteracões.", ex);
+//				}
 		}
 
 		/**
@@ -178,7 +183,7 @@ public class IngredienteService {
 		 * @param dtoRequest
 		 * @return
 		 */
-		@jakarta.transaction.Transactional
+		@Transactional
 		public MudarDeGrupoDTOResponse alterarGrupo(Integer ingredienteId, MudarDeGrupoDTORequest dtoRequest){
 				Integer grupoId = dtoRequest.getGrupo();
 				Grupo grupo = this.grupoRepository.buscarPorId(grupoId) // busca pelo grupo

@@ -12,7 +12,6 @@ import projt4.praja.entity.dto.request.shared.MudarDeGrupoDTORequest;
 import projt4.praja.entity.dto.response.fichaTecnica.FichaTecnicaDTOResponse;
 import projt4.praja.entity.dto.response.fichaTecnica.ListaFichasDeGrupoDTO;
 import projt4.praja.entity.dto.response.shared.MudarDeGrupoDTOResponse;
-import jakarta.validation.Valid;
 import projt4.praja.service.FichaTecnicaService;
 
 import java.util.List;
@@ -45,7 +44,7 @@ public class FichaTecnicaController {
     @GetMapping("/listar/grupo/{id}/")
     @Operation(summary ="Listar Fichas Tecnicas de um grupo", description = "Endpoint para listar fichas tecnicas de um grupo")
     public ResponseEntity<ListaFichasDeGrupoDTO> listarFichasPorGrupo(
-        @Valid @PathVariable Integer id
+         @PathVariable Integer id
     ){
         ListaFichasDeGrupoDTO dtoResponse = this.service.listarPorGrupo(id);
         return ResponseEntity.status(HttpStatus.OK).body(dtoResponse);
@@ -55,7 +54,7 @@ public class FichaTecnicaController {
     @GetMapping("/buscar/{id}")
     @Operation(summary ="Buscar Ficha Tecnica", description = "Endpoint para buscar ficha tecnica")
     public ResponseEntity<FichaTecnicaDTOResponse> buscarPorId(
-        @Valid @PathVariable Integer id
+         @PathVariable Integer id
         ){
             FichaTecnicaDTOResponse dtoResponse = this.service.buscarPorId(id);
             return ResponseEntity.status(HttpStatus.OK).body(dtoResponse);
@@ -64,8 +63,8 @@ public class FichaTecnicaController {
     @PatchMapping("/alterar/grupo/{id}")
     @Operation(summary = "Alterar o grupo", description = "Endpoint para alterar o grupo de uma ficha tecnica")
     public ResponseEntity<MudarDeGrupoDTOResponse> alterarGrupo(
-        @Valid @PathVariable Integer id,
-        @Valid @RequestBody MudarDeGrupoDTORequest dtoRequest
+         @PathVariable Integer id,
+         @RequestBody MudarDeGrupoDTORequest dtoRequest
     ){
         MudarDeGrupoDTOResponse dtoResponse = this.service.alterarGrupo(id, dtoRequest);
         return ResponseEntity.ok(dtoResponse);

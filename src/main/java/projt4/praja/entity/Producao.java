@@ -17,11 +17,11 @@ public class Producao {
 
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "producao_dia_id", nullable = false)
+	@JoinColumn(name = "producao_dia_id")
 	private ProducaoDia producaoDia;
 
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "estoque_id", nullable = false)
+	@JoinColumn(name = "estoque_id")
 	private Estoque estoque;
 }

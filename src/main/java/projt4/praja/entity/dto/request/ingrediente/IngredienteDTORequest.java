@@ -1,8 +1,6 @@
 package projt4.praja.entity.dto.request.ingrediente;
 
-
 public class IngredienteDTORequest {
-
 		private String nome;
     private String descricao;
     private Integer grupo;

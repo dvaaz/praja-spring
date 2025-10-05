@@ -1,5 +1,6 @@
 package projt4.praja.service;
 
+import org.hibernate.PropertyValueException;
 import projt4.praja.Enum.GrupoEnum;
 import projt4.praja.Enum.StatusEnum;
 import projt4.praja.entity.FichaTecnica;
@@ -77,6 +78,8 @@ public class FichaTecnicaService {
             return dtoResponse;
         } catch (DataIntegrityViolationException ex) {
             throw new RuntimeException("Erro ao gravar Ficha Tecnica ", ex);
+        } catch (PropertyValueException ex) {
+		        throw new RuntimeException("Campo obrigatório não preenchido na Entidade.", ex);
         }
     }
 
