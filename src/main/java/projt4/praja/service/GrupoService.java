@@ -70,7 +70,7 @@ public class GrupoService {
                 Grupo salvo = grupoRepository.save(grupo);
                 return modelMapper.map(salvo, GrupoDTOResponse.class);
             } catch (DataIntegrityViolationException ex) {
-                throw new RuntimeException("Erro ao criar grupo ", ex);
+                throw new RuntimeException("Erro ao gravar grupo ", ex);
             }
         }
 
@@ -87,9 +87,13 @@ public class GrupoService {
         grupoDefault.setStatus(ativo);
         grupoDefault.setCor("90EE90");
         grupoDefault.setTipo(grupoIngrNum);
+				try {
         Grupo save = grupoRepository.save(grupoDefault);
 
         return save;
+				} catch (DataIntegrityViolationException ex) {
+						throw new RuntimeException("Erro ao gravar grupo padrão de ingredientes", ex);
+				}
     }
 
     /**
@@ -104,9 +108,13 @@ public class GrupoService {
         grupoDefault.setStatus(ativo);
         grupoDefault.setCor("FA8907");
         grupoDefault.setTipo(grupoFichaNum);
-        Grupo save = grupoRepository.save(grupoDefault);
+        try {
+		        Grupo save = grupoRepository.save(grupoDefault);
 
-        return save;
+		        return save;
+        } catch (DataIntegrityViolationException ex) {
+		        throw new RuntimeException("Erro ao gravar grupo padrão de fichas tecnicas", ex);
+        }
     }
 
     /**
@@ -115,7 +123,7 @@ public class GrupoService {
      * @return Grupo
      */
     @Transactional
-    public Grupo buscarOuCriarGrupoPadraoIngrediente() {
+    public Grupo buscarOuCriarGrupoIngrediente() {
         return grupoRepository.buscarGrupoPadrao(
                 grupoIngrNum, grupoIngrNome)
             .orElseGet(() -> criarGrupoPadraoIngrediente());

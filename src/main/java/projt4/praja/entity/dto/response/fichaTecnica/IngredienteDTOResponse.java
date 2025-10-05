@@ -1,6 +1,6 @@
 package projt4.praja.entity.dto.response.fichaTecnica;
 
-public class FichaTecnicaDTOResponse {
+public class IngredienteDTOResponse {
 	private Integer id;
 	private String nome;
 	private String descricao;

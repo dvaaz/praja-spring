@@ -1,7 +1,5 @@
 package projt4.praja.entity.dto.response.utilizadoDia;
 
-import projt4.praja.entity.dto.response.ingrediente.IngredienteDTOSemGrupo;
-
 import java.util.Date;
 
 public class UtilizadoDiaDTOResponse {
@@ -9,7 +7,7 @@ public class UtilizadoDiaDTOResponse {
   private Integer qtd;
   private Integer destino;
 	private Date data;
-	private IngredienteDTOSemGrupo ingrediente;
+	private IngredienteDTOResponse ingrediente;
 	private Integer idProducao;
 	private String idProducaoDia;
   private Integer status;
@@ -46,11 +44,11 @@ public class UtilizadoDiaDTOResponse {
 		this.data = data;
 	}
 
-	public IngredienteDTOSemGrupo getIngrediente() {
+	public IngredienteDTOResponse getIngrediente() {
 		return ingrediente;
 	}
 
-	public void setIngrediente(IngredienteDTOSemGrupo ingrediente) {
+	public void setIngrediente(IngredienteDTOResponse ingrediente) {
 		this.ingrediente = ingrediente;
 	}
 

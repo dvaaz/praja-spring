@@ -3,12 +3,11 @@ package projt4.praja.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import projt4.praja.entity.dto.request.fichaTecnica.FichaTecnicaDTORequest;
-import projt4.praja.entity.dto.response.fichaTecnica.FichaTecnicaDTOResponse;
+import projt4.praja.entity.dto.response.fichaTecnica.IngredienteDTOResponse;
 import projt4.praja.entity.dto.response.fichaTecnica.ListaFichasDeGrupoDTO;
 import projt4.praja.service.FichaTecnicaService;
 
@@ -26,16 +25,16 @@ public class FichaTecnicaController {
 
     @PostMapping("/criar")
     @Operation(summary ="Criar nova Ficha Tecnica", description = "Endpoint para o registro de nova ficha tecnica")
-    public ResponseEntity<FichaTecnicaDTOResponse> criar(
+    public ResponseEntity<IngredienteDTOResponse> criar(
         @RequestBody FichaTecnicaDTORequest dtoRequest) {
-        FichaTecnicaDTOResponse dtoResponse = this.service.criar(dtoRequest);
+        IngredienteDTOResponse dtoResponse = this.service.criar(dtoRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(dtoResponse);
     }
 
     @GetMapping("/listar")
     @Operation(summary ="Listar Ficha Tecnica", description = "Endpoint para listar fichas tecnicas")
-    public ResponseEntity<List<FichaTecnicaDTOResponse>> listar() {
-        List<FichaTecnicaDTOResponse> dtoResponse = this.service.listar();
+    public ResponseEntity<List<IngredienteDTOResponse>> listar() {
+        List<IngredienteDTOResponse> dtoResponse = this.service.listar();
         return ResponseEntity.status(HttpStatus.OK).body(dtoResponse);
     }
 
@@ -50,10 +49,10 @@ public class FichaTecnicaController {
 
     @GetMapping("/buscar/{id}")
     @Operation(summary ="Bustar Ficha Tecnica", description = "Endpoint para buscar ficha tecnica")
-    public ResponseEntity<FichaTecnicaDTOResponse> buscarPorId(
+    public ResponseEntity<IngredienteDTOResponse> buscarPorId(
         @PathVariable Integer id
     ){
-        FichaTecnicaDTOResponse dtoResponse = this.service.buscarPorId(id);
+        IngredienteDTOResponse dtoResponse = this.service.buscarPorId(id);
         return ResponseEntity.status(HttpStatus.OK).body(dtoResponse);
     }
 

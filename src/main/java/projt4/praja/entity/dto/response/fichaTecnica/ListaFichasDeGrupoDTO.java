@@ -6,7 +6,7 @@ public class ListaFichasDeGrupoDTO {
 	private Integer idGrupo;
 	private String nomeGrupo;
 	private String corGrupo;
-	private List<FichaTecnicaDTOSemGrupo> fichasTecnicas;
+	private List<IngredienteDTOResponse> fichasTecnicas;
 
 	public Integer getIdGrupo() {
 		return idGrupo;
@@ -32,11 +32,11 @@ public class ListaFichasDeGrupoDTO {
 		this.corGrupo = corGrupo;
 	}
 
-	public List<FichaTecnicaDTOSemGrupo> getFichasTecnicas() {
+	public List<IngredienteDTOResponse> getFichasTecnicas() {
 		return fichasTecnicas;
 	}
 
-	public void setFichasTecnicas(List<FichaTecnicaDTOSemGrupo> fichasTecnicas) {
+	public void setFichasTecnicas(List<IngredienteDTOResponse> fichasTecnicas) {
 		this.fichasTecnicas = fichasTecnicas;
 	}
 }
