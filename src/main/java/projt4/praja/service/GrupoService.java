@@ -186,7 +186,7 @@ public class GrupoService {
     }
 
     @Transactional
-    public GrupoAtualizarDTOResponse atualizarGrupo(Integer grupoId, AlterarGrupoDTORequest dtoRequest) {
+    public GrupoAtualizarDTOResponse alterarDetalhes(Integer grupoId, AlterarGrupoDTORequest dtoRequest) {
         Grupo grupo = grupoRepository.buscarPorId(grupoId)
             .orElseThrow(() -> new GrupoException("Grupo com o ID: "+grupoId +" não encontrado"));;
 

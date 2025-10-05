@@ -1,5 +1,6 @@
 package projt4.praja.entity.dto.response.utilizadoDia;
 
+import projt4.praja.entity.dto.response.ingrediente.IngredienteDTOResponse;
 import java.util.Date;
 
 public class UtilizadoDiaDTOResponse {

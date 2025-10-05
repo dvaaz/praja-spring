@@ -71,10 +71,10 @@ public class GrupoController {
 
     @PatchMapping("/alterar/{id}")
     @Operation(summary = "Alterações em um grupo", description = "Endpoint para alterar nome e cor de um grupo")
-    public ResponseEntity<GrupoAtualizarDTOResponse> atualizar(
+    public ResponseEntity<GrupoAtualizarDTOResponse> alterarDetalhes(
             @Valid @PathVariable Integer id,
             @RequestBody AlterarGrupoDTORequest dtoRequest) {
-        GrupoAtualizarDTOResponse dtoResponse = this.service.atualizarGrupo(id, dtoRequest);
+        GrupoAtualizarDTOResponse dtoResponse = this.service.alterarDetalhes(id, dtoRequest);
         return ResponseEntity.ok(dtoResponse);
     }
 
