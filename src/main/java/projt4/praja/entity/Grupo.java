@@ -11,13 +11,13 @@ public class Grupo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name ="grup_id")
 	private Integer id;
-	@Column (name="grupo_nome", unique=true)
+	@Column (name="grupo_nome", nullable=false)
 	private String nome;
 	@Column(name = "grupo_cor")
 	private String cor;
-	@Column(name = "grupo_tipo")
+	@Column(name = "grupo_tipo", nullable=false)
 	private Integer tipo;
-	@Column(name = "grupo_status")
+	@Column(name = "grupo_status", nullable=false)
 	private Integer status;
 
 	@OneToMany(mappedBy = "grupo")

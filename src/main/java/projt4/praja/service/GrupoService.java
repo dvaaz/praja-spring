@@ -16,7 +16,6 @@ import projt4.praja.exception.GrupoException;
 import projt4.praja.repository.FichaTecnicaRepository;
 import projt4.praja.repository.GrupoRepository;
 import projt4.praja.repository.IngredienteRepository;
-import org.modelmapper.ModelMapper;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -78,7 +77,7 @@ public class GrupoService {
      */
     @Transactional
     public GrupoDTOResponse criar(GrupoDTORequest dtoRequest) {
-		    if (dtoRequest.getTipo() != grupoIngrNum || dtoRequest.getTipo() != grupoFichaNum) {
+		    if (!(dtoRequest.getTipo().equals(grupoIngrNum) || dtoRequest.getTipo().equals(grupoFichaNum))) {
 				    return null;
 		    }
 
@@ -115,9 +114,10 @@ public class GrupoService {
         return save;
 				} catch (DataIntegrityViolationException ex) {
 						throw new RuntimeException("Erro ao gravar grupo padrão de ingredientes", ex);
-				} catch (PropertyValueException ex) {
-						throw new RuntimeException("Campo obrigatório não preenchido na Entidade.", ex);
-				}
+				} catch (RuntimeException ex) { // Captura qualquer RuntimeException
+				// Log 'ex' para ver o erro real!
+				throw new RuntimeException("Erro CRÍTICO ao gravar grupo padrão de ingredientes. Verifique logs:", ex);
+		}
     }
 
     /**
@@ -138,7 +138,10 @@ public class GrupoService {
 		        return save;
         } catch (DataIntegrityViolationException ex) {
 		        throw new RuntimeException("Erro ao gravar grupo padrão de fichas tecnicas", ex);
-        }
+        } catch (RuntimeException ex) { // Captura qualquer RuntimeException
+				// Log 'ex' para ver o erro real!
+				throw new RuntimeException("Erro CRÍTICO ao gravar grupo padrão de fichas tecnicas. Verifique logs :", ex);
+		}
     }
 
     /**
@@ -242,7 +245,7 @@ public class GrupoService {
             .orElseThrow(() -> new GrupoException("Grupo com o Id:" + grupoId + " não encontrado"));
 
         // Remaneja os itens presentes nos grupos para seus devidos grupos padrões.
-        if (grupo.getTipo() == grupoIngrNum) {
+        if (grupo.getTipo().equals(grupoIngrNum) ) {
             List<Ingrediente> listaIngredientes = this.ingredienteRepository.listarPorGrupo(grupoId);
             if (!listaIngredientes.isEmpty()) {
                 Grupo grupoPadrao = this.grupoRepository.buscarGrupoPadrao(grupoIngrNum, grupoIngrNome)
@@ -252,7 +255,7 @@ public class GrupoService {
                     ingrediente.setGrupo(grupoPadrao);
                 }
             }
-        } else if (grupo.getTipo() == grupoFichaNum) {
+        } else if (grupo.getTipo().equals(grupoFichaNum) ) {
             List<FichaTecnica> listaFichasTecnicas = this.fichaTecnicaRepository.listarPorGrupo(grupoId);
             if (!listaFichasTecnicas.isEmpty()) {
                 Grupo grupoPadrao = this.grupoRepository.buscarGrupoPadrao(grupoFichaNum, grupoIngrNome)
@@ -299,7 +302,7 @@ public class GrupoService {
         Grupo grupo = this.grupoRepository.findById(id)
             .orElseThrow(() -> new GrupoException("Grupo com o ID: " + id + " não encontrado"));
 
-        if (grupo.getStatus() == apagado){
+        if (grupo.getStatus().equals(apagado)) {
             grupoRepository.delete(grupo);
             return true;
         }

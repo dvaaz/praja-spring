@@ -13,13 +13,13 @@ public class Estoque {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "estoque_id")
 	private Integer id;
-	@Column(name = "estoque_dia")
+	@Column(name = "estoque_dia", nullable=false)
 	private Date entrada;
 	@Column(name = "estoque_validade")
 	private Date validade;
-	@Column(name = "estoque_qtd")
+	@Column(name = "estoque_qtd", nullable=false)
 	private Integer qtd;
-	@Column(name="estoque_status")
+	@Column(name="estoque_status", nullable=false)
 	private Integer status;
 
 	@JsonIgnore

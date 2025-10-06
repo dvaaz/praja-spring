@@ -12,13 +12,13 @@ public class UtilizadoDia {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "utilizado_dia_id")
 	private Integer id;
-	@Column(name = "utilizado_dia_qtd")
+	@Column(name = "utilizado_dia_qtd", nullable=false)
 	private Integer qtd;
-	@Column(name="utilizado_dia_destino")
+	@Column(name="utilizado_dia_destino", nullable=false)
 	private Integer destino;
-	@Column(name="utilizado_dia_data")
+	@Column(name="utilizado_dia_data", nullable=false)
 	private Date data;
-	@Column(name="utilizado_dia_status")
+	@Column(name="utilizado_dia_status", nullable=false)
 	private Integer status;
 
 	@JsonIgnore

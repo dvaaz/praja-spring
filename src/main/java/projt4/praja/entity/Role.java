@@ -8,10 +8,10 @@ import jakarta.persistence.*;
 public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="role")
+    @Column(name="role", nullable=false)
     private Integer id;
     @Enumerated(EnumType.STRING)
-    @Column(name ="role_name")
+    @Column(name ="role_name", nullable=false)
     private RoleName name;
 
     public Integer getId() {

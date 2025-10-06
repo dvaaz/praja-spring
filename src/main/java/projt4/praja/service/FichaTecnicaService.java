@@ -282,7 +282,7 @@ public class FichaTecnicaService {
         FichaTecnica ficha = this.fichaTecnicaRepository.findById(fichaId)
                 .orElseThrow(() -> new FichaTecnicaException("Ficha Tecnica com o ID: " + fichaId + " não encontrado"));
 
-        if (ficha.getStatus() == apagado){
+        if (ficha.getStatus().equals(apagado)){
             fichaTecnicaRepository.delete(ficha);
             return true;
         }

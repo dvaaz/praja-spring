@@ -10,13 +10,13 @@ public class IngredienteFichaTecnica {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "ingrediente_ficha_tecnica_id")
 	private Integer id;
-	@Column(name= "ingrediente_ficha_tecnica_qtd")
+	@Column(name= "ingrediente_ficha_tecnica_qtd", nullable=false)
 	private Integer qtd;
-	@Column(name="ingrediente_ficha_tecnica_unidade_medida")
+	@Column(name="ingrediente_ficha_tecnica_unidade_medida", nullable=false)
 	private Integer unidadeMedida;
 	//  @Column(name="ingrediente_ficha_tecnica_observacao")
 	//  private String observacao;
-	@Column(name="ingrediente_ficha_tecnica_status")
+	@Column(name="ingrediente_ficha_tecnica_status", nullable=false)
 	private Integer status;
 
 	@JsonIgnore

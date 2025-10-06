@@ -13,15 +13,15 @@ import java.util.Set;
 		@GeneratedValue(strategy = GenerationType.IDENTITY)
 		@Column(name="ingrediente_id")
 		private Integer id;
-		@Column(name="ingrediente_nome")
+		@Column(name="ingrediente_nome", nullable=false)
 		private String nome;
 		@Column(name ="ingrediente_descricao")
 		private String descricao;
-		@Column(name="ingrediente_status")
+		@Column(name="ingrediente_status", nullable=false)
 		private Integer status;
 		@JsonIgnore
 		@ManyToOne
-		@JoinColumn(name = "grupo_id")
+		@JoinColumn(name = "grupo_id", nullable=false)
 		private Grupo grupo;
 
 		@OneToMany(mappedBy = "ingrediente")

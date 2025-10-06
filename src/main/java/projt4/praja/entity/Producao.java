@@ -10,18 +10,18 @@ public class Producao {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "producao_id")
 	private Integer id;
-	@Column(name = "producao_qtd")
+	@Column(name = "producao_qtd", nullable=false)
 	private Integer qtd;
-	@Column(name = "producao_status")
+	@Column(name = "producao_status", nullable=false)
 	private Integer status;
 
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "producao_dia_id")
+	@JoinColumn(name = "producao_dia_id", nullable=false)
 	private ProducaoDia producaoDia;
 
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "estoque_id")
+	@JoinColumn(name = "estoque_id", nullable=false)
 	private Estoque estoque;
 }
