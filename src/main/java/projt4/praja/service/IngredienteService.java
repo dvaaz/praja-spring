@@ -51,9 +51,19 @@ public class IngredienteService {
 		 */
 		@Transactional
 		public IngredienteDTOResponse criar(IngredienteDTORequest dtoRequest) {
-				// Verifica a existencia do um grupo
-				Grupo grupo = grupoRepository.buscarPorIdETipo(dtoRequest.getGrupo(), grupoIngrediente)
-						.orElseGet(() -> this.grupoService.buscarOuCriarGrupoIngrediente());
+				Grupo grupo;
+				Integer grupoId = dtoRequest.getGrupo();
+
+				if (dtoRequest.getGrupo() != null) { // Buscar por grupo
+						grupo = grupoRepository.buscarPorIdETipo(grupoId, grupoIngrediente)
+								.orElseThrow(() -> new GrupoException("Grupo com o ID: " + grupoId + " não encontrado."));
+				} else { // caso se receba um valor nulo pelo dto
+						grupo = this.grupoService.buscarOuCriarGrupoIngrediente();
+				}
+
+				if (grupo == null) { // Caso ainda assim não seja possivel obter um grupo
+						throw new GrupoException("Não foi possível determinar ou criar o Grupo necessário para Ingrediente.");
+				}
 
 				// Mapeia os dados obtidos para  a criação de ingrediente
 				Ingrediente novoIngrediente = new Ingrediente();

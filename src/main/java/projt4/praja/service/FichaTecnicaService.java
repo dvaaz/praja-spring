@@ -55,9 +55,19 @@ public class FichaTecnicaService {
      */
     @Transactional
     public FichaTecnicaDTOResponse criar(FichaTecnicaDTORequest dtoRequest) {
-        Grupo grupo = this.grupoRepository.buscarPorIdETipo(dtoRequest.getGrupo(), grupoFicha)
-                .orElseGet(() -> this.grupoService.buscarOuCriarGrupoFichaTecnica());
+		    Grupo grupo;
+				Integer grupoId = dtoRequest.getGrupo();
 
+		    if (dtoRequest.getGrupo() != null) { // Buscar por grupo
+				    grupo = grupoRepository.buscarPorIdETipo(grupoId, grupoFicha)
+						    .orElseThrow(() -> new GrupoException("Grupo com o ID: " + grupoId + " não encontrado."));
+		    } else { // caso se receba um valor nulo pelo dto
+				    grupo = this.grupoService.buscarOuCriarGrupoFichaTecnica();
+		    }
+
+		    if (grupo == null) { // Caso ainda assim não seja possivel obter um grupo
+				    throw new GrupoException("Não foi possível determinar ou criar o Grupo necessário para Ficha Técnica.");
+		    }
 				FichaTecnica fichaTecnica = new FichaTecnica();
         fichaTecnica.setNome(dtoRequest.getNome());
         fichaTecnica.setDescricao(dtoRequest.getDescricao());

@@ -42,8 +42,8 @@ public class ApiExceptionHandler {
 		@ExceptionHandler
 		@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ApiError handleAnyException(Exception ex){
-			System.err.println(ex.getMessage());
-    return new ApiError("erro_interno", "Ocorreu um erro inesperado.");
+//			System.err.println(ex.getMessage());
+    return new ApiError("erro_interno", ex.getMessage());
 	}
 
 		@ExceptionHandler(org.hibernate.PropertyValueException.class)
