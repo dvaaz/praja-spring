@@ -75,4 +75,10 @@ public class IngredienteFichaTecnica {
 	public void setFichaTecnica(FichaTecnica fichaTecnica) {
 		this.fichaTecnica = fichaTecnica;
 	}
+
+		public void setIngredienteId(Ingrediente ingrediente) {
+		}
+
+		public void setFichaTecnicaId(FichaTecnica fichaTecnica) {
+		}
 }
