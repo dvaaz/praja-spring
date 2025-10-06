@@ -28,57 +28,52 @@ public class IngredienteFichaTecnica {
 	@JoinColumn(name = "ficha_tecnica_id", nullable = false)
 	private FichaTecnica fichaTecnica;
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public Integer getQtd() {
-		return qtd;
-	}
+    public Integer getQtd() {
+        return qtd;
+    }
 
-	public void setQtd(Integer qtd) {
-		this.qtd = qtd;
-	}
+    public void setQtd(Integer qtd) {
+        this.qtd = qtd;
+    }
 
-	public Integer getUnidadeMedida() {
-		return unidadeMedida;
-	}
+    public Integer getUnidadeMedida() {
+        return unidadeMedida;
+    }
 
-	public void setUnidadeMedida(Integer unidadeMedida) {
-		this.unidadeMedida = unidadeMedida;
-	}
+    public void setUnidadeMedida(Integer unidadeMedida) {
+        this.unidadeMedida = unidadeMedida;
+    }
 
-	public Integer getStatus() {
-		return status;
-	}
+    public Integer getStatus() {
+        return status;
+    }
 
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 
-	public Ingrediente getIngrediente() {
-		return ingrediente;
-	}
+    public Ingrediente getIngrediente() {
+        return ingrediente;
+    }
 
-	public void setIngrediente(Ingrediente ingrediente) {
-		this.ingrediente = ingrediente;
-	}
+    public void setIngrediente(Ingrediente ingrediente) {
+        this.ingrediente = ingrediente;
+    }
 
-	public FichaTecnica getFichaTecnica() {
-		return fichaTecnica;
-	}
+    public FichaTecnica getFichaTecnica() {
+        return fichaTecnica;
+    }
 
-	public void setFichaTecnica(FichaTecnica fichaTecnica) {
-		this.fichaTecnica = fichaTecnica;
-	}
-
-		public void setIngredienteId(Ingrediente ingrediente) {
-		}
-
-		public void setFichaTecnicaId(FichaTecnica fichaTecnica) {
-		}
+    public void setFichaTecnica(FichaTecnica fichaTecnica) {
+        this.fichaTecnica = fichaTecnica;
+    }
+}
 }

@@ -2,6 +2,7 @@ package projt4.praja.service;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import projt4.praja.Enum.StatusEnum;
 import projt4.praja.entity.FichaTecnica;
 import projt4.praja.entity.Ingrediente;
 import projt4.praja.entity.IngredienteFichaTecnica;
@@ -10,6 +11,7 @@ import projt4.praja.entity.dto.response.ingredienteFichaTecnica.IngredienteEMFic
 import projt4.praja.entity.dto.response.ingredienteFichaTecnica.IngredienteFichaTecnicaDTOResponse;
 import projt4.praja.exception.FichaTecnicaException;
 import projt4.praja.exception.IngredienteException;
+import projt4.praja.exception.IngredienteFichaTecnicaException;
 import projt4.praja.repository.FichaTecnicaRepository;
 import projt4.praja.repository.IngredienteFichaTecnicaRepository;
 import projt4.praja.repository.IngredienteRepository;
@@ -27,6 +29,10 @@ public class IngredienteFichaTecnicaService {
 
   private IngredienteService ingredienteService;
   private FichaTecnicaService fichaTecnicaService;
+
+  private final Integer ativo = StatusEnum.ATIVO.getStatus(),
+        inativo = StatusEnum.INATIVO.getStatus(),
+        apagado = StatusEnum.APAGADO.getStatus();
   
   public IngredienteFichaTecnicaService(
       IngredienteFichaTecnicaRepository ingredienteFichaTecRepository,
@@ -38,26 +44,30 @@ public class IngredienteFichaTecnicaService {
     this.fichaTecnicaRepository = fichaTecnicaRepository;
   }
 
+    /**
+     * Cria relação de ingrediente ficha tecnica
+     * @param dtoRequestRequest
+     * @return
+     */
   @Transactional
-  public IngredienteFichaTecnicaDTOResponse criarRelacaoIngredienteFichaTecnica (IngredienteFichaTecnicaDTORequest dtoRequestRequest){
+  public IngredienteFichaTecnicaDTOResponse criar (IngredienteFichaTecnicaDTORequest dtoRequestRequest){
     Integer ingredienteId = dtoRequestRequest.getIngrediente(),
 		    fichaId = dtoRequestRequest.getFichaTecnica();
 
-		Ingrediente ingrediente = this.ingredienteRepository.buscarPorId(
-				(ingredienteId))
+		Ingrediente ingrediente = this.ingredienteRepository.buscarPorId((ingredienteId)) // Verifica existencia de ingrediente
 		    .orElseThrow(() -> new IngredienteException("Ingrediente com o ID: " + ingredienteId + " não encontrado")););
-		FichaTecnica ficha = this.fichaTecnicaRepository.buscarPorId(fichaId)
+		FichaTecnica ficha = this.fichaTecnicaRepository.buscarPorId(fichaId) // Verifica existencia de ficha tecnica
 				.orElseThrow(() -> new FichaTecnicaException("Ficha tecnica com o ID: " + fichaId + " não encontrada"));
-
-		
-		
-		if(duplicata != null){ return null; }
-    IngredienteFichaTecnica ingredienteFicha =  new IngredienteFichaTecnica();
+    this.ingredienteFichaTecRepository.buscarIngredienteEmFichaTecnica(ingredienteId, fichaId)
+        .ifPresent(existente -> {
+                throw new IngredienteFichaTecnicaException("Já existe relação Ingrediente Ficha Tecnica");
+        });
+    IngredienteFichaTecnica ingredienteFicha = new IngredienteFichaTecnica();
     ingredienteFicha.setQtd(dtoRequestRequest.getQtd());
     ingredienteFicha.setUnidadeMedida(dtoRequestRequest.getUnidadeMedida());
-    ingredienteFicha.setIngredienteId(ingrediente);
-    ingredienteFicha.setFichaTecnicaId(fichaTecnica);
-    ingredienteFicha.setStatus(dtoRequestRequest.getStatus());
+    ingredienteFicha.setIngrediente(ingrediente);
+    ingredienteFicha.setFichaTecnica(ficha);
+    ingredienteFicha.setStatus(ativo);
 //    ingredienteFicha.setObservacao(dtoRequestRequest.getObservacao());
 
     IngredienteFichaTecnica ingredienteFichaSave = ingredienteFichaTecRepository.save(ingredienteFicha);
@@ -66,15 +76,15 @@ public class IngredienteFichaTecnicaService {
     dtoResponse.setId(ingredienteFichaSave.getId());
     dtoResponse.setQtd(ingredienteFichaSave.getQtd());
     dtoResponse.setUnidadeMedida(ingredienteFichaSave.getUnidadeMedida());
-    dtoResponse.setIngrediente(ingredienteFichaSave.getIngredienteId().getId());
-    dtoResponse.setFichaTecnica(ingredienteFichaSave.getFichaTecnicaId().getId());
+    dtoResponse.setIngrediente(ingredienteFichaSave.getIngrediente().getId());
+    dtoResponse.setFichaTecnica(ingredienteFichaSave.getFichaTecnica().getId());
     dtoResponse.setStatus(ingredienteFichaSave.getStatus());
 //    dtoResponse.setObservacao(ingredienteFichaSave.getObservacao());
     return dtoResponse;
 
   }
 
-  public List<IngredienteEMFichaTecnicaDTOResponse> listarIngredientesDeFichaTecnica(Integer fichaTecnicaId){
+  public List<IngredienteEMFichaTecnicaDTOResponse> listarIngredientesEmFichaTecnica(Integer fichaTecnicaId){
       List<IngredienteFichaTecnica> obterLista = this.ingredienteFichaTecRepository.listarIngredientesEmFichaTecnica(fichaTecnicaId);
       if(obterLista != null) {
           List<IngredienteEMFichaTecnicaDTOResponse> responseListaIngredientesEmFicha = new ArrayList<IngredienteEMFichaTecnicaDTOResponse>();
@@ -95,7 +105,9 @@ public class IngredienteFichaTecnicaService {
 
   @Transactional
   public AlterarMedidasIngredienteFichaDTOResponse alterarMedidasIngredienteFicha(Integer ingredienteFichaId, AlterarMedidasIngredienteFichaDTORequest dtoRequest) {
-    IngredienteFichaTecnica ingredienteFichaTecnica = this.ingredienteFichaTecRepository.buscarIngredienteEmFichaTecnica(ingredienteFichaId);
+
+      IngredienteFichaTecnica ingredienteFichaTecnica = this.ingredienteFichaTecRepository.buscarPorId(ingredienteFichaId)
+          .orElseThrow(()-> new IngredienteFichaTecnicaException("Não foi encontrado ingrediente em fichatecnica com o id: " + ingredienteFichaId));
     if (ingredienteFichaTecnica != null) {
       ingredienteFichaTecnica.setUnidadeMedida(dtoRequest.getUnidadeMedida());
       ingredienteFichaTecnica.setQtd(dtoRequest.getQtd());
