@@ -29,7 +29,7 @@ public class FichaTecnicaController {
     @PostMapping("/criar")
     @Operation(summary ="Criar nova Ficha Tecnica", description = "Endpoint para o registro de nova ficha tecnica")
     public ResponseEntity<FichaTecnicaDTOResponse> criar(
-        @RequestBody FichaTecnicaDTORequest dtoRequest) {
+        @Valid @RequestBody FichaTecnicaDTORequest dtoRequest) {
         FichaTecnicaDTOResponse dtoResponse = this.service.criar(dtoRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(dtoResponse);
     }
@@ -64,7 +64,7 @@ public class FichaTecnicaController {
     @Operation(summary = "Alterar o grupo", description = "Endpoint para alterar o grupo de uma ficha tecnica")
     public ResponseEntity<MudarDeGrupoDTOResponse> alterarGrupo(
          @PathVariable Integer id,
-         @RequestBody MudarDeGrupoDTORequest dtoRequest
+         @Valid @RequestBody MudarDeGrupoDTORequest dtoRequest
     ){
         MudarDeGrupoDTOResponse dtoResponse = this.service.alterarGrupo(id, dtoRequest);
         return ResponseEntity.ok(dtoResponse);

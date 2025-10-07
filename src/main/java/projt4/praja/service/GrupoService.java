@@ -1,6 +1,5 @@
 package projt4.praja.service;
 
-import org.hibernate.PropertyValueException;
 import projt4.praja.Enum.GrupoEnum;
 import projt4.praja.Enum.StatusEnum;
 import projt4.praja.entity.FichaTecnica;

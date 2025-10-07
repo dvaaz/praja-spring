@@ -291,7 +291,7 @@ public class IngredienteService {
 				Ingrediente ingrediente = this.ingredienteRepository.findById(ingredienteId)
 						.orElseThrow(() -> new IngredienteException("Ingrediente com o ID: " + ingredienteId + " não encontrado"));
 
-				if (ingrediente.getStatus() == apagado){
+				if (ingrediente.getStatus().equals(apagado)){
 						ingredienteRepository.delete(ingrediente);
 						return true;
 				}
