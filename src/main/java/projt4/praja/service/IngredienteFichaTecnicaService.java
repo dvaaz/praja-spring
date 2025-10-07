@@ -123,12 +123,12 @@ public class IngredienteFichaTecnicaService {
   }
 
   public Boolean apagar(Integer ingredienteFichaId) {
-			Optional<IngredienteFichaTecnica> ingredienteFichaReturn = this.ingredienteFichaTecRepository.buscarPorId(ingredienteFichaId);
-		  ingredienteFichaReturn.ifPresent(
-					ingredienteFicha ->{
+			Optional<IngredienteFichaTecnica> ingredienteFicha = this.ingredienteFichaTecRepository.buscarPorId(ingredienteFichaId);
+		  ingredienteFicha.ifPresent(
+					apaga ->{
 					this.ingredienteFichaTecRepository.updateStatus(ingredienteFichaId, apagado);
 			});
 
-        return ingredienteFichaReturn.isPresent();
+        return ingredienteFicha.isPresent();
 	}
 }

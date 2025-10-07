@@ -1,7 +1,5 @@
 package projt4.praja.service;
 
-import org.hibernate.PropertyValueException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import projt4.praja.Enum.GrupoEnum;
@@ -18,7 +16,6 @@ import projt4.praja.entity.dto.response.shared.MudarDeGrupoDTOResponse;
 import projt4.praja.entity.dto.response.shared.MudarDeGrupoEmLoteDTOResponse;
 import projt4.praja.repository.GrupoRepository;
 import projt4.praja.repository.IngredienteRepository;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -58,9 +55,9 @@ public class IngredienteService {
 				Grupo grupo = this.grupoRepository.buscarPorIdETipo(grupoId, grupoIngrediente)
 						.orElseGet(() -> this.grupoService.buscarOuCriarGrupoIngrediente()); // caso não obtenha um grupo
 
-				if (grupo == null) { return null ;} // Caso ainda assim não seja possivel obter um grupo
+				if (grupo == null) { return null ;} // Caso ainda assim não seja possível obter um grupo
 
-				// Mapeia os dados obtidos para  a criação de ingrediente
+				// Mapeia os dados obtidos para a criação de ingrediente
 				Ingrediente novoIngrediente = new Ingrediente();
 				novoIngrediente.setNome(dtoRequest.getNome());
 				novoIngrediente.setDescricao(dtoRequest.getDescricao());
@@ -141,7 +138,7 @@ public class IngredienteService {
 		}
 
 		/**
-		 * Buscar Ingrediene por Id
+		 * Buscar Ingrediente por Id
 		 *
 		 * @param ingredienteId
 		 * @return
@@ -173,7 +170,7 @@ public class IngredienteService {
 		public AlterarStatusDTOResponse alterarStatus(Integer ingredienteId, AlterarStatusDTORequest dtoRequest) {
 				Optional<Ingrediente> ingrediente = this.ingredienteRepository.buscarPorId(ingredienteId);
 
-				if (ingrediente.isEmpty()) { return null; } // caso não haja ingrediente com o id
+				if (ingrediente.isEmpty()) { return null; } // caso não haja ingrediente com o ‘id’
 
 						ingrediente.get().setStatus(dtoRequest.getStatus());
 						Ingrediente save = this.ingredienteRepository.save(ingrediente.get());
@@ -252,11 +249,11 @@ public class IngredienteService {
 		 */
 		@Transactional
 		public Boolean desativar(Integer ingredienteId) {
-				Optional<Ingrediente> ingredienteReturn = this.ingredienteRepository.buscarPorId(ingredienteId);
-				ingredienteReturn.ifPresent(ingrediente -> {
-						this.ingredienteRepository.updateStatus(ingrediente.getId(), inativo);
+				Optional<Ingrediente> ingrediente = this.ingredienteRepository.buscarPorId(ingredienteId);
+				ingrediente.ifPresent(desativado -> {
+						this.ingredienteRepository.updateStatus(ingrediente.get().getId(), inativo);
 				});
-				return ingredienteReturn.isPresent();
+				return ingrediente.isPresent();
 		}
 
 		/**
@@ -267,11 +264,11 @@ public class IngredienteService {
 		 */
 		@jakarta.transaction.Transactional
 		public Boolean apagar(Integer ingredienteId) {
-				Optional<Ingrediente> ingredienteReturn = this.ingredienteRepository.buscarPorId(ingredienteId);
-				ingredienteReturn.ifPresent(ingrediente -> {
-						this.ingredienteRepository.updateStatus(ingrediente.getId(), apagado);
+				Optional<Ingrediente> ingrediente = this.ingredienteRepository.buscarPorId(ingredienteId);
+				ingrediente.ifPresent( apaga -> {
+						this.ingredienteRepository.updateStatus(ingrediente.get().getId(), apagado);
 				});
-				return ingredienteReturn.isPresent();
+				return ingrediente.isPresent();
 		}
 
 		/**
