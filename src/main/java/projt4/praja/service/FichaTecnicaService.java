@@ -165,15 +165,16 @@ public class FichaTecnicaService {
   public AlterarStatusDTOResponse alterarStatus(Integer fichaId, AlterarStatusDTORequest dtoRequest){
       Optional<FichaTecnica> ficha = this.fichaTecnicaRepository.buscarPorId(fichaId); // busca por ficha tecnica
 
-		  if(ficha.isPresent()) { return null;}
+		  if(ficha.isPresent()) {
 
-			ficha.get().setStatus(dtoRequest.getStatus());
+          ficha.get().setStatus(dtoRequest.getStatus());
 
-      FichaTecnica salvo = this.fichaTecnicaRepository.save(ficha.get());
-      AlterarStatusDTOResponse dtoResponse = new AlterarStatusDTOResponse();
-      dtoResponse.setId(ficha.get().getId());
-      dtoResponse.setStatus(ficha.get().getStatus());
-      return dtoResponse;
+          FichaTecnica salvo = this.fichaTecnicaRepository.save(ficha.get());
+          AlterarStatusDTOResponse dtoResponse = new AlterarStatusDTOResponse();
+          dtoResponse.setId(ficha.get().getId());
+          dtoResponse.setStatus(ficha.get().getStatus());
+          return dtoResponse;
+      } return null;
   }
 
     /**

@@ -288,9 +288,11 @@ public class GrupoService {
     public boolean destroy(Integer id) {
         Optional<Grupo> grupo = this.grupoRepository.findById(id);
 
-        if (grupo.get().getStatus().equals(apagado)) {
-            grupoRepository.delete(grupo.get());
-            return true;
+        if (grupo.isPresent()) {
+            if (grupo.get().getStatus().equals(apagado)) {
+                grupoRepository.delete(grupo.get());
+                return true;
+            }
         }
         return false;
 
