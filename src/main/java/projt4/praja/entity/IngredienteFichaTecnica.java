@@ -76,4 +76,4 @@ public class IngredienteFichaTecnica {
         this.fichaTecnica = fichaTecnica;
     }
 }
-}
+
