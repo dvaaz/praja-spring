@@ -71,6 +71,7 @@ public class IngredienteService {
 						dtoResponse.setId(ingredienteSave.getId());
 						dtoResponse.setNome(ingredienteSave.getNome());
 						dtoResponse.setDescricao(ingredienteSave.getDescricao());
+            dtoResponse.setUnidadeMedida(ingredienteSave.getUnidadeMedida());
 						dtoResponse.setIdGrupo(ingredienteSave.getGrupo().getId());
 						dtoResponse.setNomeGrupo(ingredienteSave.getGrupo().getNome());
 						dtoResponse.setStatus(ingredienteSave.getStatus());
@@ -99,6 +100,7 @@ public class IngredienteService {
 						temp.setDescricao(ingrediente.getDescricao());
 						temp.setIdGrupo(ingrediente.getGrupo().getId());
 						temp.setNomeGrupo(ingrediente.getGrupo().getNome());
+            temp.setUnidadeMedida(ingrediente.getUnidadeMedida());
 						temp.setStatus(ingrediente.getStatus());
 						dtoResponse.add(temp);
 				}
@@ -123,6 +125,7 @@ public class IngredienteService {
 										IngredienteDTOResponse temp = new IngredienteDTOResponse();
 										temp.setId(ingrediente.getId());
 										temp.setNome(ingrediente.getNome());
+                    temp.setUnidadeMedida(ingrediente.getUnidadeMedida());
 										temp.setDescricao(ingrediente.getDescricao());
 										ingredientesDTO.add(temp);
 								}
@@ -152,6 +155,7 @@ public class IngredienteService {
 				dtoResponse.setId(ingrediente.get().getId());
 				dtoResponse.setNome(ingrediente.get().getNome());
 				dtoResponse.setDescricao(ingrediente.get().getDescricao());
+        dtoResponse.setUnidadeMedida(ingrediente.get().getUnidadeMedida());
 				dtoResponse.setIdGrupo(ingrediente.get().getGrupo().getId());
 				dtoResponse.setNomeGrupo(ingrediente.get().getGrupo().getNome());
 				dtoResponse.setStatus(ingrediente.get().getStatus());

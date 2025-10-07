@@ -64,16 +64,18 @@ public class IngredienteFichaTecnicaService {
 						ingredienteFicha.setQtd(dtoRequestRequest.getQtd());
 						ingredienteFicha.setUnidadeMedida(dtoRequestRequest.getUnidadeMedida());
 						ingredienteFicha.setIngrediente(ingrediente.get());
+            ingredienteFicha.setDetalhe(ingredienteFicha.getDetalhe());
 						ingredienteFicha.setFichaTecnica(ficha.get());
 						ingredienteFicha.setStatus(ativo);
 						//    ingredienteFicha.setObservacao(dtoRequestRequest.getObservacao());
 
 						IngredienteFichaTecnica ingredienteFichaSave = ingredienteFichaTecRepository.save(ingredienteFicha);
 
-						IngredienteFichaTecnicaDTOResponse dtoResponse = new IngredienteFichaTecnicaDTOResponse();
+            IngredienteFichaTecnicaDTOResponse dtoResponse = new IngredienteFichaTecnicaDTOResponse();
 						dtoResponse.setId(ingredienteFichaSave.getId());
 						dtoResponse.setQtd(ingredienteFichaSave.getQtd());
 						dtoResponse.setUnidadeMedida(ingredienteFichaSave.getUnidadeMedida());
+            dtoResponse.setDetalhe(ingredienteFichaSave.getDetalhe());
 						dtoResponse.setIngrediente(ingredienteFichaSave.getIngrediente().getId());
 						dtoResponse.setFichaTecnica(ingredienteFichaSave.getFichaTecnica().getId());
 						dtoResponse.setStatus(ingredienteFichaSave.getStatus());

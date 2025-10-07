@@ -2,39 +2,39 @@ package projt4.praja.entity.dto.response.ingredienteFichaTecnica;
 
 public class AlterarMedidasIngredienteFichaDTOResponse {
   private Integer id;
-//  private String observacao;
+  private String detalhe;
   private Integer qtd;
   private Integer unidadeMedida;
 
-  public Integer getId() {
-    return id;
-  }
+    public Integer getId() {
+        return id;
+    }
 
-  public void setId(Integer id) {
-    this.id = id;
-  }
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-  public Integer getQtd() {
-    return qtd;
-  }
+    public String getDetalhe() {
+        return detalhe;
+    }
 
-  public void setQtd(Integer qtd) {
-    this.qtd = qtd;
-  }
+    public void setDetalhe(String detalhe) {
+        this.detalhe = detalhe;
+    }
 
-//    public String getObservacao() {
-//        return observacao;
-//    }
-//
-//    public void setObservacao(String observacao) {
-//        this.observacao = observacao;
-//    }
+    public Integer getQtd() {
+        return qtd;
+    }
+
+    public void setQtd(Integer qtd) {
+        this.qtd = qtd;
+    }
 
     public Integer getUnidadeMedida() {
-    return unidadeMedida;
-  }
+        return unidadeMedida;
+    }
 
-  public void setUnidadeMedida(Integer unidadeMedida) {
-    this.unidadeMedida = unidadeMedida;
-  }
+    public void setUnidadeMedida(Integer unidadeMedida) {
+        this.unidadeMedida = unidadeMedida;
+    }
 }

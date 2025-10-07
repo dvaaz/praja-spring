@@ -17,6 +17,8 @@ import java.util.Set;
 		private String nome;
 		@Column(name ="ingrediente_descricao")
 		private String descricao;
+    @Column(name="ingrediente_unidade_medida")
+    private Integer unidadeMedida;
 		@Column(name="ingrediente_status", nullable=false)
 		private Integer status;
 		@JsonIgnore
@@ -31,67 +33,75 @@ import java.util.Set;
 		@OneToMany(mappedBy = "ingrediente")
 		private Set<UtilizadoDia> utilizadoDiaSet;
 
-			public Integer getId() {
-					return id;
-			}
+      public Integer getId() {
+          return id;
+      }
 
-			public void setId(Integer id) {
-					this.id = id;
-			}
+      public void setId(Integer id) {
+          this.id = id;
+      }
 
-			public String getNome() {
-					return nome;
-			}
+      public String getNome() {
+          return nome;
+      }
 
-			public void setNome(String nome) {
-					this.nome = nome;
-			}
+      public void setNome(String nome) {
+          this.nome = nome;
+      }
 
-			public String getDescricao() {
-					return descricao;
-			}
+      public String getDescricao() {
+          return descricao;
+      }
 
-			public void setDescricao(String descricao) {
-					this.descricao = descricao;
-			}
+      public void setDescricao(String descricao) {
+          this.descricao = descricao;
+      }
 
-			public Integer getStatus() {
-					return status;
-			}
+      public Integer getUnidadeMedida() {
+          return unidadeMedida;
+      }
 
-			public void setStatus(Integer status) {
-					this.status = status;
-			}
+      public void setUnidadeMedida(Integer unidadeMedida) {
+          this.unidadeMedida = unidadeMedida;
+      }
 
-			public Grupo getGrupo() {
-					return grupo;
-			}
+      public Integer getStatus() {
+          return status;
+      }
 
-			public void setGrupo(Grupo grupo) {
-					this.grupo = grupo;
-			}
+      public void setStatus(Integer status) {
+          this.status = status;
+      }
 
-			public Set<Estoque> getEstoqueSet() {
-					return estoqueSet;
-			}
+      public Grupo getGrupo() {
+          return grupo;
+      }
 
-			public void setEstoqueSet(Set<Estoque> estoqueSet) {
-					this.estoqueSet = estoqueSet;
-			}
+      public void setGrupo(Grupo grupo) {
+          this.grupo = grupo;
+      }
 
-			public Set<IngredienteFichaTecnica> getIngredienteFichaTecnicaSet() {
-					return ingredienteFichaTecnicaSet;
-			}
+      public Set<Estoque> getEstoqueSet() {
+          return estoqueSet;
+      }
 
-			public void setIngredienteFichaTecnicaSet(Set<IngredienteFichaTecnica> ingredienteFichaTecnicaSet) {
-					this.ingredienteFichaTecnicaSet = ingredienteFichaTecnicaSet;
-			}
+      public void setEstoqueSet(Set<Estoque> estoqueSet) {
+          this.estoqueSet = estoqueSet;
+      }
 
-			public Set<UtilizadoDia> getUtilizadoDiaSet() {
-					return utilizadoDiaSet;
-			}
+      public Set<IngredienteFichaTecnica> getIngredienteFichaTecnicaSet() {
+          return ingredienteFichaTecnicaSet;
+      }
 
-			public void setUtilizadoDiaSet(Set<UtilizadoDia> utilizadoDiaSet) {
-					this.utilizadoDiaSet = utilizadoDiaSet;
-			}
-	}
+      public void setIngredienteFichaTecnicaSet(Set<IngredienteFichaTecnica> ingredienteFichaTecnicaSet) {
+          this.ingredienteFichaTecnicaSet = ingredienteFichaTecnicaSet;
+      }
+
+      public Set<UtilizadoDia> getUtilizadoDiaSet() {
+          return utilizadoDiaSet;
+      }
+
+      public void setUtilizadoDiaSet(Set<UtilizadoDia> utilizadoDiaSet) {
+          this.utilizadoDiaSet = utilizadoDiaSet;
+      }
+  }

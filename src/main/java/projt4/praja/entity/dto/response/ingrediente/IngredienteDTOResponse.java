@@ -4,55 +4,64 @@ public class IngredienteDTOResponse {
 	private Integer id;
 	private String nome;
 	private String descricao;
+  private Integer unidadeMedida;
 	private Integer idGrupo;
 	private String nomeGrupo;
 	private Integer status;
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
-	public String getNome() {
-		return nome;
-	}
+    public String getNome() {
+        return nome;
+    }
 
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
-	public String getDescricao() {
-		return descricao;
-	}
+    public String getDescricao() {
+        return descricao;
+    }
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
 
-	public Integer getIdGrupo() {
-		return idGrupo;
-	}
+    public Integer getUnidadeMedida() {
+        return unidadeMedida;
+    }
 
-	public void setIdGrupo(Integer idGrupo) {
-		this.idGrupo = idGrupo;
-	}
+    public void setUnidadeMedida(Integer unidadeMedida) {
+        this.unidadeMedida = unidadeMedida;
+    }
 
-	public String getNomeGrupo() {
-		return nomeGrupo;
-	}
+    public Integer getIdGrupo() {
+        return idGrupo;
+    }
 
-	public void setNomeGrupo(String nomeGrupo) {
-		this.nomeGrupo = nomeGrupo;
-	}
+    public void setIdGrupo(Integer idGrupo) {
+        this.idGrupo = idGrupo;
+    }
 
-	public Integer getStatus() {
-		return status;
-	}
+    public String getNomeGrupo() {
+        return nomeGrupo;
+    }
 
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
+    public void setNomeGrupo(String nomeGrupo) {
+        this.nomeGrupo = nomeGrupo;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
 }
