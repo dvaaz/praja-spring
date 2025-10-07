@@ -4,25 +4,32 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.stereotype.Repository;
 import projt4.praja.entity.Ingrediente;
+import projt4.praja.entity.IngredienteFichaTecnica;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public interface IngredienteRepository extends JpaRepository<Ingrediente, Integer> {
-	@Modifying
-	@Transactional
-	@Query("UPDATE Ingrediente i SET i.status = :status " +
-			"WHERE i.id = :id")
-	void updateStatus(@Param("id") Integer ingredieneId, @Param("status") int status);
+    @Modifying
+    @Query("UPDATE IngredienteFichaTecnica f SET f.status = :status " +
+        "WHERE f.id = :id")
+    void updateStatus(@Param("id") Integer id, @Param("status") Integer status);
 
-	@Query("SELECT i FROM Ingrediente i WHERE i.status>=0")
-	List<Ingrediente> listar();
+    @Query("SELECT f FROM IngredienteFichaTecnica f WHERE f.status>=0")
+    List<IngredienteFichaTecnica> listarAtivos();
 
-	@Query("SELECT i FROM Ingrediente i WHERE i.id = :id AND i.status>=0")
-	Optional<Ingrediente> buscarPorId(@Param("id") Integer ingredienteId);
+    @Query("SELECT f FROM IngredienteFichaTecnica f WHERE f.fichaTecnica=:ficha AND f.status>=0")
+    List<IngredienteFichaTecnica> listarIngredienteEmFichas(@Param("fichaTecnica") Integer fichaTecnica);
 
-	@Query("SELECT i FROM Ingrediente i WHERE i.grupo.id = :grupoId")
-	List<Ingrediente> listarPorGrupo(@Param("grupoId") Integer grupo);
+    @Query("SELECT f FROM IngredienteFichaTecnica f WHERE f.id =:id AND f.status>=0")
+    Optional<IngredienteFichaTecnica> buscarPorId(@Param("id") Integer id);
+
+    @Query("SELECT f FROM IngredienteFichaTecnica f " +
+        "WHERE f.ingrediente.id = :ingredienteId AND f.fichaTecnica.id = :fichaTecnicaId AND f.status>=0")
+    Optional<IngredienteFichaTecnica> buscarIngredienteEmFichaTecnica (
+        @Param("ingredienteId") Integer ingredienteId,
+        @Param("fichaTecnicaId") Integer fichaTecnicaId);
 }
