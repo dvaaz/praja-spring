@@ -6,46 +6,46 @@ public class UsuarioDTOResponse {
     private Integer id;
     private String nome;
     private String telefone;
-    private String senha;
-    private List<String> roleList;
+    private Integer status;
+		private List<String> roleList;
 
-    public Integer getId() {
-        return id;
-    }
+		public Integer getId() {
+				return id;
+		}
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
+		public void setId(Integer id) {
+				this.id = id;
+		}
 
-    public String getNome() {
-        return nome;
-    }
+		public String getNome() {
+				return nome;
+		}
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+		public void setNome(String nome) {
+				this.nome = nome;
+		}
 
-    public String getTelefone() {
-        return telefone;
-    }
+		public String getTelefone() {
+				return telefone;
+		}
 
-    public void setTelefone(String telefone) {
-        this.telefone = telefone;
-    }
+		public void setTelefone(String telefone) {
+				this.telefone = telefone;
+		}
 
-    public String getSenha() {
-        return senha;
-    }
+		public List<String> getRoleList() {
+				return roleList;
+		}
 
-    public void setSenha(String senha) {
-        this.senha = senha;
-    }
+		public void setRoleList(List<String> roleList) {
+				this.roleList = roleList;
+		}
 
-    public List<String> getRoleList() {
-        return roleList;
-    }
+		public Integer getStatus() {
+				return status;
+		}
 
-    public void setRoleList(List<String> roleList) {
-        this.roleList = roleList;
-    }
+		public void setStatus(Integer status) {
+				this.status = status;
+		}
 }

@@ -104,6 +104,30 @@ public class FichaTecnicaService {
     return dtoResponse;
   }
 
+		/**
+		 * Lista Fichas Tecnicas que estejam ativas
+		 * @return List<FichaTecnicaDTOResponse>
+		 */
+		public List<FichaTecnicaDTOResponse> listarDia(){
+				List<FichaTecnica> fichasTecnicas = this.fichaTecnicaRepository.listarAtivas();
+
+				if (fichasTecnicas.isEmpty()){ return null; }
+
+				List<FichaTecnicaDTOResponse> dtoResponse = new ArrayList<>();
+				for (FichaTecnica ficha: fichasTecnicas){
+						FichaTecnicaDTOResponse temp = new FichaTecnicaDTOResponse();
+						temp.setId(ficha.getId());
+						temp.setNome(ficha.getNome());
+						temp.setDescricao(ficha.getDescricao());
+						temp.setIdGrupo(ficha.getGrupo().getId());
+						temp.setNomeGrupo(ficha.getGrupo().getNome());
+						temp.setStatus(ficha.getStatus());
+
+						dtoResponse.add(temp);
+				}
+				return dtoResponse;
+		}
+
     /**
      * Lista fichas tecnicas pertencentes a um grupo
      * @param grupoId
