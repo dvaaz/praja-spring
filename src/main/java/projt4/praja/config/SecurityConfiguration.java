@@ -23,49 +23,46 @@ public class SecurityConfiguration {
     private UserAuthenticationFilter userAuthenticationFilter;
 
     public static final String [] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
-            "api/usuario/login", // Url que usaremos para fazer login
-            "api/usuario/criar", // Url que usaremos para criar um usuário
-            // 🔓 Swagger/OpenAPI UI
-            "/v3/api-docs/**",
-            "/swagger-ui/**",
-            "/swagger-ui.html",
-            "/api/fichatecnica/listar/dia"
+        "/api/usuario/login", // Url que usaremos para fazer login
+        "/api/usuario/criar", // Url que usaremos para criar um usuário
+        // 🔓 Swagger/OpenAPI UI
+        "/v3/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html",
+        "/api/fichatecnica/listar/dia"
     };
     // Endpoints que requerem autenticação para serem acessados
     public static final String [] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
-
-		        "/api/fichatecnica/listar/dia",
-		        "/api/fichatecnica/listar",
-		        "/api/fichatecnica/buscar/{id}"
-
+        "/api/fichatecnica/listar/dia",
+        "/api/fichatecnica/listar",
+        "/api/fichatecnica/buscar"
     };
     // Endpoints que só podem ser acessador por usuários com permissão de CLIENTE
     public static final String [] ENDPOINTS_CLIENTE = {
 		    "/api/fichatecnica/listar/dia",
 		    "/api/fichatecnica/listar",
-		    "/api/fichatecnica/buscar/{id}"
+		    "/api/fichatecnica/buscar"
     };
 		// Endpoints que só podem ser acessador por usuários com permissão de VENDEDORES
 		public static final String [] ENDPOINTS_VENDAS = {
 				"/api/usuario/listar",
 				"/api/fichatecnica/listar/dia",
 				"/api/fichatecnica/listar",
-				"/api/fichatecnica/buscar/{id}"
+				"/api/fichatecnica/buscar"
 		};
 		// Endpoints que só podem ser acessador por usuários com permissão de COZINHEIRO
 		public static final String [] ENDPOINTS_COZINHA = {
 				// ficha tecnica
 				"/api/fichatecnica/criar",
 				"/api/fichatecnica/listar",
-				"/api/fichatecnica/buscar/{id}",
+				"/api/fichatecnica/buscar",
 				"/api/fichatecnica/listar/dia",
-				"/api/fichatecnica/buscar/{id}",
+				"/api/fichatecnica/buscar",
 				//ingrediente
 				"api/ingrediente/criar",
 				"api/ingrediente/listar",
-				"api/ingrediente/buscar/{id}",
-				"api/ingrediente/atualizar/{id}",
-
+				"api/ingrediente/buscar",
+				"api/ingrediente/atualizar",
 				//grupo
 				"api/grupo/listar"
 		};
@@ -76,7 +73,7 @@ public class SecurityConfiguration {
 		};
     // Endpoints que só podem ser acessador por usuários com permissão de ADMINISTRADOR
     public static final String [] ENDPOINTS_ADMINNISTRADOR = {
-				"/api/**"
+				"/api"
     };
 
     @Bean
@@ -88,11 +85,6 @@ public class SecurityConfiguration {
                         .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() //adicionado para funcionamento do swagger
                         .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated()
-                        .requestMatchers(ENDPOINTS_ADMINNISTRADOR).hasRole("ADMINISTRATOR")
-                        .requestMatchers(ENDPOINTS_CLIENTE).hasRole("CLIENTE")
-				                .requestMatchers(ENDPOINTS_VENDAS).hasRole("VENDAS")
-		                    .requestMatchers(ENDPOINTS_COZINHA).hasRole("COZINHA")
-		                    .requestMatchers(ENDPOINTS_COZINHA).hasRole("ESTOQUE")
 		                    .anyRequest().denyAll()
                 )
                 .addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
