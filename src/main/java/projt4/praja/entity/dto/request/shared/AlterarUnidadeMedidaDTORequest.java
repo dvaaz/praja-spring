@@ -1,6 +1,6 @@
-package projt4.praja.entity.dto.request.ingredienteFichaTecnica;
+package projt4.praja.entity.dto.request.shared;
 
-public class AlterarUnidadeMedidaIngredienteFichaDTORequest {
+public class AlterarUnidadeMedidaDTORequest {
 		private Integer unidadeMedida;
 
 		public Integer getUnidadeMedida() {

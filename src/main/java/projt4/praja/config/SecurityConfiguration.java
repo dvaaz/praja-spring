@@ -1,5 +1,6 @@
 package projt4.praja.config;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -35,21 +36,21 @@ public class SecurityConfiguration {
 
 		        "/api/fichatecnica/listar/dia",
 		        "/api/fichatecnica/listar",
-		        "/api/fichatecnica/buscar/{id}",
+		        "/api/fichatecnica/buscar/{id}"
 
     };
     // Endpoints que só podem ser acessador por usuários com permissão de CLIENTE
     public static final String [] ENDPOINTS_CLIENTE = {
 		    "/api/fichatecnica/listar/dia",
 		    "/api/fichatecnica/listar",
-		    "/api/fichatecnica/buscar/{id}",
+		    "/api/fichatecnica/buscar/{id}"
     };
 		// Endpoints que só podem ser acessador por usuários com permissão de VENDEDORES
 		public static final String [] ENDPOINTS_VENDAS = {
 				"/api/usuario/listar",
 				"/api/fichatecnica/listar/dia",
 				"/api/fichatecnica/listar",
-				"/api/fichatecnica/buscar/{id}",
+				"/api/fichatecnica/buscar/{id}"
 		};
 		// Endpoints que só podem ser acessador por usuários com permissão de COZINHEIRO
 		public static final String [] ENDPOINTS_COZINHA = {
@@ -66,11 +67,11 @@ public class SecurityConfiguration {
 				"api/ingrediente/atualizar/{id}",
 
 				//grupo
-				"api/grupo/listar",
+				"api/grupo/listar"
 		};
 		// Endpoints que só podem ser acessador por usuários com permissão de cliente
 		public static final String [] ENDPOINTS_ESTOQUE = {
-				"/api/ingrediente/listar",
+				"/api/ingrediente/listar"
 
 		};
     // Endpoints que só podem ser acessador por usuários com permissão de ADMINISTRADOR
@@ -86,11 +87,12 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() //adicionado para funcionamento do swagger
+                        .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated()
                         .requestMatchers(ENDPOINTS_ADMINNISTRADOR).hasRole("ADMINISTRATOR")
                         .requestMatchers(ENDPOINTS_CLIENTE).hasRole("CLIENTE")
 				                .requestMatchers(ENDPOINTS_VENDAS).hasRole("VENDAS")
-		                    .requestMatchers(ENDPOINTS_COZINHA).hasRole("COZINHA")                    .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated()
-		                .requestMatchers(ENDPOINTS_COZINHA).hasRole("ESTOQUE")
+		                    .requestMatchers(ENDPOINTS_COZINHA).hasRole("COZINHA")
+		                    .requestMatchers(ENDPOINTS_COZINHA).hasRole("ESTOQUE")
 		                    .anyRequest().denyAll()
                 )
                 .addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

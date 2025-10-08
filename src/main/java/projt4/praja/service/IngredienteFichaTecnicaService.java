@@ -6,9 +6,9 @@ import projt4.praja.Enum.StatusEnum;
 import projt4.praja.entity.FichaTecnica;
 import projt4.praja.entity.Ingrediente;
 import projt4.praja.entity.IngredienteFichaTecnica;
-import projt4.praja.entity.dto.request.ingredienteFichaTecnica.AlterarQtdIngredienteFichaDTORequest;
+import projt4.praja.entity.dto.request.shared.AlterarUnidadeMedidaDTORequest;
 import projt4.praja.entity.dto.request.ingredienteFichaTecnica.IngredienteFichaTecnicaDTORequest;
-import projt4.praja.entity.dto.response.ingredienteFichaTecnica.AlterarMedidasIngredienteFichaDTOResponse;
+import projt4.praja.entity.dto.response.ingredienteFichaTecnica.AlterarUnidadeMedidaIngredienteFichaDTOResponse;
 import projt4.praja.entity.dto.response.ingredienteFichaTecnica.IngredienteEMFichaTecnicaDTOResponse;
 import projt4.praja.entity.dto.response.ingredienteFichaTecnica.IngredienteFichaTecnicaDTOResponse;
 import projt4.praja.repository.FichaTecnicaRepository;
@@ -105,18 +105,23 @@ public class IngredienteFichaTecnicaService {
       return null;
   }
 
+    /**
+     * Alteração do atributo de Unidade de Medida NA FICHA TECNICA
+     * @param ingredienteFichaId
+     * @param dtoRequest
+     * @return
+     */
   @Transactional
-  public AlterarMedidasIngredienteFichaDTOResponse alterarMedidasIngredienteFicha(Integer ingredienteFichaId, AlterarQtdIngredienteFichaDTORequest dtoRequest) {
+  public AlterarUnidadeMedidaIngredienteFichaDTOResponse alterarUnidadeMedida(Integer ingredienteFichaId, AlterarUnidadeMedidaDTORequest dtoRequest) {
 
       Optional<IngredienteFichaTecnica> busca = this.ingredienteFichaTecRepository.buscarPorId(ingredienteFichaId);
 		  if(busca.isPresent()){
-					busca.get().setQtd(dtoRequest.getQtd());
-      IngredienteFichaTecnica ingredienteFichaSave = ingredienteFichaTecRepository.save(busca.get());
+					busca.get().setUnidadeMedida(dtoRequest.getUnidadeMedida());
+      IngredienteFichaTecnica save = ingredienteFichaTecRepository.save(busca.get());
 
-      AlterarMedidasIngredienteFichaDTOResponse dtoResponse= new AlterarMedidasIngredienteFichaDTOResponse();
-      dtoResponse.setId(ingredienteFichaSave.getId());
-      dtoResponse.setQtd(ingredienteFichaSave.getQtd());
-      dtoResponse.setUnidadeMedida(ingredienteFichaSave.getUnidadeMedida());
+      AlterarUnidadeMedidaIngredienteFichaDTOResponse dtoResponse= new AlterarUnidadeMedidaIngredienteFichaDTOResponse();
+      dtoResponse.setId(save.getId());
+      dtoResponse.setUnidadeMedida(save.getUnidadeMedida());
 //      dtoResponse.setObservacao(ingredienteFichaSave.getObservacao());
 
       return dtoResponse;
