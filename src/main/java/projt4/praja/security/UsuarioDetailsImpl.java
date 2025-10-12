@@ -1,4 +1,4 @@
-package projt4.praja.service;
+package projt4.praja.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

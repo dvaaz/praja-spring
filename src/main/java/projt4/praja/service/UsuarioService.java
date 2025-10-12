@@ -14,7 +14,10 @@ import projt4.praja.entity.dto.request.usuario.UsuarioDTORequest;
 import projt4.praja.entity.dto.request.usuario.UsuarioLoginDTORequest;
 import projt4.praja.entity.dto.response.usuario.UsuarioDTOResponse;
 import projt4.praja.repository.UsuarioRepository;
-import projt4.praja.entity.dto.response.usuario.UsuarioLoginDTOResponse;
+import projt4.praja.security.TokenDTOResponse;
+import projt4.praja.security.service.JwtTokenService;
+import projt4.praja.security.UsuarioDetailsImpl;
+import projt4.praja.security.service.RoleService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,39 +31,22 @@ public class UsuarioService {
     @Autowired
     private SecurityConfiguration securityConfiguration;
     private final UsuarioRepository usuarioRepository;
-    public UsuarioService(UsuarioRepository usuarioRepository) {
+		@Autowired
+		private RoleService roleService;
+
+		public UsuarioService(UsuarioRepository usuarioRepository) {
         this.usuarioRepository = usuarioRepository;
     }
-    public UsuarioLoginDTOResponse login(UsuarioLoginDTORequest usuarioDTOLoginRequest){
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                new UsernamePasswordAuthenticationToken(usuarioDTOLoginRequest.getTelefone(), usuarioDTOLoginRequest.getSenha());
 
-        // Autentica o usuário com as credenciais fornecidas
-        Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
-        // Obtém o objeto UserDetails do usuário autenticado
-        UsuarioDetailsImpl userDetails = (UsuarioDetailsImpl) authentication.getPrincipal();
-
-        // Gera um token JWT para o usuário autenticado
-		    UsuarioLoginDTOResponse usuarioDTOLoginResponse = new UsuarioLoginDTOResponse();
-        usuarioDTOLoginResponse.setId(userDetails.getIdUsuario());
-        usuarioDTOLoginResponse.setNome(userDetails.getNomeUsuario());
-        usuarioDTOLoginResponse.setToken(jwtTokenService.generateToken(userDetails));
-        return usuarioDTOLoginResponse;
-    }
-    public UsuarioDTOResponse criar(UsuarioDTORequest usuarioDTORequest){
-        List<Role> roles = new ArrayList<Role>();
-        for (int i=0; i<usuarioDTORequest.getRoleList().size(); i++){
-            Role role = new Role();
-            role.setName(RoleName.valueOf(usuarioDTORequest.getRoleList().get(i)));
-            roles.add(role);
-        }
+    public UsuarioDTOResponse criar(UsuarioDTORequest dtoRequest){
+				// Sem Exception para roles inexistentes
         Usuario usuario = new Usuario();
-        usuario.setNome(usuarioDTORequest.getNome());
-        usuario.setTelefone(usuarioDTORequest.getTelefone());
-        usuario.setSenha(securityConfiguration.passwordEncoder().encode(usuarioDTORequest.getSenha()));
+        usuario.setNome(dtoRequest.getNome());
+        usuario.setTelefone(dtoRequest.getTelefone());
+        usuario.setSenha(securityConfiguration.passwordEncoder().encode(dtoRequest.getSenha()));
         usuario.setStatus(1);
-        usuario.setRoles(roles);
+        usuario.setRoles((roleService.assertRole(dtoRequest.getRoleList())));
         Usuario usuariosave = usuarioRepository.save(usuario);
 
 		    UsuarioDTOResponse usuarioDTO = new UsuarioDTOResponse();

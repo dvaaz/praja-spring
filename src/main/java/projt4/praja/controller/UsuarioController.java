@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import projt4.praja.entity.dto.request.usuario.UsuarioDTORequest;
 import projt4.praja.entity.dto.request.usuario.UsuarioLoginDTORequest;
 import projt4.praja.entity.dto.response.usuario.UsuarioDTOResponse;
-import projt4.praja.entity.dto.response.usuario.UsuarioLoginDTOResponse;
+import projt4.praja.security.TokenDTOResponse;
 import projt4.praja.service.UsuarioService;
 
 @RestController
@@ -19,10 +19,7 @@ public class UsuarioController {
         this.usuarioService = usuarioService;
     }
 
-    @PostMapping("/login")
-    public ResponseEntity<UsuarioLoginDTOResponse> login(@RequestBody UsuarioLoginDTORequest dtoRequest){
-        return ResponseEntity.ok(usuarioService.login(dtoRequest));
-    }
+
     @PostMapping("/criar")
     public ResponseEntity<UsuarioDTOResponse> criar(@RequestBody UsuarioDTORequest dtoRequest){
         return  ResponseEntity.ok(usuarioService.criar(dtoRequest));

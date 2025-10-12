@@ -13,8 +13,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import projt4.praja.entity.Usuario;
 import projt4.praja.repository.UsuarioRepository;
-import projt4.praja.service.JwtTokenService;
-import projt4.praja.service.UsuarioDetailsImpl;
+import projt4.praja.security.service.JwtTokenService;
+import projt4.praja.security.UsuarioDetailsImpl;
 
 import java.io.IOException;
 import java.util.Arrays;
