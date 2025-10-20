@@ -67,7 +67,7 @@ public class IngredienteFichaTecnicaService {
             ingredienteFicha.setDetalhe(ingredienteFicha.getDetalhe());
 						ingredienteFicha.setFichaTecnica(ficha.get());
 						ingredienteFicha.setStatus(ativo);
-						//    ingredienteFicha.setObservacao(dtoRequestRequest.getObservacao());
+            ingredienteFicha.setDetalhe(dtoRequestRequest.getDetalhe());
 
 						IngredienteFichaTecnica ingredienteFichaSave = ingredienteFichaTecRepository.save(ingredienteFicha);
 
@@ -84,6 +84,20 @@ public class IngredienteFichaTecnicaService {
 		} return null;
   }
 
+    /** Recebe uma lista de dados para criação de ficha tecnicas
+     *
+     * @param dtoRequest
+     * @return
+     */
+    public List<IngredienteFichaTecnicaDTOResponse> criarVarias(List<IngredienteFichaTecnicaDTORequest> dtoRequest){
+        List<IngredienteFichaTecnicaDTOResponse> dtoResponse = new ArrayList<>();
+        for (IngredienteFichaTecnicaDTORequest dto : dtoRequest) {
+            IngredienteFichaTecnicaDTOResponse ingredienteFicha = this.criar(dto);
+            dtoResponse.add(ingredienteFicha);
+        }
+        return dtoResponse;
+    }
+
   public List<IngredienteEMFichaTecnicaDTOResponse> listarIngredientesEmFichaTecnica(Integer fichaTecnicaId){
       List<IngredienteFichaTecnica> obterLista = this.ingredienteFichaTecRepository.listarIngredienteEmFichas(fichaTecnicaId);
 
@@ -97,6 +111,7 @@ public class IngredienteFichaTecnicaService {
               dto.setIdIngrediente(ingrediente.getIngrediente().getId());
               dto.setNomeIngrediente(ingrediente.getIngrediente().getNome());
               dto.setUnidadeMedida(ingrediente.getUnidadeMedida());
+              dto.setDetalhe(ingrediente.getDetalhe());
               dto.setQtd(ingrediente.getQtd());
               responseListaIngredientesEmFicha.add(dto);
           }
