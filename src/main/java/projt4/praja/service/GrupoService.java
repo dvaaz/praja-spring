@@ -12,7 +12,6 @@ import projt4.praja.entity.dto.request.shared.AlterarStatusDTORequest;
 import projt4.praja.entity.dto.response.grupo.GrupoAtualizarDTOResponse;
 import projt4.praja.entity.dto.response.grupo.GrupoDTOResponse;
 import projt4.praja.entity.dto.response.shared.AlterarStatusDTOResponse;
-import projt4.praja.exception.GrupoException;
 import projt4.praja.repository.FichaTecnicaRepository;
 import projt4.praja.repository.GrupoRepository;
 import projt4.praja.repository.IngredienteRepository;
@@ -22,6 +21,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GrupoService {
@@ -56,7 +56,7 @@ public class GrupoService {
 		 */
 	public GrupoDTOResponse conversaoDtoResponse (Grupo grupo){
 			if (grupo == null) {
-					throw new GrupoException("Grupo não pode ser NULL");
+					return null;
 			}
 			GrupoDTOResponse dtoResponse = new GrupoDTOResponse();
 
@@ -86,13 +86,11 @@ public class GrupoService {
 				grupo.setCor(dtoRequest.getCor());
 				grupo.setTipo(dtoRequest.getTipo());
         grupo.setStatus(ativo);
-            try {
-                Grupo salvo = grupoRepository.save(grupo);
 
-								return this.conversaoDtoResponse(salvo); // conversao manual no proprio método, evitando model mapper
-            } catch (DataIntegrityViolationException ex) {
-                throw new RuntimeException("Erro ao gravar grupo ", ex);
-            }
+        Grupo salvo = grupoRepository.save(grupo);
+
+				return this.conversaoDtoResponse(salvo); // conversao manual no proprio método, evitando model mapper
+
         }
 
     /**
@@ -108,16 +106,11 @@ public class GrupoService {
         grupoDefault.setStatus(ativo);
         grupoDefault.setCor("90EE90");
         grupoDefault.setTipo(grupoIngrNum);
-				try {
+
         Grupo save = grupoRepository.save(grupoDefault);
 
         return save;
-				} catch (DataIntegrityViolationException ex) {
-						throw new RuntimeException("Erro ao gravar grupo padrão de ingredientes", ex);
-				} catch (RuntimeException ex) { // Captura qualquer RuntimeException
-				// Log 'ex' para ver o erro real!
-				throw new RuntimeException("Erro CRÍTICO ao gravar grupo padrão de ingredientes. Verifique logs:", ex);
-		}
+
     }
 
     /**
@@ -132,16 +125,10 @@ public class GrupoService {
         grupoDefault.setStatus(ativo);
         grupoDefault.setCor("FA8907");
         grupoDefault.setTipo(grupoFichaNum);
-        try {
-		        Grupo save = grupoRepository.save(grupoDefault);
 
-		        return save;
-        } catch (DataIntegrityViolationException ex) {
-		        throw new RuntimeException("Erro ao gravar grupo padrão de fichas tecnicas", ex);
-        } catch (RuntimeException ex) { // Captura qualquer RuntimeException
-				// Log 'ex' para ver o erro real!
-				throw new RuntimeException("Erro CRÍTICO ao gravar grupo padrão de fichas tecnicas. Verifique logs :", ex);
-		}
+        Grupo save = grupoRepository.save(grupoDefault);
+
+        return save;
     }
 
     /**
@@ -169,10 +156,11 @@ public class GrupoService {
      * @return
      */
     public GrupoDTOResponse buscarPorID(Integer id) {
-        Grupo grupo = this.grupoRepository.buscarPorId(id)
-            .orElseThrow(() -> new GrupoException("Grupo com o ID: " + id + " não encontrado"));
+        Optional<Grupo> grupo = this.grupoRepository.buscarPorId(id);
 
-		    return this.conversaoDtoResponse(grupo); // conversao manual no proprio método, evitando model mapper
+				if (grupo.isEmpty()) { return null; }
+
+		    return this.conversaoDtoResponse(grupo.get()); // conversao manual no proprio método, evitando model mapper
     }
 
     /**
@@ -184,7 +172,7 @@ public class GrupoService {
         List<Grupo> grupos = this.grupoRepository.listar();
 
         if (grupos.isEmpty()) {
-            throw new GrupoException("Não há nenhum grupo criado.");
+            return null;
         }
 
         return grupos.stream()
@@ -200,10 +188,7 @@ public class GrupoService {
     public List<GrupoDTOResponse> listarGruposDoTipo(Integer tipo) {
         List<Grupo> grupos = this.grupoRepository.listarPorTipo(tipo);
 
-        if (grupos.isEmpty()) {
-            GrupoEnum grupoEnum = GrupoEnum.values()[tipo];
-            throw new GrupoException("Não há nenhum grupo de " + grupoEnum + " criado.");
-        }
+        if (grupos.isEmpty()) { return null; }
 
 		    return grupos.stream()
 				    .map(this::conversaoDtoResponse )
@@ -212,26 +197,26 @@ public class GrupoService {
 
     @Transactional
     public GrupoAtualizarDTOResponse alterarDetalhes(Integer grupoId, AlterarGrupoDTORequest dtoRequest) {
-        Grupo grupo = grupoRepository.buscarPorId(grupoId)
-            .orElseThrow(() -> new GrupoException("Grupo com o ID: "+grupoId +" não encontrado"));;
+        Optional<Grupo> grupo = grupoRepository.buscarPorId(grupoId);
+
+				if (grupo.isEmpty()) { return null; }
 
         if (dtoRequest.getCor() != null) {
-            grupo.setCor(dtoRequest.getCor());
+            grupo.get().setCor(dtoRequest.getCor());
         }
         if (dtoRequest.getNome()!= null) {
-            grupo.setNome(dtoRequest.getNome());
+            grupo.get().setNome(dtoRequest.getNome());
         }
-        try {
-            Grupo save = grupoRepository.save(grupo);
-						GrupoAtualizarDTOResponse dtoResponse = new GrupoAtualizarDTOResponse();
-						dtoResponse.setId(save.getId());
-						dtoResponse.setNome(save.getNome());
-						dtoResponse.setCor(save.getCor());
 
-						return dtoResponse;
-        } catch (DataIntegrityViolationException ex) {
-            throw new RuntimeException("Um objeto com este nome já existe: " + dtoRequest.getNome(), ex);
-        }
+        Grupo save = grupoRepository.save(grupo.get());
+
+				GrupoAtualizarDTOResponse dtoResponse = new GrupoAtualizarDTOResponse();
+				dtoResponse.setId(save.getId());
+				dtoResponse.setNome(save.getNome());
+				dtoResponse.setCor(save.getCor());
+
+				return dtoResponse;
+
     }
 
     /**
@@ -241,25 +226,24 @@ public class GrupoService {
      */
     @Transactional
     public void apagarGrupo(Integer grupoId) {
-        Grupo grupo = this.grupoRepository.buscarPorId(grupoId)
-            .orElseThrow(() -> new GrupoException("Grupo com o Id:" + grupoId + " não encontrado"));
+        Optional<Grupo> grupo = this.grupoRepository.buscarPorId(grupoId);
+
+				if (grupo.isEmpty()) { return; }
 
         // Remaneja os itens presentes nos grupos para seus devidos grupos padrões.
-        if (grupo.getTipo().equals(grupoIngrNum) ) {
+        if (grupo.get().getTipo().equals(grupoIngrNum) ) { // busca ingredientes de um grupo
             List<Ingrediente> listaIngredientes = this.ingredienteRepository.listarPorGrupo(grupoId);
             if (!listaIngredientes.isEmpty()) {
-                Grupo grupoPadrao = this.grupoRepository.buscarGrupoPadrao(grupoIngrNum, grupoIngrNome)
-                    .orElseGet(this::criarGrupoPadraoIngrediente);
+                Grupo grupoPadrao = this.buscarOuCriarGrupoIngrediente();
 
                 for (Ingrediente ingrediente : listaIngredientes) {
                     ingrediente.setGrupo(grupoPadrao);
                 }
             }
-        } else if (grupo.getTipo().equals(grupoFichaNum) ) {
+        } else if (grupo.get().getTipo().equals(grupoFichaNum) ) {
             List<FichaTecnica> listaFichasTecnicas = this.fichaTecnicaRepository.listarPorGrupo(grupoId);
             if (!listaFichasTecnicas.isEmpty()) {
-                Grupo grupoPadrao = this.grupoRepository.buscarGrupoPadrao(grupoFichaNum, grupoIngrNome)
-                    .orElseGet(this::criarGrupoPadraoFichaTecnica);
+                Grupo grupoPadrao = this.buscarOuCriarGrupoFichaTecnica();
 
                 for (FichaTecnica fichaTecnica : listaFichasTecnicas) {
                     fichaTecnica.setGrupo(grupoPadrao);
@@ -270,26 +254,29 @@ public class GrupoService {
 
     @Transactional
     public AlterarStatusDTOResponse atualizarStatus(Integer id, AlterarStatusDTORequest dtoRequest) {
-        Grupo  grupo = this.grupoRepository.buscarPorId(id)
-            .orElseThrow(() -> new GrupoException("Grupo com o id: "+id+" não encontrado"));
         Integer novoStatus = dtoRequest.getStatus();
 
-        grupo.setStatus(dtoRequest.getStatus());
-        Grupo tempResponse = grupoRepository.save(grupo);
+        Optional<Grupo>  grupo = this.grupoRepository.buscarPorId(id);
+
+				if (grupo.isEmpty()) { return null; }
+
+        grupo.get().setStatus(dtoRequest.getStatus());
+        Grupo save = grupoRepository.save(grupo.get());
 
 				AlterarStatusDTOResponse dtoResponse = new AlterarStatusDTOResponse();
-				dtoResponse.setId(tempResponse.getId());
-				dtoResponse.setStatus(tempResponse.getStatus());
+				dtoResponse.setId(save.getId());
+				dtoResponse.setStatus(save.getStatus());
 				return dtoResponse;
     }
 
     // Incluir lógica para remanejar os itens que estejam dentro do grupo
     @Transactional
     public boolean apagar(Integer id){
-        Grupo grupo = this.grupoRepository.buscarPorId(id)
-                .orElseThrow(()->new GrupoException("Grupo com o id: "+id+" não encontrado"));
-        this.grupoRepository.updateStatus(id, apagado);
-        return true;
+        Optional<Grupo> grupo = this.grupoRepository.buscarPorId(id);
+        grupo.ifPresent(apaga -> {
+		        this.grupoRepository.updateStatus(id, apagado);
+        });
+        return grupo.isPresent();
     }
 
     /**
@@ -299,12 +286,13 @@ public class GrupoService {
      */
     @Transactional
     public boolean destroy(Integer id) {
-        Grupo grupo = this.grupoRepository.findById(id)
-            .orElseThrow(() -> new GrupoException("Grupo com o ID: " + id + " não encontrado"));
+        Optional<Grupo> grupo = this.grupoRepository.findById(id);
 
-        if (grupo.getStatus().equals(apagado)) {
-            grupoRepository.delete(grupo);
-            return true;
+        if (grupo.isPresent()) {
+            if (grupo.get().getStatus().equals(apagado)) {
+                grupoRepository.delete(grupo.get());
+                return true;
+            }
         }
         return false;
 

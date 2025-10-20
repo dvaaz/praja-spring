@@ -1,6 +1,6 @@
 package projt4.praja.service;
 
-import org.hibernate.PropertyValueException;
+
 import projt4.praja.Enum.GrupoEnum;
 import projt4.praja.Enum.StatusEnum;
 import projt4.praja.entity.FichaTecnica;
@@ -13,23 +13,21 @@ import projt4.praja.entity.dto.response.fichaTecnica.ListaFichasDeGrupoDTO;
 import projt4.praja.entity.dto.response.shared.AlterarStatusDTOResponse;
 import projt4.praja.entity.dto.response.shared.MudarDeGrupoDTOResponse;
 import projt4.praja.entity.dto.response.shared.MudarDeGrupoEmLoteDTOResponse;
-import projt4.praja.exception.FichaTecnicaException;
-import projt4.praja.exception.GrupoException;
 import projt4.praja.repository.FichaTecnicaRepository;
 import projt4.praja.repository.GrupoRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 public class FichaTecnicaService {
     private final FichaTecnicaRepository fichaTecnicaRepository;
     private final GrupoRepository grupoRepository;
-    private GrupoService grupoService;
+    private final GrupoService grupoService;
 
     public FichaTecnicaService(FichaTecnicaRepository fichaTecnicaRepository,
                                GrupoRepository grupoRepository, GrupoService grupoService) {
@@ -47,50 +45,39 @@ public class FichaTecnicaService {
     // Métodos
 
     /**
-     * Criar nova Ficha Tecnica, quando criada a ficha tecnica NÃO será
-     * considerada ativa, essa ativação se dará manualmente através de endpoint proprio
+     * Cria Ficha Tecnica, quando criada a ficha tecnica NÃO será
+     * considerada ativa, essa ativação se dará manualmente por endpoint proprio
      *
      * @param dtoRequest
      * @return
      */
     @Transactional
     public FichaTecnicaDTOResponse criar(FichaTecnicaDTORequest dtoRequest) {
-		    Grupo grupo;
 				Integer grupoId = dtoRequest.getGrupo();
+			// Busca pelo grupo
+		    Grupo grupo = this.grupoRepository.buscarPorIdETipo(grupoId, grupoFicha)
+				    .orElseGet(() -> this.grupoService.buscarOuCriarGrupoFichaTecnica()); // caso não obtenha um grupo
 
-		    if (dtoRequest.getGrupo() != null) { // Buscar por grupo
-				    grupo = grupoRepository.buscarPorIdETipo(grupoId, grupoFicha)
-						    .orElseThrow(() -> new GrupoException("Grupo com o ID: " + grupoId + " não encontrado."));
-		    } else { // caso se receba um valor nulo pelo dto
-				    grupo = this.grupoService.buscarOuCriarGrupoFichaTecnica();
-		    }
+		    if (grupo == null) { return null; } // Força a saida caso não seja possivel obter um grupo
 
-		    if (grupo == null) { // Caso ainda assim não seja possivel obter um grupo
-				    throw new GrupoException("Não foi possível determinar ou criar o Grupo necessário para Ficha Técnica.");
-		    }
 				FichaTecnica fichaTecnica = new FichaTecnica();
         fichaTecnica.setNome(dtoRequest.getNome());
         fichaTecnica.setDescricao(dtoRequest.getDescricao());
         fichaTecnica.setGrupo(grupo);
         fichaTecnica.setStatus(inativo);
 
-        try {
-            FichaTecnica salvo = this.fichaTecnicaRepository.save(fichaTecnica);
+        FichaTecnica salvo = this.fichaTecnicaRepository.save(fichaTecnica);
 
-            FichaTecnicaDTOResponse dtoResponse = new FichaTecnicaDTOResponse();
-            dtoResponse.setId(salvo.getId());
-            dtoResponse.setNome(salvo.getNome());
-            dtoResponse.setDescricao(salvo.getDescricao());
-            dtoResponse.setIdGrupo(salvo.getGrupo().getId());
-            dtoResponse.setNomeGrupo(salvo.getGrupo().getNome());
-            dtoResponse.setStatus(salvo.getStatus());
+        FichaTecnicaDTOResponse dtoResponse = new FichaTecnicaDTOResponse();
+        dtoResponse.setId(salvo.getId());
+        dtoResponse.setNome(salvo.getNome());
+        dtoResponse.setDescricao(salvo.getDescricao());
+        dtoResponse.setIdGrupo(salvo.getGrupo().getId());
+        dtoResponse.setNomeGrupo(salvo.getGrupo().getNome());
+        dtoResponse.setStatus(salvo.getStatus());
 
-            return dtoResponse;
-        } catch (DataIntegrityViolationException ex) {
-            throw new RuntimeException("Erro ao gravar Ficha Tecnica ", ex);
-        } catch (PropertyValueException ex) {
-		        throw new RuntimeException("Campo obrigatório não preenchido na Entidade.", ex);
-        }
+        return dtoResponse;
+
     }
 
   /**
@@ -100,9 +87,7 @@ public class FichaTecnicaService {
   public List<FichaTecnicaDTOResponse> listar(){
     List<FichaTecnica> fichasTecnicas = this.fichaTecnicaRepository.listar();
 
-    if (fichasTecnicas.isEmpty()){
-      throw new FichaTecnicaException("Não há nenhuma ficha tecnica criada.");
-    }
+    if (fichasTecnicas.isEmpty()){ return null; }
 
     List<FichaTecnicaDTOResponse> dtoResponse = new ArrayList<>();
     for (FichaTecnica ficha: fichasTecnicas){
@@ -119,34 +104,60 @@ public class FichaTecnicaService {
     return dtoResponse;
   }
 
+		/**
+		 * Lista Fichas Tecnicas que estejam ativas
+		 * @return List<FichaTecnicaDTOResponse>
+		 */
+		public List<FichaTecnicaDTOResponse> listarDia(){
+				List<FichaTecnica> fichasTecnicas = this.fichaTecnicaRepository.listarAtivas();
+
+				if (fichasTecnicas.isEmpty()){ return null; }
+
+				List<FichaTecnicaDTOResponse> dtoResponse = new ArrayList<>();
+				for (FichaTecnica ficha: fichasTecnicas){
+						FichaTecnicaDTOResponse temp = new FichaTecnicaDTOResponse();
+						temp.setId(ficha.getId());
+						temp.setNome(ficha.getNome());
+						temp.setDescricao(ficha.getDescricao());
+						temp.setIdGrupo(ficha.getGrupo().getId());
+						temp.setNomeGrupo(ficha.getGrupo().getNome());
+						temp.setStatus(ficha.getStatus());
+
+						dtoResponse.add(temp);
+				}
+				return dtoResponse;
+		}
+
+
     /**
      * Lista fichas tecnicas pertencentes a um grupo
      * @param grupoId
      * @return
      */
     public ListaFichasDeGrupoDTO listarPorGrupo(Integer grupoId){
-        Grupo grupo = this.grupoRepository.buscarPorId(grupoId)
-                .orElseThrow(() -> new GrupoException("Grupo com o ID: "+grupoId +" não encontrado"));
-        List<FichaTecnica> fichas = this.fichaTecnicaRepository.listarPorGrupo(grupo.getId());
-        if (fichas.isEmpty()){
-            throw new FichaTecnicaException("Não há fichas no grupo : ( "+grupo.getId()+" ) -> "+grupo.getNome());
-        }
-        // transforma as fichas em dto especifico
-        List<FichaTecnicaDTOResponse> fichasDto = new ArrayList<>();
-        for (FichaTecnica ficha: fichas){
-            FichaTecnicaDTOResponse temp = new FichaTecnicaDTOResponse();
-            temp.setId(ficha.getId());
-            temp.setNome(ficha.getNome());
-            temp.setDescricao(ficha.getDescricao());
-            fichasDto.add(temp);
-        }
+        Optional<Grupo> grupo = this.grupoRepository.buscarPorId(grupoId);
 
-        ListaFichasDeGrupoDTO dtoResponse = new ListaFichasDeGrupoDTO();
-        dtoResponse.setIdGrupo(grupo.getId());
-        dtoResponse.setNomeGrupo(grupo.getNome());
-        dtoResponse.setCorGrupo(grupo.getCor());
-        dtoResponse.setFichasTecnicas(fichasDto);
-        return dtoResponse;
+				if(grupo.isPresent()) {
+						List<FichaTecnica> fichas = this.fichaTecnicaRepository.listarPorGrupo(grupo.get().getId());
+						if (!fichas.isEmpty()) {
+								// transforma as fichas em dto especifico
+								List<FichaTecnicaDTOResponse> fichasDto = new ArrayList<>();
+								for (FichaTecnica ficha : fichas) {
+										FichaTecnicaDTOResponse temp = new FichaTecnicaDTOResponse();
+										temp.setId(ficha.getId());
+										temp.setNome(ficha.getNome());
+										temp.setDescricao(ficha.getDescricao());
+										fichasDto.add(temp);
+								}
+
+								ListaFichasDeGrupoDTO dtoResponse = new ListaFichasDeGrupoDTO();
+								dtoResponse.setIdGrupo(grupo.get().getId());
+								dtoResponse.setNomeGrupo(grupo.get().getNome());
+								dtoResponse.setCorGrupo(grupo.get().getCor());
+								dtoResponse.setFichasTecnicas(fichasDto);
+								return dtoResponse;
+						}
+				} return null;
     }
 
     /**
@@ -155,16 +166,17 @@ public class FichaTecnicaService {
      * @return
      */
   public FichaTecnicaDTOResponse buscarPorId(Integer fichaId){
-      FichaTecnica fichaTecnica = this.fichaTecnicaRepository.buscarPorId(fichaId)
-              .orElseThrow(() -> new FichaTecnicaException("Ficha tecnica com o ID: " + fichaId + " não encontrada"));
+      Optional<FichaTecnica> fichaTecnica = this.fichaTecnicaRepository.buscarPorId(fichaId);
+
+			if (fichaTecnica.isEmpty()){ return null;}
 
       FichaTecnicaDTOResponse dtoResponse = new FichaTecnicaDTOResponse();
-      dtoResponse.setId(fichaTecnica.getId());
-      dtoResponse.setNome(fichaTecnica.getNome());
-      dtoResponse.setDescricao(fichaTecnica.getDescricao());
-      dtoResponse.setIdGrupo(fichaTecnica.getGrupo().getId());
-      dtoResponse.setNomeGrupo(fichaTecnica.getGrupo().getNome());
-      dtoResponse.setStatus(fichaTecnica.getStatus());
+      dtoResponse.setId(fichaTecnica.get().getId());
+      dtoResponse.setNome(fichaTecnica.get().getNome());
+      dtoResponse.setDescricao(fichaTecnica.get().getDescricao());
+      dtoResponse.setIdGrupo(fichaTecnica.get().getGrupo().getId());
+      dtoResponse.setNomeGrupo(fichaTecnica.get().getGrupo().getNome());
+      dtoResponse.setStatus(fichaTecnica.get().getStatus());
       return dtoResponse;
   }
 
@@ -176,23 +188,22 @@ public class FichaTecnicaService {
      */
   @Transactional
   public AlterarStatusDTOResponse alterarStatus(Integer fichaId, AlterarStatusDTORequest dtoRequest){
-      FichaTecnica ficha = this.fichaTecnicaRepository.buscarPorId(fichaId) // busca por ficha tecnica
-              .orElseThrow(() -> new FichaTecnicaException("Ficha Tecnica não encontrada"));
-      ficha.setStatus(dtoRequest.getStatus());
+      Optional<FichaTecnica> ficha = this.fichaTecnicaRepository.buscarPorId(fichaId); // busca por ficha tecnica
 
-      try{
-          fichaTecnicaRepository.save(ficha);
+		  if(ficha.isPresent()) {
+
+          ficha.get().setStatus(dtoRequest.getStatus());
+
+          FichaTecnica salvo = this.fichaTecnicaRepository.save(ficha.get());
           AlterarStatusDTOResponse dtoResponse = new AlterarStatusDTOResponse();
-          dtoResponse.setId(ficha.getId());
-          dtoResponse.setStatus(ficha.getStatus());
+          dtoResponse.setId(ficha.get().getId());
+          dtoResponse.setStatus(ficha.get().getStatus());
           return dtoResponse;
-      } catch (DataIntegrityViolationException ex){
-          throw new  RuntimeException("Erro ao salvar alteracões.", ex);
-      }
+      } return null;
   }
 
     /**
-     * Altera Grupo de Ficha Tecnica
+     * Altera Ficha Tecnica de Grupo
      * @param fichaId
      * @param dtoRequest
      * @return
@@ -200,60 +211,55 @@ public class FichaTecnicaService {
     @Transactional
     public MudarDeGrupoDTOResponse alterarGrupo(Integer fichaId, MudarDeGrupoDTORequest dtoRequest){
         Integer grupoId = dtoRequest.getGrupo();
-        Grupo grupo = this.grupoRepository.buscarPorId(grupoId) // busca pelo grupo
-                .orElseThrow(() -> new GrupoException("Grupo com o ID: "+grupoId +" não encontrado"));
 
-        FichaTecnica ficha = this.fichaTecnicaRepository.buscarPorId(fichaId) // busca pela ficha tecnica
-                .orElseThrow(() -> new FichaTecnicaException("Ficha tecnica com o ID: " + fichaId + " não encontrada"));
+				Optional<Grupo> grupo = this.grupoRepository.buscarPorId(grupoId); // busca pelo grupo
 
-        ficha.setGrupo(grupo);
+		    if(grupo.isPresent()) {
+				    Optional<FichaTecnica> ficha = this.fichaTecnicaRepository.buscarPorId(fichaId); // busca pela ficha tecnica
 
-        try{
-            FichaTecnica salvo = fichaTecnicaRepository.save(ficha);
+				    if (ficha.isPresent()) {
+						    ficha.get().setGrupo(grupo.get());
+						    FichaTecnica salvo = fichaTecnicaRepository.save(ficha.get());
 
-            MudarDeGrupoDTOResponse dtoResponse = new MudarDeGrupoDTOResponse();
-            dtoResponse.setId(salvo.getId());
-            dtoResponse.setIdGrupo(salvo.getGrupo().getId());
-            dtoResponse.setNomeGrupo(salvo.getGrupo().getNome());
+						    MudarDeGrupoDTOResponse dtoResponse = new MudarDeGrupoDTOResponse();
+						    dtoResponse.setId(salvo.getId());
+						    dtoResponse.setIdGrupo(salvo.getGrupo().getId());
+						    dtoResponse.setNomeGrupo(salvo.getGrupo().getNome());
 
-            return dtoResponse;
-        } catch (DataIntegrityViolationException ex){
-            throw new RuntimeException("Erro ao salvar alterações", ex);
-        }
+						    return dtoResponse;
+				    }
+		    } return null;
     }
 
     /**
-     * Alterar várias fichas tecnicas de um grupo para outro
+     * Alterar várias fichas tecnicas de um grupo(A) para um grupo(B)
      * @param grupoId
      * @param dtoRequest
      * @return
      */
   @Transactional
   public MudarDeGrupoEmLoteDTOResponse mudarDeGrupoEmLote(Integer grupoId, MudarDeGrupoDTORequest dtoRequest){
-      Grupo grupo = this.grupoRepository.buscarPorId(grupoId)
-              .orElseThrow(() -> new GrupoException("Grupo com o id: "+grupoId+" não encontrado"));
+      Optional<Grupo> grupoA = this.grupoRepository.buscarPorId(grupoId);
+			Optional<Grupo> grupoB = this.grupoRepository.buscarPorId(dtoRequest.getGrupo());
+
+			if(grupoA.isPresent() && grupoB.isPresent()) {
       List<FichaTecnica> fichas = this.fichaTecnicaRepository.listarPorGrupo(grupoId);
+				if(!fichas.isEmpty()) {
+						for (FichaTecnica ficha : fichas) {
+								ficha.setGrupo(grupoB.get());
+								FichaTecnica salvo = fichaTecnicaRepository.save(ficha);
+						}
 
-      if (fichas.isEmpty()){
-          throw new FichaTecnicaException("Não há fichas tecnicas no grupo: ( "+grupoId+" )-> "+grupo.getNome());
-      }
-    try {
-        for (FichaTecnica ficha : fichas) {
-            ficha.setGrupo(grupo);
-            FichaTecnica salvo = fichaTecnicaRepository.save(ficha);
-        }
+						MudarDeGrupoEmLoteDTOResponse dtoResponse = new MudarDeGrupoEmLoteDTOResponse();
+						dtoResponse.setIdGrupo(grupoB.get().getId());
+						dtoResponse.setNomeDosItens(
+								fichas.stream()
+										.map(FichaTecnica::getNome)
+										.collect(Collectors.toList()));
 
-        MudarDeGrupoEmLoteDTOResponse dtoResponse = new MudarDeGrupoEmLoteDTOResponse();
-        dtoResponse.setIdGrupo(grupo.getId());
-        dtoResponse.setNomeDosItens(
-                fichas.stream()
-                .map(FichaTecnica::getNome)
-                .collect(Collectors.toList()));
-        return dtoResponse;
-
-    } catch (DataIntegrityViolationException ex){
-        throw new  RuntimeException("Erro ao salvar alteracões.", ex);
-    }
+						return dtoResponse;
+				}
+				} return null;
   }
 
 		/**
@@ -262,11 +268,13 @@ public class FichaTecnicaService {
 		 * @return
 		 */
 	@Transactional
-	public boolean ativar(Integer fichaId){
-			FichaTecnica ficha = this.fichaTecnicaRepository.buscarPorId(fichaId)
-					.orElseThrow(() -> new FichaTecnicaException("Ficha tecnica com o ID: " + fichaId + " não encontrada"));
-			this.fichaTecnicaRepository.updateStatus(ficha.getId(), ativo);
-			return true;
+	public Boolean ativar(Integer fichaId){
+			Optional<FichaTecnica> ficha = this.fichaTecnicaRepository.buscarPorId(fichaId);
+				ficha.ifPresent( ativa -> {
+						this.fichaTecnicaRepository.updateStatus(ficha.get().getId(), ativo);
+				});
+
+			return ficha.isPresent();
 	}
 
 		/**
@@ -275,11 +283,14 @@ public class FichaTecnicaService {
 		 * @return
 		 */
     @Transactional
-    public boolean apagar(Integer fichaId){
-      FichaTecnica ficha = this.fichaTecnicaRepository.buscarPorId(fichaId)
-              .orElseThrow(() -> new FichaTecnicaException("Ficha tecnica com o ID: " + fichaId + " não encontrada"));
-      this.fichaTecnicaRepository.updateStatus(ficha.getId(), apagado);
-      return true;
+    public Boolean apagar(Integer fichaId){
+      Optional<FichaTecnica> ficha = this.fichaTecnicaRepository.buscarPorId(fichaId);
+
+			ficha.ifPresent( apaga -> {
+					this.fichaTecnicaRepository.updateStatus(ficha.get().getId(), apagado);
+			});
+
+      return ficha.isPresent();
     }
 
     /**
@@ -288,15 +299,14 @@ public class FichaTecnicaService {
      * @return
      */
     @Transactional
-    public boolean destroy(Integer fichaId) {
-        FichaTecnica ficha = this.fichaTecnicaRepository.findById(fichaId)
-                .orElseThrow(() -> new FichaTecnicaException("Ficha Tecnica com o ID: " + fichaId + " não encontrado"));
-
-        if (ficha.getStatus().equals(apagado)){
-            fichaTecnicaRepository.delete(ficha);
-            return true;
-        }
-        return false;
+    public Boolean destroy(Integer fichaId) {
+        Optional<FichaTecnica> ficha = this.fichaTecnicaRepository.findById(fichaId);
+				if(ficha.isPresent()) {
+						if (ficha.get().getStatus().equals(apagado)) {
+								fichaTecnicaRepository.delete(ficha.get());
+								return true;
+						}
+				} return false;
     }
 }
 

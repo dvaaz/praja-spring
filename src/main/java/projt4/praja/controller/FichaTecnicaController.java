@@ -2,7 +2,6 @@ package projt4.praja.controller;
 
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +39,12 @@ public class FichaTecnicaController {
         List<FichaTecnicaDTOResponse> dtoResponse = this.service.listar();
         return ResponseEntity.status(HttpStatus.OK).body(dtoResponse);
     }
+		@GetMapping("/listar/dia")
+		@Operation(summary ="Listar Ficha Tecnica", description = "Endpoint para listar fichas tecnicas")
+		public ResponseEntity<List<FichaTecnicaDTOResponse>> listarDia() {
+				List<FichaTecnicaDTOResponse> dtoResponse = this.service.listarDia();
+				return ResponseEntity.status(HttpStatus.OK).body(dtoResponse);
+		}
 
     @GetMapping("/listar/grupo/{id}/")
     @Operation(summary ="Listar Fichas Tecnicas de um grupo", description = "Endpoint para listar fichas tecnicas de um grupo")

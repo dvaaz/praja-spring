@@ -2,7 +2,7 @@ package projt4.praja.entity.dto.response.ingredienteFichaTecnica;
 
 public class IngredienteEMFichaTecnicaDTOResponse {
     private Integer id;
-//    private String observacao;
+    private String detalhe;
     private Integer unidadeMedida;
     private Integer qtd;
     private Integer idIngrediente;
@@ -16,9 +16,13 @@ public class IngredienteEMFichaTecnicaDTOResponse {
         this.id = id;
     }
 
-//    public String getObservacao() {return observacao;}
-//
-//    public  void setObservacao(String observacao) {this.observacao = observacao;}
+    public String getDetalhe() {
+        return detalhe;
+    }
+
+    public void setDetalhe(String detalhe) {
+        this.detalhe = detalhe;
+    }
 
     public Integer getUnidadeMedida() {
         return unidadeMedida;

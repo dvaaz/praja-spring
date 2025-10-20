@@ -101,4 +101,17 @@ public class GrupoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Não foi possível apagar o grupo");
         }
     }
+
+    @DeleteMapping("/destroy/{id}")
+    @Operation(summary = "Destruir grupo", description = "Endpoint para remoção de um grupo")
+    public ResponseEntity destruir(
+        @PathVariable Integer id
+    ) {
+       boolean destuido = this.service.destroy(id);
+       if (destuido) {
+           return ResponseEntity.status(HttpStatus.OK).body("Grupo removido com sucesso");
+       }  else {
+           return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Não foi possivel remover o grupo");
+       }
+    }
 }

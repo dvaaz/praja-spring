@@ -4,6 +4,7 @@ public class IngredienteDTORequest {
 		private String nome;
     private String descricao;
     private Integer grupo;
+    private Integer unidadeMedida;
 
     public String getNome() {
         return nome;
@@ -27,5 +28,13 @@ public class IngredienteDTORequest {
 
     public void setGrupo(Integer grupo) {
         this.grupo = grupo;
+    }
+
+    public Integer getUnidadeMedida() {
+        return unidadeMedida;
+    }
+
+    public void setUnidadeMedida(Integer unidadeMedida) {
+        this.unidadeMedida = unidadeMedida;
     }
 }

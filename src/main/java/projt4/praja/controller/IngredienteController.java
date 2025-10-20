@@ -3,8 +3,8 @@ package projt4.praja.controller;
 
 
 
+
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -29,7 +29,7 @@ public class IngredienteController {
 				this.service = service;
 		}
 
-		@PostMapping("/criar")
+		@PostMapping( "/criar")
     @Operation(summary ="Criar nova Ingrediente", description = "Endpoint para o registro de nova ingrediente")
     public ResponseEntity<IngredienteDTOResponse> criar(
 				 @RequestBody IngredienteDTORequest dtoRequest) {

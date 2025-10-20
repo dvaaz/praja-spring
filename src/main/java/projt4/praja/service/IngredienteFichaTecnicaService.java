@@ -6,18 +6,17 @@ import projt4.praja.Enum.StatusEnum;
 import projt4.praja.entity.FichaTecnica;
 import projt4.praja.entity.Ingrediente;
 import projt4.praja.entity.IngredienteFichaTecnica;
+import projt4.praja.entity.dto.request.shared.AlterarUnidadeMedidaDTORequest;
 import projt4.praja.entity.dto.request.ingredienteFichaTecnica.IngredienteFichaTecnicaDTORequest;
+import projt4.praja.entity.dto.response.ingredienteFichaTecnica.AlterarUnidadeMedidaIngredienteFichaDTOResponse;
 import projt4.praja.entity.dto.response.ingredienteFichaTecnica.IngredienteEMFichaTecnicaDTOResponse;
 import projt4.praja.entity.dto.response.ingredienteFichaTecnica.IngredienteFichaTecnicaDTOResponse;
-import projt4.praja.exception.FichaTecnicaException;
-import projt4.praja.exception.IngredienteException;
-import projt4.praja.exception.IngredienteFichaTecnicaException;
 import projt4.praja.repository.FichaTecnicaRepository;
 import projt4.praja.repository.IngredienteFichaTecnicaRepository;
 import projt4.praja.repository.IngredienteRepository;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class IngredienteFichaTecnicaService {
@@ -51,80 +50,107 @@ public class IngredienteFichaTecnicaService {
      */
   @Transactional
   public IngredienteFichaTecnicaDTOResponse criar (IngredienteFichaTecnicaDTORequest dtoRequestRequest){
-    Integer ingredienteId = dtoRequestRequest.getIngrediente(),
+    Integer ingredienteId = dtoRequestRequest.getIngrediente(), // armazena os Ids
 		    fichaId = dtoRequestRequest.getFichaTecnica();
 
-		Ingrediente ingrediente = this.ingredienteRepository.buscarPorId((ingredienteId)) // Verifica existencia de ingrediente
-		    .orElseThrow(() -> new IngredienteException("Ingrediente com o ID: " + ingredienteId + " não encontrado")););
-		FichaTecnica ficha = this.fichaTecnicaRepository.buscarPorId(fichaId) // Verifica existencia de ficha tecnica
-				.orElseThrow(() -> new FichaTecnicaException("Ficha tecnica com o ID: " + fichaId + " não encontrada"));
-    this.ingredienteFichaTecRepository.buscarIngredienteEmFichaTecnica(ingredienteId, fichaId)
-        .ifPresent(existente -> {
-                throw new IngredienteFichaTecnicaException("Já existe relação Ingrediente Ficha Tecnica");
-        });
-    IngredienteFichaTecnica ingredienteFicha = new IngredienteFichaTecnica();
-    ingredienteFicha.setQtd(dtoRequestRequest.getQtd());
-    ingredienteFicha.setUnidadeMedida(dtoRequestRequest.getUnidadeMedida());
-    ingredienteFicha.setIngrediente(ingrediente);
-    ingredienteFicha.setFichaTecnica(ficha);
-    ingredienteFicha.setStatus(ativo);
-//    ingredienteFicha.setObservacao(dtoRequestRequest.getObservacao());
+		Optional<Ingrediente> ingrediente = this.ingredienteRepository.buscarPorId((ingredienteId)); // Verifica existencia de ingredient
+		Optional<FichaTecnica> ficha = this.fichaTecnicaRepository.buscarPorId(fichaId); // Verifica existencia de ficha tecnica
 
-    IngredienteFichaTecnica ingredienteFichaSave = ingredienteFichaTecRepository.save(ingredienteFicha);
+		if (ingrediente.isPresent() && ficha.isPresent()) {
+				Optional<IngredienteFichaTecnica> buscaDeEntrada = this.ingredienteFichaTecRepository.buscarIngredienteEmFichaTecnica(ingredienteId, fichaId);
 
-    IngredienteFichaTecnicaDTOResponse dtoResponse= new IngredienteFichaTecnicaDTOResponse();
-    dtoResponse.setId(ingredienteFichaSave.getId());
-    dtoResponse.setQtd(ingredienteFichaSave.getQtd());
-    dtoResponse.setUnidadeMedida(ingredienteFichaSave.getUnidadeMedida());
-    dtoResponse.setIngrediente(ingredienteFichaSave.getIngrediente().getId());
-    dtoResponse.setFichaTecnica(ingredienteFichaSave.getFichaTecnica().getId());
-    dtoResponse.setStatus(ingredienteFichaSave.getStatus());
-//    dtoResponse.setObservacao(ingredienteFichaSave.getObservacao());
-    return dtoResponse;
+				if (buscaDeEntrada.isPresent()) {
+						IngredienteFichaTecnica ingredienteFicha = new IngredienteFichaTecnica();
+						ingredienteFicha.setQtd(dtoRequestRequest.getQtd());
+						ingredienteFicha.setUnidadeMedida(dtoRequestRequest.getUnidadeMedida());
+						ingredienteFicha.setIngrediente(ingrediente.get());
+            ingredienteFicha.setDetalhe(ingredienteFicha.getDetalhe());
+						ingredienteFicha.setFichaTecnica(ficha.get());
+						ingredienteFicha.setStatus(ativo);
+            ingredienteFicha.setDetalhe(dtoRequestRequest.getDetalhe());
 
+						IngredienteFichaTecnica ingredienteFichaSave = ingredienteFichaTecRepository.save(ingredienteFicha);
+
+            IngredienteFichaTecnicaDTOResponse dtoResponse = new IngredienteFichaTecnicaDTOResponse();
+						dtoResponse.setId(ingredienteFichaSave.getId());
+						dtoResponse.setQtd(ingredienteFichaSave.getQtd());
+						dtoResponse.setUnidadeMedida(ingredienteFichaSave.getUnidadeMedida());
+            dtoResponse.setDetalhe(ingredienteFichaSave.getDetalhe());
+						dtoResponse.setIngrediente(ingredienteFichaSave.getIngrediente().getId());
+						dtoResponse.setFichaTecnica(ingredienteFichaSave.getFichaTecnica().getId());
+						dtoResponse.setStatus(ingredienteFichaSave.getStatus());
+						return dtoResponse;
+				}
+		} return null;
   }
 
+    /** Recebe uma lista de dados para criação de ficha tecnicas
+     *
+     * @param dtoRequest
+     * @return
+     */
+    public List<IngredienteFichaTecnicaDTOResponse> criarVarias(List<IngredienteFichaTecnicaDTORequest> dtoRequest){
+        List<IngredienteFichaTecnicaDTOResponse> dtoResponse = new ArrayList<>();
+        for (IngredienteFichaTecnicaDTORequest dto : dtoRequest) {
+            IngredienteFichaTecnicaDTOResponse ingredienteFicha = this.criar(dto);
+            dtoResponse.add(ingredienteFicha);
+        }
+        return dtoResponse;
+    }
+
   public List<IngredienteEMFichaTecnicaDTOResponse> listarIngredientesEmFichaTecnica(Integer fichaTecnicaId){
-      List<IngredienteFichaTecnica> obterLista = this.ingredienteFichaTecRepository.listarIngredientesEmFichaTecnica(fichaTecnicaId);
-      if(obterLista != null) {
+      List<IngredienteFichaTecnica> obterLista = this.ingredienteFichaTecRepository.listarIngredienteEmFichas(fichaTecnicaId);
+
+			if(!obterLista.isEmpty()) {
+
           List<IngredienteEMFichaTecnicaDTOResponse> responseListaIngredientesEmFicha = new ArrayList<IngredienteEMFichaTecnicaDTOResponse>();
+
           for (IngredienteFichaTecnica ingrediente : obterLista) {
               IngredienteEMFichaTecnicaDTOResponse dto = new IngredienteEMFichaTecnicaDTOResponse();
               dto.setId(ingrediente.getId());
-              dto.setIdIngrediente(ingrediente.getIngredienteId().getId());
-              dto.setNomeIngrediente(ingrediente.getIngredienteId().getNome());
+              dto.setIdIngrediente(ingrediente.getIngrediente().getId());
+              dto.setNomeIngrediente(ingrediente.getIngrediente().getNome());
               dto.setUnidadeMedida(ingrediente.getUnidadeMedida());
+              dto.setDetalhe(ingrediente.getDetalhe());
               dto.setQtd(ingrediente.getQtd());
-              //              dto.setPrepato(ingrediente.getObservacao());
               responseListaIngredientesEmFicha.add(dto);
           }
           return responseListaIngredientesEmFicha;
       }
-      throw new RuntimeException("A ficha tecnica não foi encontrada");
+      return null;
   }
 
+    /**
+     * Alteração do atributo de Unidade de Medida NA FICHA TECNICA
+     * @param ingredienteFichaId
+     * @param dtoRequest
+     * @return
+     */
   @Transactional
-  public AlterarMedidasIngredienteFichaDTOResponse alterarMedidasIngredienteFicha(Integer ingredienteFichaId, AlterarMedidasIngredienteFichaDTORequest dtoRequest) {
+  public AlterarUnidadeMedidaIngredienteFichaDTOResponse alterarUnidadeMedida(Integer ingredienteFichaId, AlterarUnidadeMedidaDTORequest dtoRequest) {
 
-      IngredienteFichaTecnica ingredienteFichaTecnica = this.ingredienteFichaTecRepository.buscarPorId(ingredienteFichaId)
-          .orElseThrow(()-> new IngredienteFichaTecnicaException("Não foi encontrado ingrediente em fichatecnica com o id: " + ingredienteFichaId));
-    if (ingredienteFichaTecnica != null) {
-      ingredienteFichaTecnica.setUnidadeMedida(dtoRequest.getUnidadeMedida());
-      ingredienteFichaTecnica.setQtd(dtoRequest.getQtd());
-//      ingredienteFichaTecnica.setObservacao(dtoRequest.getObservacao());
+      Optional<IngredienteFichaTecnica> busca = this.ingredienteFichaTecRepository.buscarPorId(ingredienteFichaId);
+		  if(busca.isPresent()){
+					busca.get().setUnidadeMedida(dtoRequest.getUnidadeMedida());
+      IngredienteFichaTecnica save = ingredienteFichaTecRepository.save(busca.get());
 
-      IngredienteFichaTecnica ingredienteFichaSave = ingredienteFichaTecRepository.save(ingredienteFichaTecnica);
-
-      AlterarMedidasIngredienteFichaDTOResponse dtoResponse= new AlterarMedidasIngredienteFichaDTOResponse();
-      dtoResponse.setId(ingredienteFichaSave.getId());
-      dtoResponse.setQtd(ingredienteFichaSave.getQtd());
-      dtoResponse.setUnidadeMedida(ingredienteFichaSave.getUnidadeMedida());
+      AlterarUnidadeMedidaIngredienteFichaDTOResponse dtoResponse= new AlterarUnidadeMedidaIngredienteFichaDTOResponse();
+      dtoResponse.setId(save.getId());
+      dtoResponse.setUnidadeMedida(save.getUnidadeMedida());
 //      dtoResponse.setObservacao(ingredienteFichaSave.getObservacao());
 
       return dtoResponse;
 
-    } throw new RuntimeException("Nenhuma ficha tecnica com esse ID foi encontrada");
+    } return null;
   }
 
-  public void pagarLogicoIngredienteFichaTecnica(Integer ingredienteFichaId){
-    this.ingredienteFichaTecRepository.apagarLogicoIngredienteFichaTecnica(ingredienteFichaId);
+  public Boolean apagar(Integer ingredienteFichaId) {
+			Optional<IngredienteFichaTecnica> ingredienteFicha = this.ingredienteFichaTecRepository.buscarPorId(ingredienteFichaId);
+		  ingredienteFicha.ifPresent(
+					apaga ->{
+					this.ingredienteFichaTecRepository.updateStatus(ingredienteFichaId, apagado);
+			});
+
+        return ingredienteFicha.isPresent();
+	}
+}
