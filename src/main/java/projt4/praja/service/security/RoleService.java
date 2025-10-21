@@ -1,10 +1,10 @@
-package projt4.praja.security.service;
+package projt4.praja.service.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import projt4.praja.Enum.RoleName;
 import projt4.praja.entity.Role;
-import projt4.praja.security.RoleRepository;
+import projt4.praja.repository.security.RoleRepository;
 
 import java.util.ArrayList;
 import java.util.List;

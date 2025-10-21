@@ -4,9 +4,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import projt4.praja.entity.dto.request.usuario.UsuarioDTORequest;
-import projt4.praja.entity.dto.request.usuario.UsuarioLoginDTORequest;
 import projt4.praja.entity.dto.response.usuario.UsuarioDTOResponse;
-import projt4.praja.security.TokenDTOResponse;
 import projt4.praja.service.UsuarioService;
 
 @RestController

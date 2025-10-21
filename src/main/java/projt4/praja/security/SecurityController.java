@@ -7,8 +7,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import projt4.praja.entity.dto.request.usuario.UsuarioLoginDTORequest;
-import projt4.praja.security.service.LoginService;
+import projt4.praja.entity.dto.request.security.UsuarioLoginDTORequest;
+import projt4.praja.entity.dto.response.security.TokenDTOResponse;
+import projt4.praja.service.security.LoginService;
 
 @RestController
 @RequestMapping("/auth")

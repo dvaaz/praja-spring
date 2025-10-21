@@ -6,21 +6,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import projt4.praja.Enum.RoleName;
-import projt4.praja.config.SecurityConfiguration;
-import projt4.praja.entity.Role;
+import projt4.praja.config.security.SecurityConfiguration;
 import projt4.praja.entity.Usuario;
 import projt4.praja.entity.dto.request.usuario.UsuarioDTORequest;
-import projt4.praja.entity.dto.request.usuario.UsuarioLoginDTORequest;
 import projt4.praja.entity.dto.response.usuario.UsuarioDTOResponse;
 import projt4.praja.repository.UsuarioRepository;
-import projt4.praja.security.TokenDTOResponse;
-import projt4.praja.security.service.JwtTokenService;
-import projt4.praja.security.UsuarioDetailsImpl;
-import projt4.praja.security.service.RoleService;
-
-import java.util.ArrayList;
-import java.util.List;
+import projt4.praja.service.security.JwtTokenService;
+import projt4.praja.service.security.RoleService;
 
 @Service
 public class UsuarioService {

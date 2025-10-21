@@ -1,4 +1,4 @@
-package projt4.praja.config;
+package projt4.praja.config.security;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

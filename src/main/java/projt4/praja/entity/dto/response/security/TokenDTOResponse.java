@@ -1,4 +1,4 @@
-package projt4.praja.security;
+package projt4.praja.entity.dto.response.security;
 
 public class TokenDTOResponse {
 		private String token;

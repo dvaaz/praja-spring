@@ -1,4 +1,4 @@
-package projt4.praja.config;
+package projt4.praja.config.security;
 
 
 import jakarta.servlet.FilterChain;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import projt4.praja.entity.Usuario;
 import projt4.praja.repository.UsuarioRepository;
-import projt4.praja.security.service.JwtTokenService;
+import projt4.praja.service.security.JwtTokenService;
 import projt4.praja.security.UsuarioDetailsImpl;
 
 import java.io.IOException;

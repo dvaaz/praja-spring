@@ -1,4 +1,4 @@
-package projt4.praja.security.service;
+package projt4.praja.service.security;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -13,7 +13,7 @@ import java.time.ZonedDateTime;
 
 @Service
 public class JwtTokenService {
-    private static final String SECRET_KEY = "fowd3245oh3jkb43li44jig23ij";
+    private static final String SECRET_KEY = "qazPl!¨&*(G)sdfghjk456";
     private static final String ISSUER = "gamesolimpiadas-api";
 
     public String generateToken(UsuarioDetailsImpl usuario) {

@@ -1,12 +1,11 @@
-package projt4.praja.security.service;
+package projt4.praja.service.security;
 
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import projt4.praja.entity.dto.request.usuario.UsuarioLoginDTORequest;
-import projt4.praja.security.TokenDTOResponse;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import projt4.praja.entity.dto.request.security.UsuarioLoginDTORequest;
+import projt4.praja.entity.dto.response.security.TokenDTOResponse;
 import projt4.praja.security.UsuarioDetailsImpl;
 
 @Service

@@ -1,6 +1,4 @@
-package projt4.praja.entity.dto.request.usuario;
-
-import java.util.List;
+package projt4.praja.entity.dto.request.security;
 
 public class  UsuarioLoginDTORequest {
   private String telefone;
