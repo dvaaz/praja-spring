@@ -12,7 +12,7 @@
 	<artifactId>praja</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>praja</name>
-	<description>Gerenciador de Producao diaria</description>
+	<description>Gerenciador de Producao Diaria para Restaurante</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -29,6 +29,7 @@
 	<properties>
 		<java.version>21</java.version>
 	</properties>
+    
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -63,7 +64,7 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-webmvc</artifactId>
         </dependency>
-<!--   security begin    -->
+        <!--   security begin    -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-security</artifactId>
@@ -80,11 +81,10 @@
             <artifactId>spring-security-test</artifactId>
             <scope>test</scope>
         </dependency>
-<!--    end security    -->
+        <!--    end security    -->
     </dependencies>
 
-
-    <build>
+	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
@@ -92,9 +92,5 @@
 			</plugin>
 		</plugins>
 	</build>
-	<repositories>
-	</repositories>
-	<pluginRepositories>
-	</pluginRepositories>
 
 </project>
