@@ -1,4 +1,4 @@
-package projt4.praja.config.security;
+package projt4.praja.security.authentication;
 
 
 import jakarta.servlet.FilterChain;
@@ -11,10 +11,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import projt4.praja.security.config.SecurityConfiguration;
 import projt4.praja.entity.Usuario;
 import projt4.praja.repository.UsuarioRepository;
-import projt4.praja.service.security.JwtTokenService;
-import projt4.praja.security.UsuarioDetailsImpl;
+import projt4.praja.security.details.UsuarioDetailsImpl;
 
 import java.io.IOException;
 import java.util.Arrays;

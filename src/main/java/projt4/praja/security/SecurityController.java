@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import projt4.praja.entity.dto.request.security.UsuarioLoginDTORequest;
 import projt4.praja.entity.dto.response.security.TokenDTOResponse;
-import projt4.praja.service.security.LoginService;
+import projt4.praja.security.details.LoginService;
 
 @RestController
 @RequestMapping("/auth")

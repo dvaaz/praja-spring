@@ -1,4 +1,4 @@
-package projt4.praja.config.security;
+package projt4.praja.security.config;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

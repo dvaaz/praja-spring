@@ -1,12 +1,13 @@
-package projt4.praja.service.security;
+package projt4.praja.security.details;
 
 import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.stereotype.Service;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import projt4.praja.entity.dto.request.security.UsuarioLoginDTORequest;
 import projt4.praja.entity.dto.response.security.TokenDTOResponse;
-import projt4.praja.security.UsuarioDetailsImpl;
+import projt4.praja.security.authentication.JwtTokenService;
 
 @Service
 public class LoginService {
@@ -27,7 +28,7 @@ public class LoginService {
 				Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
 				// Obtém o objeto UserDetails do usuário autenticado
-				UsuarioDetailsImpl userDetails = (UsuarioDetailsImpl) authentication.getPrincipal();
+				UsuarioDetailsImpl userDetails = (UsuarioDetailsImpl) authentication.getClass(;
 
 				// Gera um token JWT para o usuário autenticado
 				TokenDTOResponse usuarioDTOLoginResponse = new TokenDTOResponse();

@@ -1,4 +1,4 @@
-package projt4.praja.config.security;
+package projt4.praja.security.config;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +14,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import projt4.praja.security.authentication.UserAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity

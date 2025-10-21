@@ -14,8 +14,7 @@ public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
     @Query("SELECT u FROM Usuario u " +
             "WHERE u.status>=0 AND u.telefone=:telefone")
-    Optional<Usuario> buscarPorTelefone(@Param("telefone") String telefone);
+    Optional<Usuario> findByTelefone(@Param("telefone") String telefone);
 
-    Optional<Usuario> findByTelefone(String login);
 
   }
