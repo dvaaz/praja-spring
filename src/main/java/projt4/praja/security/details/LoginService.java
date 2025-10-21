@@ -28,7 +28,7 @@ public class LoginService {
 				Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
 				// Obtém o objeto UserDetails do usuário autenticado
-				UsuarioDetailsImpl userDetails = (UsuarioDetailsImpl) authentication.getClass(;
+				UsuarioDetailsImpl userDetails = (UsuarioDetailsImpl) authentication.getClass().get;
 
 				// Gera um token JWT para o usuário autenticado
 				TokenDTOResponse usuarioDTOLoginResponse = new TokenDTOResponse();

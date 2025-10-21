@@ -30,10 +30,10 @@ public class UsuarioDetailsImpl implements UserDetails {
         return usuario.getTelefone();
     }
 
-    public Integer getIdUsuario(){
+    public Integer getId(){
         return usuario.getId();
     }
-    public String getNomeUsuario(){
+    public String getNome(){
         return usuario.getNome();
     }
 }

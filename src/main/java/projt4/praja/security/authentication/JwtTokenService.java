@@ -14,17 +14,17 @@ import java.time.ZonedDateTime;
 @Service
 public class JwtTokenService {
     private static final String SECRET_KEY = "qazPl!¨&*(G)sdfghjk456";
-    private static final String ISSUER = "gamesolimpiadas-api";
+    private static final String ISSUER = "praja-api";
 
     public String generateToken(UsuarioDetailsImpl usuario) {
         try {
             Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
             return JWT.create()
-                    .withIssuer(ISSUER)
-                    .withIssuedAt(creationDate())
-                    .withExpiresAt(expirationDate())
-                    .withSubject(usuario.getUsername())
-                    .sign(algorithm);
+		            .withIssuer(ISSUER) // Define o emissor do token
+		            .withIssuedAt(creationDate()) // Define a data de emissão do token
+		            .withExpiresAt(expirationDate()) // Define a data de expiração do token
+		            .withSubject(usuario.getUsername()) // Define o assunto do token (neste caso, o nome de usuário)
+		            .sign(algorithm); // Assina o token usando o algoritmo especificado
         } catch (JWTCreationException exception) {
             throw new JWTCreationException("Erro ao gerar o token", exception);
         }
