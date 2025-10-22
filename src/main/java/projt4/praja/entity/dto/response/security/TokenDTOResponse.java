@@ -3,7 +3,7 @@ package projt4.praja.entity.dto.response.security;
 public class TokenDTOResponse {
 		private String token;
 
-		public TokenDTOResponse() {
+		public TokenDTOResponse(String s) {
 				this.token = token;
 		}
 
