@@ -34,11 +34,11 @@ public class UsuarioService {
 		public UsuarioDTOResponse criar(UsuarioDTORequest dtoRequest){
 				// Sem Exception para roles inexistentes
         Usuario usuario = new Usuario();
-        usuario.setNome(dtoRequest.getNome());
-        usuario.setTelefone(dtoRequest.getTelefone());
-        usuario.setSenha(securityConfiguration.passwordEncoder().encode(dtoRequest.getSenha()));
+        usuario.setNome(dtoRequest.nome());
+        usuario.setTelefone(dtoRequest.telefone());
+        usuario.setSenha(securityConfiguration.passwordEncoder().encode(dtoRequest.senha()));
         usuario.setStatus(1);
-        usuario.setRoles((roleService.assertRole(dtoRequest.getRoleList())));
+        usuario.setRoles((roleService.assertRole(dtoRequest.roleList())));
         Usuario usuariosave = usuarioRepository.save(usuario);
 
 		    UsuarioDTOResponse usuarioDTO = new UsuarioDTOResponse();

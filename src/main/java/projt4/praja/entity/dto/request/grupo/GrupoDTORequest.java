@@ -10,5 +10,5 @@ public record GrupoDTORequest (
 		@NotEmpty String nome,
 		@NotEmpty String cor,
 
-		@Min(1)@Max(2) String  tipo
+		@Min(1)@Max(2) Integer  tipo
 		){}

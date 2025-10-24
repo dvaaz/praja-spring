@@ -1,6 +1,7 @@
 package projt4.praja.controller;
 
 import projt4.praja.Enum.GrupoEnum;
+import projt4.praja.entity.dto.request.grupo.AlterarCorDTORequest;
 import projt4.praja.entity.dto.request.grupo.GrupoDTORequest;
 import projt4.praja.entity.dto.request.shared.AlterarNomeDTORequest;
 import projt4.praja.entity.dto.request.shared.AlterarStatusDTORequest;
@@ -68,16 +69,24 @@ public class GrupoController {
         return ResponseEntity.ok(dtoResponse);
     }
 
-    @PatchMapping("/alterar/{id}")
-    @Operation(summary = "Alterações em um grupo", description = "Endpoint para alterar nome e cor de um grupo")
+    @PatchMapping("/alterar/nome/{id}")
+    @Operation(summary = "Alterações em um grupo", description = "Endpoint para alterar o nome de um grupo")
     public ResponseEntity<GrupoAtualizarDTOResponse> alterarNome(
              @PathVariable Integer id,
             @RequestBody AlterarNomeDTORequest dtoRequest) {
         GrupoAtualizarDTOResponse dtoResponse = this.service.alterarNome(id, dtoRequest);
         return ResponseEntity.ok(dtoResponse);
     }
+		@PatchMapping("/alterar/cor/{id}")
+		@Operation(summary = "Alterações em um grupo", description = "Endpoint para alterar  cor de um grupo")
+		public ResponseEntity<GrupoAtualizarDTOResponse> alterarCor(
+				@PathVariable Integer id,
+				@RequestBody AlterarCorDTORequest dtoRequest) {
+				GrupoAtualizarDTOResponse dtoResponse = this.service.alterarCor(id, dtoRequest);
+				return ResponseEntity.ok(dtoResponse);
+		}
 
-    @PatchMapping("/alterarstatus/{id}")
+    @PatchMapping("/alterar/status/{id}")
     @Operation(summary = "Atualizaçao de grupo", description = "Endpoint para atualização lógica de um grupo")
     public ResponseEntity<AlterarStatusDTOResponse> atualizarStatus(
          @PathVariable Integer id,

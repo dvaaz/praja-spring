@@ -50,7 +50,7 @@ public class IngredienteService {
 		 */
 		@Transactional
 		public IngredienteDTOResponse criar(IngredienteDTORequest dtoRequest) {
-				Integer grupoId = dtoRequest.getGrupo();
+				Integer grupoId = dtoRequest.grupo();
 				// Busca um grupo
 				Grupo grupo = this.grupoRepository.buscarPorIdETipo(grupoId, grupoIngrediente)
 						.orElseGet(() -> this.grupoService.buscarOuCriarGrupoIngrediente()); // caso não obtenha um grupo
@@ -59,8 +59,8 @@ public class IngredienteService {
 
 				// Mapeia os dados obtidos para a criação de ingrediente
 				Ingrediente novoIngrediente = new Ingrediente();
-				novoIngrediente.setNome(dtoRequest.getNome());
-				novoIngrediente.setDescricao(dtoRequest.getDescricao());
+				novoIngrediente.setNome(dtoRequest.nome());
+				novoIngrediente.setDescricao(dtoRequest.descricao());
 				novoIngrediente.setGrupo(grupo);
 				novoIngrediente.setStatus(ativo);
 				// Salva no banco de dados (persistence)
@@ -176,7 +176,7 @@ public class IngredienteService {
 
 				if (ingrediente.isEmpty()) { return null; } // caso não haja ingrediente com o ‘id’
 
-						ingrediente.get().setStatus(dtoRequest.getStatus());
+						ingrediente.get().setStatus(dtoRequest.status());
 						Ingrediente save = this.ingredienteRepository.save(ingrediente.get());
 
 						AlterarStatusDTOResponse dtoResponse = new AlterarStatusDTOResponse();
@@ -194,7 +194,7 @@ public class IngredienteService {
 		 */
 		@Transactional
 		public MudarDeGrupoDTOResponse alterarGrupo(Integer ingredienteId, MudarDeGrupoDTORequest dtoRequest) {
-				Integer grupoId = dtoRequest.getGrupo();
+				Integer grupoId = dtoRequest.grupo();
 				Optional<Grupo> grupo = this.grupoRepository.buscarPorId(grupoId); // busca pelo grupo
 
 				Optional<Ingrediente> ingrediente	= this.ingredienteRepository.buscarPorId(ingredienteId);
@@ -224,7 +224,7 @@ public class IngredienteService {
 		public MudarDeGrupoEmLoteDTOResponse mudarDeGrupoEmLote(Integer grupoId, MudarDeGrupoDTORequest dtoRequest) {
 				Optional<Grupo> grupoA = this.grupoRepository.buscarPorId(grupoId);
 
-				Optional<Grupo> grupoB = this.grupoRepository.buscarPorId(dtoRequest.getGrupo());
+				Optional<Grupo> grupoB = this.grupoRepository.buscarPorId(dtoRequest.grupo());
 
 				List<Ingrediente> ingredientes = this.ingredienteRepository.listarPorGrupo(grupoId);
 

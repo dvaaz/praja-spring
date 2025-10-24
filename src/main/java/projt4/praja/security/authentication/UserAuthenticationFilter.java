@@ -61,7 +61,7 @@ public class UserAuthenticationFilter extends OncePerRequestFilter {
     private boolean checkIfEndpointIsNotPublic(HttpServletRequest request) {
         //ajustado para funcionamento do swagger
         String requestURI = request.getRequestURI();
-        return Arrays.stream(SecurityConfiguration.ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).noneMatch(publicEndpoint ->
+        return Arrays.stream(SecurityConfiguration.PUBLIC_ENDPOINTS).noneMatch(publicEndpoint ->
                 requestURI.startsWith(publicEndpoint.replace("/**", "")) // suporta wildcard
         );
     }

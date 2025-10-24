@@ -8,6 +8,7 @@ import projt4.praja.repository.RoleRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RoleService {
@@ -30,5 +31,12 @@ public class RoleService {
 						}
 				}
 				return roles;
+		}
+
+		public boolean delete(Integer id){
+				Optional<Role> roleOpt = repository.findById(id);
+				roleOpt.ifPresent(role -> repository.delete(role));
+
+				return roleOpt.isPresent();
 		}
 }

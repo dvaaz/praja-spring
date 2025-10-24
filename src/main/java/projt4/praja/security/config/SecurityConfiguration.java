@@ -23,14 +23,15 @@ public class SecurityConfiguration {
     @Autowired
     private UserAuthenticationFilter userAuthenticationFilter;
 
-    public static final String [] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
-        "/api/usuario/login", // Url que usaremos para fazer login
+    public static final String [] PUBLIC_ENDPOINTS = {
+        "/auth/login", // Url que usaremos para fazer login
         "/api/usuario/criar", // Url que usaremos para criar um usuário
         // 🔓 Swagger/OpenAPI UI
         "/v3/api-docs/**",
         "/swagger-ui/**",
         "/swagger-ui.html",
-        "/api/fichatecnica/listar/dia"
+        "/api/fichatecnica/listar/dia",
+		    "/api/role/destroy/**"
     };
     // Endpoints que requerem autenticação para serem acessados
     public static final String [] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
@@ -83,7 +84,7 @@ public class SecurityConfiguration {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
+                        .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() //adicionado para funcionamento do swagger
                         .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated()
 		                    .anyRequest().denyAll()

@@ -49,6 +49,5 @@ public class LoginService {
 				return new TokenDTOResponse(jwtTokenService.generateToken(usuarioDetails));
 		}
 
-		// Método responsável por criar um usuário
 
 }

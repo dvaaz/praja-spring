@@ -131,7 +131,7 @@ public class IngredienteFichaTecnicaService {
 
       Optional<IngredienteFichaTecnica> busca = this.ingredienteFichaTecRepository.buscarPorId(ingredienteFichaId);
 		  if(busca.isPresent()){
-					busca.get().setUnidadeMedida(dtoRequest.getUnidadeMedida());
+					busca.get().setUnidadeMedida(dtoRequest.unidadeMedida());
       IngredienteFichaTecnica save = ingredienteFichaTecRepository.save(busca.get());
 
       AlterarUnidadeMedidaIngredienteFichaDTOResponse dtoResponse= new AlterarUnidadeMedidaIngredienteFichaDTOResponse();
