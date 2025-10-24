@@ -1,16 +1,13 @@
 package projt4.praja.entity.dto.request.shared;
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+
 import java.util.List;
 
-public class MudarDeGrupoEmLoteDTORequest {
-  private List<Integer> idDosItens;
+// talvez nao seja uma boa ideia ao chamar os ids dentro da lista... talvez
+public record MudarDeGrupoEmLoteDTORequest (
+		@Valid @NotNull @Min(1) List<Integer> idDosItens
 
-  public List<Integer> getIdDosItens() {
-    return idDosItens;
-  }
-
-  public void setIdDosItens(List<Integer> idDoItem) {
-    this.idDosItens = idDoItem;
-  }
-
-}
+){}

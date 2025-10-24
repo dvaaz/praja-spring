@@ -1,34 +1,14 @@
 package projt4.praja.entity.dto.request.grupo;
 
 
-public class GrupoDTORequest {
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 
-	private String nome;
-	private String cor;
+public record GrupoDTORequest (
 
-	private Integer tipo;
+		@NotEmpty String nome,
+		@NotEmpty String cor,
 
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
-	}
-
-	public String getCor() {
-		return cor;
-	}
-
-	public void setCor(String cor) {
-		this.cor = cor;
-	}
-
-	public Integer getTipo() {
-		return tipo;
-	}
-
-	public void setTipo(Integer tipo) {
-		this.tipo = tipo;
-	}
-}
+		@Min(1)@Max(2) String  tipo
+		){}

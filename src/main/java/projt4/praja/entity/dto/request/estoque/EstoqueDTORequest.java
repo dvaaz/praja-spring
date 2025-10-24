@@ -1,43 +1,21 @@
 package projt4.praja.entity.dto.request.estoque;
 
 
+
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.PastOrPresent;
+
 import java.util.Date;
 
-public class EstoqueDTORequest {
-    private Date entrada;
-    private Date validade;
-    private Integer qtd;
-    private Integer ingrediente;
-
-	public Date getEntrada() {
-		return entrada;
-	}
-
-	public void setEntrada(Date entrada) {
-		this.entrada = entrada;
-	}
-
-	public Date getValidade() {
-		return validade;
-	}
-
-	public void setValidade(Date validade) {
-		this.validade = validade;
-	}
-
-	public Integer getQtd() {
-		return qtd;
-	}
-
-	public void setQtd(Integer qtd) {
-		this.qtd = qtd;
-	}
-
-	public Integer getIngrediente() {
-		return ingrediente;
-	}
-
-	public void setIngrediente(Integer ingrediente) {
-		this.ingrediente = ingrediente;
-	}
-}
+public record EstoqueDTORequest (
+    @PastOrPresent(message = "A data de validade tem de ser presente ou passado")
+		Date entrada,
+		 @FutureOrPresent(message = "A data de validade tem de ser presente ou futura")
+     Date validade,
+		 @Min(1)
+     Integer qtd,
+		 @NotBlank
+     Integer ingrediente
+){}

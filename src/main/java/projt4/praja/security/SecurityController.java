@@ -24,6 +24,6 @@ public class SecurityController {
 
 		@PostMapping("/login")
 		public ResponseEntity<TokenDTOResponse> login(@RequestBody UsuarioLoginDTORequest dtoRequest){
-				return ResponseEntity.ok(loginService.login(dtoRequest));
+				return ResponseEntity.ok(loginService.authenticateUser(dtoRequest));
 		}
 }

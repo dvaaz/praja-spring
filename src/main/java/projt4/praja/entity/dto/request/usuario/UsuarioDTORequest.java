@@ -1,45 +1,17 @@
 package projt4.praja.entity.dto.request.usuario;
 
 
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import projt4.praja.Enum.RoleName;
 
 import java.util.List;
 
-public class UsuarioDTORequest {
-    private String nome;
-    private String telefone;
-    private String senha;
-    private List<RoleName> roleList;
-
-		public String getNome() {
-				return nome;
-		}
-
-		public void setNome(String nome) {
-				this.nome = nome;
-		}
-
-		public String getTelefone() {
-				return telefone;
-		}
-
-		public void setTelefone(String telefone) {
-				this.telefone = telefone;
-		}
-
-		public String getSenha() {
-				return senha;
-		}
-
-		public void setSenha(String senha) {
-				this.senha = senha;
-		}
-
-		public List<RoleName> getRoleList() {
-				return roleList;
-		}
-
-		public void setRoleList(List<RoleName> roleList) {
-				this.roleList = roleList;
-		}
-}
+public record UsuarioDTORequest (
+		@NotEmpty String nome,
+    @NotEmpty String telefone,
+    @NotEmpty @Min(6) @Max(12) String senha,
+    @Valid @NotEmpty @NotEmpty List<RoleName> roleList
+){}

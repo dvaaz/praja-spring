@@ -53,7 +53,7 @@ public class FichaTecnicaService {
      */
     @Transactional
     public FichaTecnicaDTOResponse criar(FichaTecnicaDTORequest dtoRequest) {
-				Integer grupoId = dtoRequest.getGrupo();
+				Integer grupoId = dtoRequest.grupo();
 			// Busca pelo grupo
 		    Grupo grupo = this.grupoRepository.buscarPorIdETipo(grupoId, grupoFicha)
 				    .orElseGet(() -> this.grupoService.buscarOuCriarGrupoFichaTecnica()); // caso não obtenha um grupo
@@ -61,8 +61,8 @@ public class FichaTecnicaService {
 		    if (grupo == null) { return null; } // Força a saida caso não seja possivel obter um grupo
 
 				FichaTecnica fichaTecnica = new FichaTecnica();
-        fichaTecnica.setNome(dtoRequest.getNome());
-        fichaTecnica.setDescricao(dtoRequest.getDescricao());
+        fichaTecnica.setNome(dtoRequest.nome());
+        fichaTecnica.setDescricao(dtoRequest.descricao());
         fichaTecnica.setGrupo(grupo);
         fichaTecnica.setStatus(inativo);
 
@@ -192,7 +192,7 @@ public class FichaTecnicaService {
 
 		  if(ficha.isPresent()) {
 
-          ficha.get().setStatus(dtoRequest.getStatus());
+          ficha.get().setStatus(dtoRequest.status());
 
           FichaTecnica salvo = this.fichaTecnicaRepository.save(ficha.get());
           AlterarStatusDTOResponse dtoResponse = new AlterarStatusDTOResponse();
@@ -210,7 +210,7 @@ public class FichaTecnicaService {
      */
     @Transactional
     public MudarDeGrupoDTOResponse alterarGrupo(Integer fichaId, MudarDeGrupoDTORequest dtoRequest){
-        Integer grupoId = dtoRequest.getGrupo();
+        Integer grupoId = dtoRequest.grupo();
 
 				Optional<Grupo> grupo = this.grupoRepository.buscarPorId(grupoId); // busca pelo grupo
 
@@ -240,7 +240,7 @@ public class FichaTecnicaService {
   @Transactional
   public MudarDeGrupoEmLoteDTOResponse mudarDeGrupoEmLote(Integer grupoId, MudarDeGrupoDTORequest dtoRequest){
       Optional<Grupo> grupoA = this.grupoRepository.buscarPorId(grupoId);
-			Optional<Grupo> grupoB = this.grupoRepository.buscarPorId(dtoRequest.getGrupo());
+			Optional<Grupo> grupoB = this.grupoRepository.buscarPorId(dtoRequest.grupo());
 
 			if(grupoA.isPresent() && grupoB.isPresent()) {
       List<FichaTecnica> fichas = this.fichaTecnicaRepository.listarPorGrupo(grupoId);

@@ -1,13 +1,12 @@
 package projt4.praja.service;
 
-import org.hibernate.PropertyValueException;
 import projt4.praja.Enum.GrupoEnum;
 import projt4.praja.Enum.StatusEnum;
 import projt4.praja.entity.FichaTecnica;
 import projt4.praja.entity.Grupo;
 import projt4.praja.entity.Ingrediente;
 import projt4.praja.entity.dto.request.grupo.GrupoDTORequest;
-import projt4.praja.entity.dto.request.shared.AlterarGrupoDTORequest;
+import projt4.praja.entity.dto.request.shared.AlterarNomeDTORequest;
 import projt4.praja.entity.dto.request.shared.AlterarStatusDTORequest;
 import projt4.praja.entity.dto.response.grupo.GrupoAtualizarDTOResponse;
 import projt4.praja.entity.dto.response.grupo.GrupoDTOResponse;
@@ -15,7 +14,6 @@ import projt4.praja.entity.dto.response.shared.AlterarStatusDTOResponse;
 import projt4.praja.repository.FichaTecnicaRepository;
 import projt4.praja.repository.GrupoRepository;
 import projt4.praja.repository.IngredienteRepository;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -196,12 +194,12 @@ public class GrupoService {
     }
 
     @Transactional
-    public GrupoAtualizarDTOResponse alterarDetalhes(Integer grupoId, AlterarGrupoDTORequest dtoRequest) {
+    public GrupoAtualizarDTOResponse alterarNome(Integer grupoId, AlterarNomeDTORequest dtoRequest) {
         Optional<Grupo> grupo = grupoRepository.buscarPorId(grupoId);
 
 				if (grupo.isEmpty()) { return null; }
 
-        if (dtoRequest.getCor() != null) {
+		        if (dtoRequest. != null) {
             grupo.get().setCor(dtoRequest.getCor());
         }
         if (dtoRequest.getNome()!= null) {

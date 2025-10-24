@@ -1,22 +1,18 @@
 package projt4.praja.entity.dto.request.security;
 
-public class  UsuarioLoginDTORequest {
-  private String telefone;
-  private String senha;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
-		public String getTelefone() {
-				return telefone;
-		}
+/**
+ * Senhas com no minimo 6 caracteres e no maximo 12
+ * @param telefone
+ * @param senha
+ */
+public record  UsuarioLoginDTORequest (
+		@NotBlank
+   String telefone,
+	 @Size(min=6, max=12)
+   String senha
+){
 
-		public void setTelefone(String telefone) {
-				this.telefone = telefone;
-		}
-
-		public String getSenha() {
-				return senha;
-		}
-
-		public void setSenha(String senha) {
-				this.senha = senha;
-		}
 }

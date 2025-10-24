@@ -2,7 +2,7 @@ package projt4.praja.controller;
 
 import projt4.praja.Enum.GrupoEnum;
 import projt4.praja.entity.dto.request.grupo.GrupoDTORequest;
-import projt4.praja.entity.dto.request.shared.AlterarGrupoDTORequest;
+import projt4.praja.entity.dto.request.shared.AlterarNomeDTORequest;
 import projt4.praja.entity.dto.request.shared.AlterarStatusDTORequest;
 import projt4.praja.entity.dto.response.grupo.GrupoAtualizarDTOResponse;
 import projt4.praja.entity.dto.response.grupo.GrupoDTOResponse;
@@ -70,10 +70,10 @@ public class GrupoController {
 
     @PatchMapping("/alterar/{id}")
     @Operation(summary = "Alterações em um grupo", description = "Endpoint para alterar nome e cor de um grupo")
-    public ResponseEntity<GrupoAtualizarDTOResponse> alterarDetalhes(
+    public ResponseEntity<GrupoAtualizarDTOResponse> alterarNome(
              @PathVariable Integer id,
-            @RequestBody AlterarGrupoDTORequest dtoRequest) {
-        GrupoAtualizarDTOResponse dtoResponse = this.service.alterarDetalhes(id, dtoRequest);
+            @RequestBody AlterarNomeDTORequest dtoRequest) {
+        GrupoAtualizarDTOResponse dtoResponse = this.service.alterarNome(id, dtoRequest);
         return ResponseEntity.ok(dtoResponse);
     }
 

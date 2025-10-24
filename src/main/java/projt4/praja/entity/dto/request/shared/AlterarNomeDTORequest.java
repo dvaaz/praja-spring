@@ -2,6 +2,6 @@ package projt4.praja.entity.dto.request.shared;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record AlterarDescricaoDTORequest (
-    @NotBlank String descricao
-){}
+public record AlterarNomeDTORequest(
+    @NotBlank String nome
+		){}
