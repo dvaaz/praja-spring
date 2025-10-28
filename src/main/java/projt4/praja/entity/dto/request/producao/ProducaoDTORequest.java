@@ -1,13 +1,10 @@
 package projt4.praja.entity.dto.request.producao;
 
-public class ProducaoDTORequest {
-	private Integer qtd;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
-	public Integer getQtd() {
-		return qtd;
-	}
-
-	public void setQtd(Integer qtd) {
-		this.qtd = qtd;
-	}
-}
+public record ProducaoDTORequest(
+	@Min(1) Integer qtd,
+	@NotNull Integer estoque,
+	@NotNull Integer producaoDia
+	){}

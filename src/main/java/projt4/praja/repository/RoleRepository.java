@@ -1,4 +1,4 @@
-package projt4.praja.repository.security;
+package projt4.praja.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,7 +9,7 @@ import projt4.praja.entity.Role;
 import java.util.List;
 
 @Repository
-public interface RoleRepository extends JpaRepository<RoleName, Integer> {
+public interface RoleRepository extends JpaRepository<Role, Integer> {
 	@Query("SELECT r FROM Role r")
 		public List<Role> listar();
 }

@@ -1,13 +1,8 @@
 package projt4.praja.entity.dto.request.shared;
 
-public class AlterarUnidadeMedidaDTORequest {
-		private Integer unidadeMedida;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
 
-		public Integer getUnidadeMedida() {
-				return unidadeMedida;
-		}
-
-		public void setUnidadeMedida(Integer unidadeMedida) {
-				this.unidadeMedida = unidadeMedida;
-		}
-}
+public record AlterarUnidadeMedidaDTORequest (
+		@Min(0) @Max(2) Integer unidadeMedida
+){}

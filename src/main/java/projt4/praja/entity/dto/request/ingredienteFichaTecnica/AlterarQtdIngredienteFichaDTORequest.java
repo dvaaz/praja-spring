@@ -1,14 +1,7 @@
 package projt4.praja.entity.dto.request.ingredienteFichaTecnica;
 
-public class AlterarQtdIngredienteFichaDTORequest {
-  private Integer qtd;
+import jakarta.validation.constraints.Min;
 
-  public Integer getQtd() {
-    return qtd;
-  }
-
-  public void setQtd(Integer qtd) {
-    this.qtd = qtd;
-  }
-
-}
+public record AlterarQtdIngredienteFichaDTORequest (
+  @Min(1) Integer qtd
+){}

@@ -1,15 +1,9 @@
 package projt4.praja.entity.dto.request.producaoDia;
 
+import jakarta.validation.constraints.NotBlank;
+
 import java.util.Date;
 
-public class ProducaoDiaDTORequest {
-    private Date data;
-
-	public Date getData() {
-		return data;
-	}
-
-	public void setData(Date data) {
-		this.data = data;
-	}
-}
+public record ProducaoDiaDTORequest(
+		@NotBlank Date data
+		){}

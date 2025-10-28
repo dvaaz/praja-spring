@@ -1,13 +1,13 @@
 package projt4.praja.service;
 
-import org.hibernate.PropertyValueException;
 import projt4.praja.Enum.GrupoEnum;
 import projt4.praja.Enum.StatusEnum;
 import projt4.praja.entity.FichaTecnica;
 import projt4.praja.entity.Grupo;
 import projt4.praja.entity.Ingrediente;
+import projt4.praja.entity.dto.request.grupo.AlterarCorDTORequest;
 import projt4.praja.entity.dto.request.grupo.GrupoDTORequest;
-import projt4.praja.entity.dto.request.shared.AlterarGrupoDTORequest;
+import projt4.praja.entity.dto.request.shared.AlterarNomeDTORequest;
 import projt4.praja.entity.dto.request.shared.AlterarStatusDTORequest;
 import projt4.praja.entity.dto.response.grupo.GrupoAtualizarDTOResponse;
 import projt4.praja.entity.dto.response.grupo.GrupoDTOResponse;
@@ -15,7 +15,6 @@ import projt4.praja.entity.dto.response.shared.AlterarStatusDTOResponse;
 import projt4.praja.repository.FichaTecnicaRepository;
 import projt4.praja.repository.GrupoRepository;
 import projt4.praja.repository.IngredienteRepository;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,14 +76,14 @@ public class GrupoService {
      */
     @Transactional
     public GrupoDTOResponse criar(GrupoDTORequest dtoRequest) {
-		    if (!(dtoRequest.getTipo().equals(grupoIngrNum) || dtoRequest.getTipo().equals(grupoFichaNum))) {
+		    if (!(dtoRequest.tipo().equals(grupoIngrNum) || dtoRequest.tipo().equals(grupoFichaNum))) {
 				    return null;
 		    }
 
 				Grupo grupo = new Grupo();
-				grupo.setNome(dtoRequest.getNome());
-				grupo.setCor(dtoRequest.getCor());
-				grupo.setTipo(dtoRequest.getTipo());
+				grupo.setNome(dtoRequest.nome());
+				grupo.setCor(dtoRequest.cor());
+				grupo.setTipo(dtoRequest.tipo());
         grupo.setStatus(ativo);
 
         Grupo salvo = grupoRepository.save(grupo);
@@ -196,18 +195,12 @@ public class GrupoService {
     }
 
     @Transactional
-    public GrupoAtualizarDTOResponse alterarDetalhes(Integer grupoId, AlterarGrupoDTORequest dtoRequest) {
-        Optional<Grupo> grupo = grupoRepository.buscarPorId(grupoId);
+    public GrupoAtualizarDTOResponse alterarNome(Integer id, AlterarNomeDTORequest dtoRequest) {
+        Optional<Grupo> grupo = grupoRepository.buscarPorId(id);
 
 				if (grupo.isEmpty()) { return null; }
 
-        if (dtoRequest.getCor() != null) {
-            grupo.get().setCor(dtoRequest.getCor());
-        }
-        if (dtoRequest.getNome()!= null) {
-            grupo.get().setNome(dtoRequest.getNome());
-        }
-
+				grupo.get().setNome(dtoRequest.nome());
         Grupo save = grupoRepository.save(grupo.get());
 
 				GrupoAtualizarDTOResponse dtoResponse = new GrupoAtualizarDTOResponse();
@@ -219,20 +212,36 @@ public class GrupoService {
 
     }
 
+		public GrupoAtualizarDTOResponse alterarCor(Integer id, AlterarCorDTORequest dtoRequest) {
+				Optional<Grupo> grupo = grupoRepository.buscarPorId(id);
+
+				if (grupo.isEmpty()) { return null; }
+
+				grupo.get().setCor(dtoRequest.cor());
+				Grupo save = grupoRepository.save(grupo.get());
+
+				GrupoAtualizarDTOResponse dtoResponse = new GrupoAtualizarDTOResponse();
+				dtoResponse.setId(save.getId());
+				dtoResponse.setNome(save.getNome());
+				dtoResponse.setCor(save.getCor());
+
+				return dtoResponse;
+		}
+
     /**
      * Apaga o grupo. Caso haja elementos no grupo eles serão alocados para o grupo padrao devido.
      *
-     * @param grupoId
+     * @param id
      */
     @Transactional
-    public void apagarGrupo(Integer grupoId) {
-        Optional<Grupo> grupo = this.grupoRepository.buscarPorId(grupoId);
+    public void apagarGrupo(Integer id) {
+        Optional<Grupo> grupo = this.grupoRepository.buscarPorId(id);
 
 				if (grupo.isEmpty()) { return; }
 
         // Remaneja os itens presentes nos grupos para seus devidos grupos padrões.
         if (grupo.get().getTipo().equals(grupoIngrNum) ) { // busca ingredientes de um grupo
-            List<Ingrediente> listaIngredientes = this.ingredienteRepository.listarPorGrupo(grupoId);
+            List<Ingrediente> listaIngredientes = this.ingredienteRepository.listarPorGrupo(id);
             if (!listaIngredientes.isEmpty()) {
                 Grupo grupoPadrao = this.buscarOuCriarGrupoIngrediente();
 
@@ -241,7 +250,7 @@ public class GrupoService {
                 }
             }
         } else if (grupo.get().getTipo().equals(grupoFichaNum) ) {
-            List<FichaTecnica> listaFichasTecnicas = this.fichaTecnicaRepository.listarPorGrupo(grupoId);
+            List<FichaTecnica> listaFichasTecnicas = this.fichaTecnicaRepository.listarPorGrupo(id);
             if (!listaFichasTecnicas.isEmpty()) {
                 Grupo grupoPadrao = this.buscarOuCriarGrupoFichaTecnica();
 
@@ -254,13 +263,13 @@ public class GrupoService {
 
     @Transactional
     public AlterarStatusDTOResponse atualizarStatus(Integer id, AlterarStatusDTORequest dtoRequest) {
-        Integer novoStatus = dtoRequest.getStatus();
+        Integer novoStatus = dtoRequest.status();
 
         Optional<Grupo>  grupo = this.grupoRepository.buscarPorId(id);
 
 				if (grupo.isEmpty()) { return null; }
 
-        grupo.get().setStatus(dtoRequest.getStatus());
+        grupo.get().setStatus(dtoRequest.status());
         Grupo save = grupoRepository.save(grupo.get());
 
 				AlterarStatusDTOResponse dtoResponse = new AlterarStatusDTOResponse();
@@ -297,4 +306,6 @@ public class GrupoService {
         return false;
 
     }
+
+
 }

@@ -1,5 +1,7 @@
 package projt4.praja.entity.dto.response.usuario;
 
+import projt4.praja.entity.Role;
+
 import java.util.List;
 
 public class UsuarioDTOResponse {
@@ -33,7 +35,7 @@ public class UsuarioDTOResponse {
 				this.telefone = telefone;
 		}
 
-		public List<String> getRoleList() {
+		public List<String> getRoleList(List<Role> roles) {
 				return roleList;
 		}
 

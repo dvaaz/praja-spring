@@ -1,13 +1,7 @@
 package projt4.praja.entity.dto.request.shared;
 
-public class MudarDeGrupoDTORequest {
-    private Integer grupo;
+import jakarta.validation.constraints.Min;
 
-    public Integer getGrupo() {
-        return grupo;
-    }
-
-    public void setGrupo(Integer grupo) {
-        this.grupo = grupo;
-    }
-}
+public record MudarDeGrupoDTORequest(
+		@Min(1) Integer grupo
+){}

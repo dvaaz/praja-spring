@@ -1,40 +1,14 @@
 package projt4.praja.entity.dto.request.ingrediente;
 
-public class IngredienteDTORequest {
-		private String nome;
-    private String descricao;
-    private Integer grupo;
-    private Integer unidadeMedida;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 
-    public String getNome() {
-        return nome;
-    }
 
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
+public record IngredienteDTORequest (
+		@NotEmpty String nome,
+		String descricao,
+		@Min(1) @Max(2) Integer grupo,
+		@Min(0) @Max(2) Integer unidadeMedida
 
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public Integer getGrupo() {
-        return grupo;
-    }
-
-    public void setGrupo(Integer grupo) {
-        this.grupo = grupo;
-    }
-
-    public Integer getUnidadeMedida() {
-        return unidadeMedida;
-    }
-
-    public void setUnidadeMedida(Integer unidadeMedida) {
-        this.unidadeMedida = unidadeMedida;
-    }
-}
+		){}

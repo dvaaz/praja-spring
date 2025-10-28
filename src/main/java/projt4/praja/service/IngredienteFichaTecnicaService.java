@@ -50,8 +50,8 @@ public class IngredienteFichaTecnicaService {
      */
   @Transactional
   public IngredienteFichaTecnicaDTOResponse criar (IngredienteFichaTecnicaDTORequest dtoRequestRequest){
-    Integer ingredienteId = dtoRequestRequest.getIngrediente(), // armazena os Ids
-		    fichaId = dtoRequestRequest.getFichaTecnica();
+    Integer ingredienteId = dtoRequestRequest.ingrediente(), // armazena os Ids
+		    fichaId = dtoRequestRequest.fichaTecnica();
 
 		Optional<Ingrediente> ingrediente = this.ingredienteRepository.buscarPorId((ingredienteId)); // Verifica existencia de ingredient
 		Optional<FichaTecnica> ficha = this.fichaTecnicaRepository.buscarPorId(fichaId); // Verifica existencia de ficha tecnica
@@ -61,13 +61,13 @@ public class IngredienteFichaTecnicaService {
 
 				if (buscaDeEntrada.isPresent()) {
 						IngredienteFichaTecnica ingredienteFicha = new IngredienteFichaTecnica();
-						ingredienteFicha.setQtd(dtoRequestRequest.getQtd());
-						ingredienteFicha.setUnidadeMedida(dtoRequestRequest.getUnidadeMedida());
+						ingredienteFicha.setQtd(dtoRequestRequest.qtd());
+						ingredienteFicha.setUnidadeMedida(dtoRequestRequest.unidadeMedida());
 						ingredienteFicha.setIngrediente(ingrediente.get());
             ingredienteFicha.setDetalhe(ingredienteFicha.getDetalhe());
 						ingredienteFicha.setFichaTecnica(ficha.get());
 						ingredienteFicha.setStatus(ativo);
-            ingredienteFicha.setDetalhe(dtoRequestRequest.getDetalhe());
+            ingredienteFicha.setDetalhe(dtoRequestRequest.detalhe());
 
 						IngredienteFichaTecnica ingredienteFichaSave = ingredienteFichaTecRepository.save(ingredienteFicha);
 
@@ -131,7 +131,7 @@ public class IngredienteFichaTecnicaService {
 
       Optional<IngredienteFichaTecnica> busca = this.ingredienteFichaTecRepository.buscarPorId(ingredienteFichaId);
 		  if(busca.isPresent()){
-					busca.get().setUnidadeMedida(dtoRequest.getUnidadeMedida());
+					busca.get().setUnidadeMedida(dtoRequest.unidadeMedida());
       IngredienteFichaTecnica save = ingredienteFichaTecRepository.save(busca.get());
 
       AlterarUnidadeMedidaIngredienteFichaDTOResponse dtoResponse= new AlterarUnidadeMedidaIngredienteFichaDTOResponse();
