@@ -14,11 +14,11 @@ import projt4.praja.security.details.LoginService;
 @RestController
 @RequestMapping("/auth")
 @Tag(name="Endpoint de securança", description ="Endpoint para lidar com logins, alterações de senhas e outros aspectos de segurança")
-public class SecurityController {
+public class LoginController {
 		private final LoginService loginService;
 
 		@Autowired
-		public SecurityController(LoginService loginService) {
+		public LoginController(LoginService loginService) {
 				this.loginService = loginService;
 		}
 

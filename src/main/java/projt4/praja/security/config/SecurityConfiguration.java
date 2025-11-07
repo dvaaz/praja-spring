@@ -1,6 +1,5 @@
 package projt4.praja.security.config;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -23,79 +22,69 @@ public class SecurityConfiguration {
     @Autowired
     private UserAuthenticationFilter userAuthenticationFilter;
 
-    public static final String [] PUBLIC_ENDPOINTS = {
-        "/auth/login", // Url que usaremos para fazer login
-        "/api/usuario/criar", // Url que usaremos para criar um usuário
-        // 🔓 Swagger/OpenAPI UI
+    // Endpoints públicos
+    public static final String[] PUBLIC_ENDPOINTS = {
+        "/api/auth/login",
+        "/api/usuario/criar",
         "/v3/api-docs/**",
         "/swagger-ui/**",
-        "/swagger-ui.html",
-        "/api/fichatecnica/listar/dia",
-		    "/api/role/destroy/**"
+        "/swagger-ui.html"
     };
-    // Endpoints que requerem autenticação para serem acessados
-    public static final String [] ENDPOINTS_WITH_AUTHENTICATION_REQUIRED = {
-        "/api/fichatecnica/listar/dia",
-        "/api/fichatecnica/listar",
-        "/api/fichatecnica/buscar"
-    };
-    // Endpoints que só podem ser acessador por usuários com permissão de CLIENTE
-    public static final String [] ENDPOINTS_CLIENTE = {
-		    "/api/fichatecnica/listar/dia",
-		    "/api/fichatecnica/listar",
-		    "/api/fichatecnica/buscar"
-    };
-		// Endpoints que só podem ser acessador por usuários com permissão de VENDEDORES
-		public static final String [] ENDPOINTS_VENDAS = {
-				"/api/usuario/listar",
-				"/api/fichatecnica/listar/dia",
-				"/api/fichatecnica/listar",
-				"/api/fichatecnica/buscar"
-		};
-		// Endpoints que só podem ser acessador por usuários com permissão de COZINHEIRO
-		public static final String [] ENDPOINTS_COZINHA = {
-				// ficha tecnica
-				"/api/fichatecnica/criar",
-				"/api/fichatecnica/listar",
-				"/api/fichatecnica/buscar",
-				"/api/fichatecnica/listar/dia",
-				"/api/fichatecnica/buscar",
-				//ingrediente
-				"api/ingrediente/criar",
-				"api/ingrediente/listar",
-				"api/ingrediente/buscar",
-				"api/ingrediente/atualizar",
-				//grupo
-				"api/grupo/listar"
-		};
-		// Endpoints que só podem ser acessador por usuários com permissão de cliente
-		public static final String [] ENDPOINTS_ESTOQUE = {
-				"/api/ingrediente/listar"
 
-		};
-    // Endpoints que só podem ser acessador por usuários com permissão de ADMINISTRADOR
-    public static final String [] ENDPOINTS_ADMINNISTRADOR = {
-				"/api"
+    // Outros endpoints com restrição de roles
+    public static final String[] ENDPOINTS_CLIENTE = {
+        "/api/fichatecnica/listar/**"
+    };
+
+    public static final String[] ENDPOINTS_VENDAS = {
+        "/api/usuario/listar",
+        "/api/fichatecnica/**"
+    };
+
+    public static final String[] ENDPOINTS_COZINHA = {
+        "/api/fichatecnica/**",
+        "/api/ingrediente/**",
+        "/api/grupo/**"
+    };
+
+    public static final String[] ENDPOINTS_ESTOQUE = {
+        "/api/ingrediente/listar"
+    };
+
+    public static final String[] ENDPOINTS_ADMINISTRADOR = {
+        "/api/**"
     };
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(PUBLIC_ENDPOINTS).permitAll()
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() //adicionado para funcionamento do swagger
-                        .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_REQUIRED).authenticated()
-		                    .anyRequest().denyAll()
-                )
-                .addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers(PUBLIC_ENDPOINTS)
+                    .permitAll()
+                .requestMatchers(HttpMethod.OPTIONS, "/**")
+                    .permitAll()
+                .requestMatchers(ENDPOINTS_CLIENTE)
+                    .hasAnyRole("CLIENTE", "VENDAS", "COZINHA", "ADMINISTRADOR", "ESTOQUE")
+                .requestMatchers(ENDPOINTS_VENDAS)
+                    .hasAnyRole("VENDAS", "ADMINISTRADOR", "COZINHA")
+                .requestMatchers(ENDPOINTS_COZINHA)
+                    .hasAnyRole("COZINHA", "ADMINISTRADOR")
+                .requestMatchers(ENDPOINTS_ESTOQUE)
+                    .hasAnyRole("ESTOQUE", "ADMINISTRADOR", "COZINHA")
+                .requestMatchers(ENDPOINTS_ADMINISTRADOR)
+                    .hasRole("ADMINISTRADOR")
+                .anyRequest().authenticated()
+            )
+            .addFilterBefore(userAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+        throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
@@ -103,5 +92,4 @@ public class SecurityConfiguration {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
 }
