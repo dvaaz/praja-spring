@@ -36,10 +36,10 @@ public class FichaTecnicaService {
         this.grupoService = grupoService;
     }
 
-    // Enuns a serem utilizados na classe
-    private final Integer ativo = StatusEnum.ATIVO.getStatus(),
-            inativo = StatusEnum.INATIVO.getStatus(),
-            apagado = StatusEnum.APAGADO.getStatus();
+    // Variaveis para melhor leitura de código
+    private final int ativo = 1,
+            inativo = 0,
+            apagado = -1;
 		private final int grupoFicha = GrupoEnum.fichaTecnica.getNumber();
 
     // Métodos

@@ -29,9 +29,11 @@ public class IngredienteFichaTecnicaService {
   private IngredienteService ingredienteService;
   private FichaTecnicaService fichaTecnicaService;
 
-  private final Integer ativo = StatusEnum.ATIVO.getStatus(),
-        inativo = StatusEnum.INATIVO.getStatus(),
-        apagado = StatusEnum.APAGADO.getStatus();
+  // Variaveis para melhor leitura de código
+  private final int ativo = 1,
+            inativo = 0,
+            impulsionar = 2,
+            apagado = -1;
   
   public IngredienteFichaTecnicaService(
       IngredienteFichaTecnicaRepository ingredienteFichaTecRepository,

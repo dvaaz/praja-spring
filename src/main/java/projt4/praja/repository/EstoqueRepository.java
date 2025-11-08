@@ -45,7 +45,7 @@ public interface EstoqueRepository extends JpaRepository<Estoque, Integer> {
 		List<Estoque> listByIngredienteId(@Param("ingredienteId") int ingredienteId, @Param("status") int status);
 
 
-
+		Estoque findByIngredienteId(int ingredienteId);
 
 
 }
