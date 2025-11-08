@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import projt4.praja.entity.Estoque;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface EstoqueRepository extends JpaRepository<Estoque, Integer> {
@@ -30,9 +31,9 @@ public interface EstoqueRepository extends JpaRepository<Estoque, Integer> {
 		 */
 		@Modifying
 		@Transactional
-		@Query("UPDATE Estoque e SET e.status = :status" +
-				"WHERE e.id = :id")
-		void updateStatus(@Param("id") int id, @Param("status") String status);
+		@Query("UPDATE Estoque e SET e.status = :status " +
+				"WHERE e.id= :id")
+		void updateStatus(@Param("id") int id, @Param("status") int status);
 
 
 		/**
@@ -44,8 +45,7 @@ public interface EstoqueRepository extends JpaRepository<Estoque, Integer> {
 				"WHERE e.status >= :status AND e.ingrediente.id = :ingredienteId")
 		List<Estoque> listByIngredienteId(@Param("ingredienteId") int ingredienteId, @Param("status") int status);
 
-
-		Estoque findByIngredienteId(int ingredienteId);
-
-
+		@Query("SELECT e FROM Estoque e " +
+				"WHERE e.id =:id AND e.status >= 0")
+		Optional<Estoque> buscarPorId(@Param("id") int id);
 }

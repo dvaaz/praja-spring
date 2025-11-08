@@ -2,6 +2,7 @@ package projt4.praja.entity;
 
 import jakarta.persistence.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.Set;
 
@@ -13,7 +14,7 @@ public class ProducaoDia {
 	@Column(name = "producao_dia_id")
 	private Integer id;
 	@Column(name = "producao_dia_data", nullable=false)
-	private Date data;
+	private LocalDate data;
 	@Column(name="producao_dia_status", nullable=false)
 	private Integer status;
 	@OneToMany(mappedBy = "producaoDia")
@@ -27,11 +28,11 @@ public class ProducaoDia {
 				this.id = id;
 		}
 
-		public Date getData() {
+		public LocalDate getData() {
 				return data;
 		}
 
-		public void setData(Date data) {
+		public void setData(LocalDate data) {
 				this.data = data;
 		}
 

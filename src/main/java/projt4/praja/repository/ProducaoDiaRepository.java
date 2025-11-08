@@ -9,9 +9,9 @@ import projt4.praja.entity.ProducaoDia;
 
 @Repository
 public interface ProducaoDiaRepository extends JpaRepository<ProducaoDia, Integer> {
-		@Modifying
-		@Transactional
-		@Query("UPDATE p FROM ProducaoDia p " +
-				"WHERE p.status >= 0 AND p.id = :id")
-		void
+//		@Modifying
+//		@Transactional
+//		@Query("UPDATE p FROM ProducaoDia p " +
+//				"WHERE p.status >= 0 AND p.id = :id")
+//		void
 }

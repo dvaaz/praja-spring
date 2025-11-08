@@ -3,7 +3,8 @@ package projt4.praja.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 @Entity
 @Table(name = "utilizado_dia")
@@ -17,7 +18,7 @@ public class UtilizadoDia {
 	@Column(name="utilizado_dia_destino", nullable=false)
 	private Integer destino;
 	@Column(name="utilizado_dia_data", nullable=false)
-	private Date data;
+	private LocalDate data;
 	@Column(name="utilizado_dia_status", nullable=false)
 	private Integer status;
 
@@ -34,67 +35,67 @@ public class UtilizadoDia {
 	@JoinColumn(name="producao_id", nullable = false)
 	private Producao producao;
 
-	public Integer getId() {
-		return id;
-	}
+		public Integer getId() {
+				return id;
+		}
 
-	public void setId(Integer id) {
-		this.id = id;
-	}
+		public void setId(Integer id) {
+				this.id = id;
+		}
 
-	public Integer getQtd() {
-		return qtd;
-	}
+		public Integer getQtd() {
+				return qtd;
+		}
 
-	public void setQtd(Integer qtd) {
-		this.qtd = qtd;
-	}
+		public void setQtd(Integer qtd) {
+				this.qtd = qtd;
+		}
 
-	public Integer getDestino() {
-		return destino;
-	}
+		public Integer getDestino() {
+				return destino;
+		}
 
-	public void setDestino(Integer destino) {
-		this.destino = destino;
-	}
+		public void setDestino(Integer destino) {
+				this.destino = destino;
+		}
 
-	public Date getData() {
-		return data;
-	}
+		public LocalDate getData() {
+				return data;
+		}
 
-	public void setData(Date data) {
-		this.data = data;
-	}
+		public void setData(LocalDate data) {
+				this.data = data;
+		}
 
-	public Integer getStatus() {
-		return status;
-	}
+		public Integer getStatus() {
+				return status;
+		}
 
-	public void setStatus(Integer status) {
-		this.status = status;
-	}
+		public void setStatus(Integer status) {
+				this.status = status;
+		}
 
-	public Ingrediente getIngrediente() {
-		return ingrediente;
-	}
+		public Ingrediente getIngrediente() {
+				return ingrediente;
+		}
 
-	public void setIngrediente(Ingrediente ingrediente) {
-		this.ingrediente = ingrediente;
-	}
+		public void setIngrediente(Ingrediente ingrediente) {
+				this.ingrediente = ingrediente;
+		}
 
-	public ProducaoDia getProducaoDia() {
-		return producaoDia;
-	}
+		public ProducaoDia getProducaoDia() {
+				return producaoDia;
+		}
 
-	public void setProducaoDia(ProducaoDia producaoDia) {
-		this.producaoDia = producaoDia;
-	}
+		public void setProducaoDia(ProducaoDia producaoDia) {
+				this.producaoDia = producaoDia;
+		}
 
-	public Producao getProducao() {
-		return producao;
-	}
+		public Producao getProducao() {
+				return producao;
+		}
 
-	public void setProducao(Producao producao) {
-		this.producao = producao;
-	}
+		public void setProducao(Producao producao) {
+				this.producao = producao;
+		}
 }

@@ -1,10 +1,11 @@
 package projt4.praja.entity.dto.response.producaoDia;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 public class ProducaoDiaDTOResponse {
     private Integer id;
-    private Date data;
+    private LocalDate data;
     private Integer status;
 
     public Integer getId() {
@@ -15,11 +16,11 @@ public class ProducaoDiaDTOResponse {
         this.id = id;
     }
 
-    public Date getData() {
+    public LocalDate getData() {
         return data;
     }
 
-    public void setData(Date data) {
+    public void setData(LocalDate data) {
         this.data = data;
     }
 
