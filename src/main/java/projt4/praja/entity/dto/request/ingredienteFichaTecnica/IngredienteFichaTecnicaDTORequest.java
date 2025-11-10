@@ -5,8 +5,6 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.validation.annotation.Validated;
 
-
-@Validated
 public record IngredienteFichaTecnicaDTORequest (
 
 		@Min(0) @Max(2) Integer unidadeMedida,

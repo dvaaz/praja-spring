@@ -8,6 +8,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import projt4.praja.entity.dto.request.ingredienteFichaTecnica.IngredienteEmFichaWrapperDTORequest;
 import projt4.praja.entity.dto.request.ingredienteFichaTecnica.IngredienteFichaTecnicaDTORequest;
 import projt4.praja.entity.dto.request.shared.AlterarUnidadeMedidaDTORequest;
 import projt4.praja.entity.dto.response.ingredienteFichaTecnica.AlterarUnidadeMedidaIngredienteFichaDTOResponse;
@@ -15,6 +16,7 @@ import projt4.praja.entity.dto.response.ingredienteFichaTecnica.IngredienteEMFic
 import projt4.praja.entity.dto.response.ingredienteFichaTecnica.IngredienteFichaTecnicaDTOResponse;
 import projt4.praja.service.IngredienteFichaTecnicaService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,13 +32,26 @@ public class IngredienteFichaTecnicaController {
   @PostMapping("/criar")
   @Operation(summary = "Registro de detalhes da Ficha Tecnica", description = "Endpoint para a criacao de uma nova entrada de Ingrediente Ficha Tecnica")
   public ResponseEntity<List<IngredienteEMFichaTecnicaDTOResponse>> criarRelacaoIngredienteFichaTecnica(
-      @Valid @RequestBody List< @Valid IngredienteFichaTecnicaDTORequest> dto
+      @RequestBody IngredienteEmFichaWrapperDTORequest dto
   ) {
-			List<IngredienteEMFichaTecnicaDTOResponse> dtoResponse = service.criar(dto);
-			if(dtoResponse.isEmpty()) {
-					return ResponseEntity.noContent().build();
-			} else return ResponseEntity.status(HttpStatus.CREATED).body(dtoResponse);
-
+//			List<IngredienteEMFichaTecnicaDTOResponse> dtoResponse = service.criar(dto);
+//      for ( IngredienteFichaTecnicaDTORequest ingrediente : dto ) {
+//          IngredienteEMFichaTecnicaDTOResponse ingredienteAdicionado = service.adicionarItem(ingrediente);
+//          dtoResponse.add(ingredienteAdicionado);
+//      }
+//			if(dtoResponse.isEmpty()) {
+//					return ResponseEntity.noContent().build();
+//			} else return ResponseEntity.status(HttpStatus.CREATED).body(dtoResponse);
+        List<IngredienteEMFichaTecnicaDTOResponse> dtoResponse= new ArrayList<IngredienteEMFichaTecnicaDTOResponse>();
+      for (IngredienteFichaTecnicaDTORequest ingrediente : dto.ingredienteFichaTecnicaDTORequest()) {
+          System.out.println( ingrediente );
+//          dtoResponse.add(service.adicionarItem(ingrediente));
+      }
+//
+//      if (dtoResponse.isEmpty()){
+          return ResponseEntity.badRequest().build();
+//
+//      }          return ResponseEntity.ok().body(dtoResponse);
   }
 	// teste
 		@PostMapping("/teste")
