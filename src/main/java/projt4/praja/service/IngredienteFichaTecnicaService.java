@@ -3,6 +3,7 @@ package projt4.praja.service;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import projt4.praja.Enum.StatusEnum;
+import projt4.praja.Enum.UnidadeMedidaEnum;
 import projt4.praja.entity.FichaTecnica;
 import projt4.praja.entity.Ingrediente;
 import projt4.praja.entity.IngredienteFichaTecnica;
@@ -46,55 +47,69 @@ public class IngredienteFichaTecnicaService {
   }
 
     /**
-     * Cria relação de ingrediente ficha tecnica
+     * Cria relação de UM ingrediente a ficha tecnica
      * @param dtoRequestRequest
      * @return
      */
   @Transactional
-  public IngredienteFichaTecnicaDTOResponse criar (IngredienteFichaTecnicaDTORequest dtoRequestRequest){
+  public IngredienteEMFichaTecnicaDTOResponse adicionarItem (IngredienteFichaTecnicaDTORequest dtoRequestRequest){
     Integer ingredienteId = dtoRequestRequest.ingrediente(), // armazena os Ids
 		    fichaId = dtoRequestRequest.fichaTecnica();
 
 		Optional<Ingrediente> ingrediente = this.ingredienteRepository.buscarPorId((ingredienteId)); // Verifica existencia de ingredient
 		Optional<FichaTecnica> ficha = this.fichaTecnicaRepository.buscarPorId(fichaId); // Verifica existencia de ficha tecnica
 
-		if (ingrediente.isPresent() && ficha.isPresent()) {
+		  if (ingrediente.isEmpty() || ficha.isEmpty()) {
+				  return null; // ou lance uma exceção customizada BadRequestNotFound
+		  }
 				Optional<IngredienteFichaTecnica> buscaDeEntrada = this.ingredienteFichaTecRepository.buscarIngredienteEmFichaTecnica(ingredienteId, fichaId);
 
-				if (buscaDeEntrada.isPresent()) {
-						IngredienteFichaTecnica ingredienteFicha = new IngredienteFichaTecnica();
-						ingredienteFicha.setQtd(dtoRequestRequest.qtd());
-						ingredienteFicha.setUnidadeMedida(dtoRequestRequest.unidadeMedida());
-						ingredienteFicha.setIngrediente(ingrediente.get());
-            ingredienteFicha.setDetalhe(ingredienteFicha.getDetalhe());
-						ingredienteFicha.setFichaTecnica(ficha.get());
-						ingredienteFicha.setStatus(ativo);
-            ingredienteFicha.setDetalhe(dtoRequestRequest.detalhe());
+			// sobreescreve/ atualiza a entrada existente
+		  if (buscaDeEntrada.isPresent()) {
+				  IngredienteFichaTecnica existente = buscaDeEntrada.get();
+				  IngredienteEMFichaTecnicaDTOResponse dtoResponse = new IngredienteEMFichaTecnicaDTOResponse();
+				  dtoResponse.setId(existente.getId());
+				  dtoResponse.setQtd(existente.getQtd());
+				  dtoResponse.setUnidadeMedida(existente.getUnidadeMedida());
+				  dtoResponse.setDetalhe(existente.getDetalhe());
+				  dtoResponse.setIdIngrediente(existente.getIngrediente().getId());
+				  dtoResponse.setNomeIngrediente(existente.getIngrediente().getNome());
+				  return dtoResponse;
+		  }
+		  // Se não existe, cria nova entrada
+				IngredienteFichaTecnica ingredienteFicha = new IngredienteFichaTecnica();
+				ingredienteFicha.setQtd(dtoRequestRequest.qtd());
+				ingredienteFicha.setUnidadeMedida(dtoRequestRequest.unidadeMedida());
+				ingredienteFicha.setIngrediente(ingrediente.get());
+		    ingredienteFicha.setDetalhe(ingredienteFicha.getDetalhe());
+				ingredienteFicha.setFichaTecnica(ficha.get());
+				ingredienteFicha.setStatus(ativo);
+		    ingredienteFicha.setDetalhe(dtoRequestRequest.detalhe());
 
-						IngredienteFichaTecnica ingredienteFichaSave = ingredienteFichaTecRepository.save(ingredienteFicha);
+				IngredienteFichaTecnica ingredienteFichaSave = ingredienteFichaTecRepository.save(ingredienteFicha);
 
-            IngredienteFichaTecnicaDTOResponse dtoResponse = new IngredienteFichaTecnicaDTOResponse();
-						dtoResponse.setId(ingredienteFichaSave.getId());
-						dtoResponse.setQtd(ingredienteFichaSave.getQtd());
-						dtoResponse.setUnidadeMedida(ingredienteFichaSave.getUnidadeMedida());
-            dtoResponse.setDetalhe(ingredienteFichaSave.getDetalhe());
-						dtoResponse.setIngrediente(ingredienteFichaSave.getIngrediente().getId());
-						dtoResponse.setFichaTecnica(ingredienteFichaSave.getFichaTecnica().getId());
-						dtoResponse.setStatus(ingredienteFichaSave.getStatus());
-						return dtoResponse;
-				}
-		} return null;
+				IngredienteEMFichaTecnicaDTOResponse dtoResponse = new IngredienteEMFichaTecnicaDTOResponse();
+				dtoResponse.setId(ingredienteFichaSave.getId());
+				dtoResponse.setQtd(ingredienteFichaSave.getQtd());
+				dtoResponse.setUnidadeMedida(ingredienteFichaSave.getUnidadeMedida());
+		    dtoResponse.setDetalhe(ingredienteFichaSave.getDetalhe());
+				dtoResponse.setIdIngrediente(ingredienteFichaSave.getIngrediente().getId());
+				dtoResponse.setNomeIngrediente(ingredienteFichaSave.getIngrediente().getNome());
+				return dtoResponse;
+
+
   }
 
-    /** Recebe uma lista de dados para criação de ficha tecnicas
-     *
+
+    /**
+     * Recebe uma lista de dados para criação de ficha tecnicas
      * @param dtoRequest
      * @return
      */
-    public List<IngredienteFichaTecnicaDTOResponse> criarVarias(List<IngredienteFichaTecnicaDTORequest> dtoRequest){
-        List<IngredienteFichaTecnicaDTOResponse> dtoResponse = new ArrayList<>();
+    public List<IngredienteEMFichaTecnicaDTOResponse> criar(List<IngredienteFichaTecnicaDTORequest> dtoRequest){
+        List<IngredienteEMFichaTecnicaDTOResponse> dtoResponse = new ArrayList<>();
         for (IngredienteFichaTecnicaDTORequest dto : dtoRequest) {
-            IngredienteFichaTecnicaDTOResponse ingredienteFicha = this.criar(dto);
+		        IngredienteEMFichaTecnicaDTOResponse ingredienteFicha = this.adicionarItem(dto);
             dtoResponse.add(ingredienteFicha);
         }
         return dtoResponse;
@@ -104,7 +119,7 @@ public class IngredienteFichaTecnicaService {
       List<IngredienteFichaTecnica> obterLista = this.ingredienteFichaTecRepository.listarIngredienteEmFichas(fichaTecnicaId);
 
 			if(!obterLista.isEmpty()) {
-
+					UnidadeMedidaEnum unidadeMedidaEnum;
           List<IngredienteEMFichaTecnicaDTOResponse> responseListaIngredientesEmFicha = new ArrayList<IngredienteEMFichaTecnicaDTOResponse>();
 
           for (IngredienteFichaTecnica ingrediente : obterLista) {
@@ -113,6 +128,9 @@ public class IngredienteFichaTecnicaService {
               dto.setIdIngrediente(ingrediente.getIngrediente().getId());
               dto.setNomeIngrediente(ingrediente.getIngrediente().getNome());
               dto.setUnidadeMedida(ingrediente.getUnidadeMedida());
+							dto.setUnidadeMedidaString(
+									UnidadeMedidaEnum.getString(ingrediente.getUnidadeMedida())
+											.orElse("N/A"));
               dto.setDetalhe(ingrediente.getDetalhe());
               dto.setQtd(ingrediente.getQtd());
               responseListaIngredientesEmFicha.add(dto);

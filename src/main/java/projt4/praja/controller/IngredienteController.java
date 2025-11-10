@@ -62,4 +62,17 @@ public class IngredienteController {
         return ResponseEntity.status(HttpStatus.OK).body(dtoResponse);
     }
 
+		@DeleteMapping("apagar/{id}")
+		@Operation(summary = "Apagar Ingrediente", description = "Apaga ingrediente por id")
+		public ResponseEntity apagarPorId(
+				@PathVariable("id") Integer id
+		){
+				boolean apagado = this.service.apagar(id);
+				if (apagado) {
+						return ResponseEntity.status(HttpStatus.OK).body("Ingrediente apagado com sucesso");
+				} else {
+						return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Não foi possível apagar o ingrediente");
+				}
+		}
+
 }
