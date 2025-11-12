@@ -43,8 +43,8 @@ public class IngredienteFichaTecnicaController {
 //					return ResponseEntity.noContent().build();
 //			} else return ResponseEntity.status(HttpStatus.CREATED).body(dtoResponse);
         List<IngredienteEMFichaTecnicaDTOResponse> dtoResponse= new ArrayList<IngredienteEMFichaTecnicaDTOResponse>();
-      for (IngredienteFichaTecnicaDTORequest ingrediente : dto.ingredienteFichaTecnicaDTORequest()) {
-          System.out.println( ingrediente );
+      for (IngredienteFichaTecnicaDTORequest ingrediente : dto.getIngredienteFichaTecnicaDTORequest()) {
+          System.out.println("Recebido: " + ingrediente.ingrediente());
 //          dtoResponse.add(service.adicionarItem(ingrediente));
       }
 //

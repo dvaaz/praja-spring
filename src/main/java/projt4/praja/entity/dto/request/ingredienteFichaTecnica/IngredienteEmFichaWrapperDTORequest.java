@@ -4,7 +4,14 @@ import jakarta.validation.Valid;
 
 import java.util.List;
 
-public record IngredienteEmFichaWrapperDTORequest(
-    List<IngredienteFichaTecnicaDTORequest> ingredienteFichaTecnicaDTORequest
-) {
+public class IngredienteEmFichaWrapperDTORequest{
+    List<IngredienteFichaTecnicaDTORequest> ingredienteFichaTecnicaDTORequest;
+
+  public List<IngredienteFichaTecnicaDTORequest> getIngredienteFichaTecnicaDTORequest() {
+    return ingredienteFichaTecnicaDTORequest;
+  }
+
+  public void setIngredienteFichaTecnicaDTORequest(List<IngredienteFichaTecnicaDTORequest> ingredienteFichaTecnicaDTORequest) {
+    this.ingredienteFichaTecnicaDTORequest = ingredienteFichaTecnicaDTORequest;
+  }
 }
