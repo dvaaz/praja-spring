@@ -106,6 +106,7 @@ public class IngredienteFichaTecnicaService {
      * @param dtoRequest
      * @return
      */
+    @Transactional
     public List<IngredienteEMFichaTecnicaDTOResponse> criar(List<IngredienteFichaTecnicaDTORequest> dtoRequest){
         List<IngredienteEMFichaTecnicaDTOResponse> dtoResponse = new ArrayList<>();
         for (IngredienteFichaTecnicaDTORequest dto : dtoRequest) {
