@@ -1,13 +1,15 @@
 package projt4.praja.entity.dto.response.utilizadoDia;
 
 import projt4.praja.entity.dto.response.ingrediente.IngredienteDTOResponse;
-import java.util.Date;
+
+import java.time.LocalDate;
+
 
 public class UtilizadoDiaDTOResponse {
   private Integer id;
   private Integer qtd;
   private Integer destino;
-	private Date data;
+	private LocalDate data;
 	private IngredienteDTOResponse ingrediente;
 	private Integer idProducao;
 	private String idProducaoDia;
@@ -37,11 +39,11 @@ public class UtilizadoDiaDTOResponse {
 		this.destino = destino;
 	}
 
-	public Date getData() {
+	public LocalDate getData() {
 		return data;
 	}
 
-	public void setData(Date data) {
+	public void setData(LocalDate data) {
 		this.data = data;
 	}
 

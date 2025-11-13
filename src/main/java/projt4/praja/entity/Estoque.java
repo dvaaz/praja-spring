@@ -3,7 +3,7 @@ package projt4.praja.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Set;
 
 @Entity
@@ -14,9 +14,9 @@ public class Estoque {
 	@Column(name = "estoque_id")
 	private Integer id;
 	@Column(name = "estoque_dia", nullable=false)
-	private Date entrada;
+	private LocalDate entrada;
 	@Column(name = "estoque_validade")
-	private Date validade;
+	private LocalDate validade;
 	@Column(name = "estoque_qtd", nullable=false)
 	private Integer qtd;
 	@Column(name="estoque_status", nullable=false)
@@ -38,19 +38,19 @@ public class Estoque {
 		this.id = id;
 	}
 
-	public Date getEntrada() {
+	public LocalDate getEntrada() {
 		return entrada;
 	}
 
-	public void setEntrada(Date entrada) {
+	public void setEntrada(LocalDate entrada) {
 		this.entrada = entrada;
 	}
 
-	public Date getValidade() {
+	public LocalDate getValidade() {
 		return validade;
 	}
 
-	public void setValidade(Date validade) {
+	public void setValidade(LocalDate validade) {
 		this.validade = validade;
 	}
 

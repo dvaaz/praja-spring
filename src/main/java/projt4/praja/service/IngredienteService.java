@@ -34,10 +34,10 @@ public class IngredienteService {
 				this.grupoService = grupoService;
 		}
 
-		// Enums a serem utilizados
-		private final Integer ativo = StatusEnum.ATIVO.getStatus(),
-				inativo = StatusEnum.INATIVO.getStatus(),
-				apagado = StatusEnum.APAGADO.getStatus();
+		// Variaveis para melhor leitura de código
+		private final int ativo = 1,
+					inativo = 0,
+					apagado = -1;
 		private final int grupoIngrediente = GrupoEnum.ingrediente.getNumber();
 
 		// métodos

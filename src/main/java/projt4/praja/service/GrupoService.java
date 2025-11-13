@@ -38,14 +38,14 @@ public class GrupoService {
         this.fichaTecnicaRepository = fichaTecnicaRepository;
     }
 
-    // Enuns a serem utilizados na classe
+    // // Variaveis para melhor leitura de código
     private final String grupoIngrNome = GrupoEnum.ingrediente.getText(),
             grupoFichNome = GrupoEnum.fichaTecnica.getText();
     private final Integer grupoIngrNum = GrupoEnum.ingrediente.getNumber(),
             grupoFichaNum = GrupoEnum.fichaTecnica.getNumber();
-    private final Integer ativo = StatusEnum.ATIVO.getStatus(),
-            inativo = StatusEnum.INATIVO.getStatus(),
-            apagado = StatusEnum.APAGADO.getStatus();
+    private final int ativo = 1,
+            inativo = 0,
+            apagado = -1;
 
     // Inicio dos métodos
 		/**
