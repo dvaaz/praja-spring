@@ -62,6 +62,7 @@ public class IngredienteService {
 				novoIngrediente.setNome(dtoRequest.nome());
 				novoIngrediente.setDescricao(dtoRequest.descricao());
 				novoIngrediente.setGrupo(grupo);
+        novoIngrediente.setUnidadeMedida(dtoRequest.unidadeMedida());
 				novoIngrediente.setStatus(ativo);
 				// Salva no banco de dados (persistence)
 
