@@ -17,5 +17,5 @@ FROM amazoncorretto:21-alpine
 
 # O nome Usuario.jar vem da tag finalName do pom.xml que adicionei
 COPY --from=build target/*.jar app.jar
-EXPOSE 9090
+EXPOSE 8408
 CMD ["java", "-jar", "/app.jar"]
