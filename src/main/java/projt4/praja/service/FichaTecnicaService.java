@@ -202,6 +202,7 @@ public class FichaTecnicaService {
 				.setNomeGrupo(save.getGrupo().getNome())
 				.setStatus(save.getStatus());
 			return dtoResponse;
+		} else return null;
 			
 	}
 
