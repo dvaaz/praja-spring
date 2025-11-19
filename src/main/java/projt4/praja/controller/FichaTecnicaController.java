@@ -64,7 +64,21 @@ public class FichaTecnicaController {
             FichaTecnicaDTOResponse dtoResponse = this.service.buscarPorId(id);
             return ResponseEntity.status(HttpStatus.OK).body(dtoResponse);
         }
-        
+
+	@PatchMapping("/alterar/descricao/{id}")
+	@Operation(summary = "Path de Descricao", description =" Endpoint que altera a descricao da ficah tecnica e recebe de volta o objeto")
+	public ResponseEntity<FichaTecnicaDTOResponse> alterarDescricao(
+		@PathVariable("id") Integer id
+		@RequestBody AlterarDescricaoDTORequest dtoRequest	
+	) {
+		FichaTecnicaDTOResponse dtoResponse = this.service.alterarDescricao(id, dtoRequest);
+		if(dtoResponse != null){
+			return ResponseEntity.status(HttpStatus.OK).body(dtoResponse);
+		} else{
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build("Ficha não encontrada");
+		}
+	}
+	
     @PatchMapping("/alterar/grupo/{id}")
     @Operation(summary = "Alterar o grupo", description = "Endpoint para alterar o grupo de uma ficha tecnica")
     public ResponseEntity<MudarDeGrupoDTOResponse> alterarGrupo(
