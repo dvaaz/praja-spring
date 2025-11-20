@@ -45,12 +45,12 @@ pipeline {
                           def appName = 'demo'
                           def imageTag = "${appName}:${env.BUILD_ID}"
 
-                          // Parar e remover o container existente, se houver
+                      // Parar e remover o container existente, se houver
                   		sh "docker stop ${appName} || exit 0"
                   		sh "docker rm -v ${appName} || exit 0"  // Remover o container e os volumes associados
 
-                          // Executar o novo container
-                          sh "docker-compose up -d --build"
+                      // Executar o novo container
+                        sh "docker run -d --name ${appName} -p 8408:8408 ${imageTag}"
                       }
                   }
               }

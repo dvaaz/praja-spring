@@ -6,12 +6,13 @@ import projt4.praja.Enum.StatusEnum;
 import projt4.praja.entity.FichaTecnica;
 import projt4.praja.entity.Grupo;
 import projt4.praja.entity.dto.request.fichaTecnica.FichaTecnicaDTORequest;
+import projt4.praja.entity.dto.request.shared.AlterarDescricaoDTORequest;
 import projt4.praja.entity.dto.request.shared.AlterarStatusDTORequest;
 import projt4.praja.entity.dto.request.shared.MudarDeGrupoDTORequest;
 import projt4.praja.entity.dto.response.fichaTecnica.FichaTecnicaDTOResponse;
 import projt4.praja.entity.dto.response.fichaTecnica.ListaFichasDeGrupoDTO;
 import projt4.praja.entity.dto.response.shared.AlterarStatusDTOResponse;
-import projt4.praja.entity.dto.response.shared.AlterarDescricaoDTORequest;
+
 import projt4.praja.entity.dto.response.shared.MudarDeGrupoDTOResponse;
 import projt4.praja.entity.dto.response.shared.MudarDeGrupoEmLoteDTOResponse;
 import projt4.praja.repository.FichaTecnicaRepository;
@@ -188,19 +189,19 @@ public class FichaTecnicaService {
 	*/
 	@Transactional
 	public FichaTecnicaDTOResponse alterarDescricao(Integer fichaId, AlterarDescricaoDTORequest dtoRequest) {
-		Optional<FichaTecnica> ficha = this.fichaTecnicaRepository.buscarPorId(fichaId)
+		Optional<FichaTecnica> ficha = this.fichaTecnicaRepository.buscarPorId(fichaId);
 			// .orElseThrow( 
 	if (ficha.isPresent()){
 			ficha.get().setDescricao(dtoRequest.descricao());
 
 			FichaTecnica save = this.fichaTecnicaRepository.save(ficha.get());
-			FichaTecnicaDTOResponse dtoResponse = new FichaTecnicaDTOResponse()
-				.setId(save.getId())
-				.setNome(save.getNome())
-				.setDescricao(save.getDescricao())
-				.setIdGrupo(save.getGrupo().getId())
-				.setNomeGrupo(save.getGrupo().getNome())
-				.setStatus(save.getStatus());
+			FichaTecnicaDTOResponse dtoResponse = new FichaTecnicaDTOResponse();
+			dtoResponse.setId(save.getId());
+			dtoResponse.setNome(save.getNome());
+			dtoResponse.setDescricao(save.getDescricao());
+			dtoResponse.setIdGrupo(save.getGrupo().getId());
+			dtoResponse.setNomeGrupo(save.getGrupo().getNome());
+			dtoResponse.setStatus(save.getStatus());
 			return dtoResponse;
 		} else return null;
 			

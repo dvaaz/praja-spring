@@ -3,10 +3,12 @@ package projt4.praja.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import projt4.praja.entity.dto.request.fichaTecnica.FichaTecnicaDTORequest;
+import projt4.praja.entity.dto.request.shared.AlterarDescricaoDTORequest;
 import projt4.praja.entity.dto.request.shared.MudarDeGrupoDTORequest;
 import projt4.praja.entity.dto.response.fichaTecnica.FichaTecnicaDTOResponse;
 import projt4.praja.entity.dto.response.fichaTecnica.ListaFichasDeGrupoDTO;
@@ -68,14 +70,14 @@ public class FichaTecnicaController {
 	@PatchMapping("/alterar/descricao/{id}")
 	@Operation(summary = "Path de Descricao", description =" Endpoint que altera a descricao da ficah tecnica e recebe de volta o objeto")
 	public ResponseEntity<FichaTecnicaDTOResponse> alterarDescricao(
-		@PathVariable("id") Integer id
-		@RequestBody AlterarDescricaoDTORequest dtoRequest	
+		@PathVariable("id") Integer id,
+		@Valid @RequestBody AlterarDescricaoDTORequest dtoRequest
 	) {
 		FichaTecnicaDTOResponse dtoResponse = this.service.alterarDescricao(id, dtoRequest);
 		if(dtoResponse != null){
 			return ResponseEntity.status(HttpStatus.OK).body(dtoResponse);
 		} else{
-		return ResponseEntity.status(HttpStatus.NOT_FOUND).build("Ficha não encontrada");
+		return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		}
 	}
 	
