@@ -14,8 +14,8 @@ public class IngredienteFichaTecnica {
 	private Integer qtd;
 	@Column(name="ingrediente_ficha_tecnica_unidade_medida", nullable=false)
 	private Integer unidadeMedida;
-  @Column(name="ingrediente_ficha_tecnica_detalhe")
-  private String detalhe;
+    @Column(name="ingrediente_ficha_tecnica_detalhe")
+    private String detalhe;
 	@Column(name="ingrediente_ficha_tecnica_status", nullable=false)
 	private Integer status;
 

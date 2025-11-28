@@ -1,0 +1,35 @@
+type Grupo {
+   id: ID!
+   nome: String!
+   cor: String
+   tipo: Number!
+   status: Number!
+}
+
+type Ficha {
+ id: ID!
+ nome: String!
+ descricao: String
+ status: String
+ grupo: Grupo
+}
+
+type Ingrediente {
+    id: ID!
+    nome: String!
+    descricao: String
+    unidadeMedida: Number
+    status: Number
+    grupo: Grupo
+}
+
+type IngredienteFicha {
+    id: ID!
+    qtd: Number
+    unidadeMedida: Number
+    detalhe: String
+    status: Number
+    ingrediente: Ingrediente
+    ficha: Ficha
+}
+
