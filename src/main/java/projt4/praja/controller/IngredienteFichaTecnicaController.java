@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/ingredientefichatecnica")
 @Tag(name="Detalhes da Ficha Tecnica", description = "Api para gerenciamento de 'ingrediente ficha tecnica'")

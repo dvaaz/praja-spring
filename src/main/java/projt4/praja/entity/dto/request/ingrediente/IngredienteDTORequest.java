@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotEmpty;
 public record IngredienteDTORequest (
 		@NotEmpty String nome,
 		String descricao,
-		@Min(1) @Max(2) Integer grupo,
+		Integer grupo,
 		@Min(0) @Max(2) Integer unidadeMedida
 
 		){}

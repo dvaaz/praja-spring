@@ -17,7 +17,7 @@ import projt4.praja.service.FichaTecnicaService;
 
 import java.util.List;
 
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/ficha")
 @Tag(name="Ficha Tecnica", description = "Api para gerenciamento de Fciha Tecnica")

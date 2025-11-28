@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/grupos")
 @Tag(name="Grupo", description = "Api para gerenciamento de Grupo")

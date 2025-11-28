@@ -17,7 +17,7 @@ import projt4.praja.service.IngredienteService;
 
 import java.util.List;
 
-
+@CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/ingrediente")
 @Tag(name="Ingrediente", description = "Api para gerenciamento de Fciha Tecnica")
