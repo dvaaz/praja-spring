@@ -21,19 +21,18 @@ public interface EstoqueRepository extends JpaRepository<Estoque, Integer> {
 		@Modifying
 		@Transactional
 		@Query("Update Estoque e SET e.qtd = :qtd " +
-				"WHERE e.id = :id")
-		void updateQtd(@Param("id") int id, @Param("qtd") int qtd);
+				"WHERE e.id = :estoqueId")
+		void updateQtd(@Param("estoqueId") int id, @Param("qtd") int qtd);
 
 		/**
 		 * Alteração de status de estoque 0 para inativo 1 para ativo
-		 * @param id
-		 * @param status
+		 * @param estoqueId @param status
 		 */
 		@Modifying
 		@Transactional
 		@Query("UPDATE Estoque e SET e.status = :status " +
-				"WHERE e.id= :id")
-		void updateStatus(@Param("id") int id, @Param("status") int status);
+				"WHERE e.id= :estoqueId")
+		void updateStatus(@Param("estoqueId") int estoqueId, @Param("status") int status);
 
 
 		/**
@@ -45,6 +44,12 @@ public interface EstoqueRepository extends JpaRepository<Estoque, Integer> {
 				"WHERE e.status >= :status AND e.ingrediente.id = :ingredienteId")
 		List<Estoque> listByIngredienteId(@Param("ingredienteId") int ingredienteId, @Param("status") int status);
 
+		/**
+		 * Busca por estoque só retorna se tiver com status >= 0
+		 *
+		 * @param id
+		 * @return
+		 */
 		@Query("SELECT e FROM Estoque e " +
 				"WHERE e.id =:id AND e.status >= 0")
 		Optional<Estoque> buscarPorId(@Param("id") int id);

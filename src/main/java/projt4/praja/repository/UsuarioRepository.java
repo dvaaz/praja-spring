@@ -12,6 +12,11 @@ import java.util.Optional;
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Integer> {
 
+		/**
+		 * buscar por usuarios não apagados logicamente
+		 * @param telefone
+		 * @return
+		 */
     @Query("SELECT u FROM Usuario u " +
             "WHERE u.status>=0 AND u.telefone=:telefone")
     Optional<Usuario> findByTelefone(@Param("telefone") String telefone);

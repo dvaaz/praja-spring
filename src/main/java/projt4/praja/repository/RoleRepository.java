@@ -10,6 +10,10 @@ import java.util.List;
 
 @Repository
 public interface RoleRepository extends JpaRepository<Role, Integer> {
-	@Query("SELECT r FROM Role r")
+		/**
+		 * Função de busca de roles existentes
+		 * @return
+		 */
+		@Query("SELECT r FROM Role r")
 		public List<Role> listar();
 }
