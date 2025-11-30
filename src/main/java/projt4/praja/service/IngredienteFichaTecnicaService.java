@@ -120,7 +120,6 @@ public class IngredienteFichaTecnicaService {
       List<IngredienteFichaTecnica> obterLista = this.ingredienteFichaTecRepository.listarIngredienteEmFichas(fichaTecnicaId);
 
 			if(!obterLista.isEmpty()) {
-					UnidadeMedidaEnum unidadeMedidaEnum;
           List<IngredienteEMFichaTecnicaDTOResponse> responseListaIngredientesEmFicha = new ArrayList<IngredienteEMFichaTecnicaDTOResponse>();
 
           for (IngredienteFichaTecnica ingrediente : obterLista) {
@@ -138,7 +137,8 @@ public class IngredienteFichaTecnicaService {
           }
           return responseListaIngredientesEmFicha;
       }
-      return null;
+			List<IngredienteEMFichaTecnicaDTOResponse> listaVazia = new ArrayList<>();
+      return listaVazia;
   }
 
     /**

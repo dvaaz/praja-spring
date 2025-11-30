@@ -41,7 +41,7 @@ public class FichaTecnicaController {
         List<FichaTecnicaDTOResponse> dtoResponse = this.service.listar();
         return ResponseEntity.status(HttpStatus.OK).body(dtoResponse);
     }
-		@GetMapping("/listar/dia")
+		@GetMapping("/listar/preparodia")
 		@Operation(summary ="Listar Ficha Tecnica", description = "Endpoint para listar fichas tecnicas")
 		public ResponseEntity<List<FichaTecnicaDTOResponse>> listarDia() {
 				List<FichaTecnicaDTOResponse> dtoResponse = this.service.listarDia();

@@ -23,7 +23,7 @@ import java.util.Optional;
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/ingredientefichatecnica")
-@Tag(name="Detalhes da Ficha Tecnica", description = "Api para gerenciamento de 'ingrediente ficha tecnica'")
+@Tag(name="Ingredientes da Ficha Tecnica", description = "Api para gerenciamento de 'ingrediente ficha tecnica'")
 public class IngredienteFichaTecnicaController {
   private final IngredienteFichaTecnicaService service;
   public IngredienteFichaTecnicaController( IngredienteFichaTecnicaService service) {
@@ -65,10 +65,10 @@ public class IngredienteFichaTecnicaController {
 				return ResponseEntity.status(HttpStatus.CREATED).body(dtoResponse);
 		}
 
-	@GetMapping("buscar/{id}")
+	@GetMapping("/buscar/{id}")
 	@Operation(summary = "Busca dados de uma Ficha Tecnica", description = "Endpoint que lista todos os ingredientes de uma ficha tecnica")
 	public ResponseEntity<List<IngredienteEMFichaTecnicaDTOResponse>> listarIngredientesEmFichaTecnica(
-			@Valid @PathVariable("id") Integer id
+			@PathVariable("id") Integer id
 	){
 			List<IngredienteEMFichaTecnicaDTOResponse> dtoResponses = this.service.listarIngredientesEmFichaTecnica(id);
 			if(dtoResponses==null){
@@ -80,7 +80,7 @@ public class IngredienteFichaTecnicaController {
   @PatchMapping("/alterar/{id}/medidas")
   @Operation(summary = "Alteração de unidade de medida e quantidade", description = "Endpoint para alteração dos detalhes da medida da ficha tecnica")
   public ResponseEntity<AlterarUnidadeMedidaIngredienteFichaDTOResponse> alterarUnidadeMedida(
-      @Valid @PathVariable("id") Integer id,
+      @PathVariable("id") Integer id,
       @Valid @RequestBody AlterarUnidadeMedidaDTORequest dto
   ) {
     return ResponseEntity.ok(service.alterarUnidadeMedida(id, dto));

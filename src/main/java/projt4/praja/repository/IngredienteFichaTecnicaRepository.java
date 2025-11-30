@@ -28,7 +28,8 @@ public interface IngredienteFichaTecnicaRepository extends JpaRepository<Ingredi
 		 * @param fichaId
 		 * @return
 		 */
-		@Query("SELECT f FROM IngredienteFichaTecnica f WHERE f.fichaTecnica=:fichaId AND f.status>=0")
+		@Query("SELECT f FROM IngredienteFichaTecnica f " +
+				"WHERE f.fichaTecnica.id=:fichaId AND f.status>=0")
 		List<IngredienteFichaTecnica> listarIngredienteEmFichas(@Param("fichaId") Integer fichaId);
 
     @Query("SELECT f FROM IngredienteFichaTecnica f WHERE f.id =:id AND f.status>=0")
