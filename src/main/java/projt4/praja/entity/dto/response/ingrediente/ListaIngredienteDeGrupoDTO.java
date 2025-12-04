@@ -6,7 +6,7 @@ public class ListaIngredienteDeGrupoDTO {
 	private Integer idGrupo;
 	private String nomeGrupo;
 	private String corGrupo;
-	private List<IngredienteDTOResponse> ingredientes;
+	private List<IngredienteSemGrupoDTOResponse> ingredientes;
 
 		public Integer getIdGrupo() {
 				return idGrupo;
@@ -32,11 +32,11 @@ public class ListaIngredienteDeGrupoDTO {
 				this.corGrupo = corGrupo;
 		}
 
-		public List<IngredienteDTOResponse> getIngredientes() {
+		public List<IngredienteSemGrupoDTOResponse> getIngredientes() {
 				return ingredientes;
 		}
 
-		public void setIngredientes(List<IngredienteDTOResponse> ingredientes) {
+		public void setIngredientes(List<IngredienteSemGrupoDTOResponse> ingredientes) {
 				this.ingredientes = ingredientes;
 		}
 }

@@ -10,6 +10,7 @@ import projt4.praja.entity.dto.request.ingrediente.IngredienteDTORequest;
 import projt4.praja.entity.dto.request.shared.AlterarStatusDTORequest;
 import projt4.praja.entity.dto.request.shared.MudarDeGrupoDTORequest;
 import projt4.praja.entity.dto.response.ingrediente.IngredienteDTOResponse;
+import projt4.praja.entity.dto.response.ingrediente.IngredienteSemGrupoDTOResponse;
 import projt4.praja.entity.dto.response.ingrediente.ListaIngredienteDeGrupoDTO;
 import projt4.praja.entity.dto.response.shared.AlterarStatusDTOResponse;
 import projt4.praja.entity.dto.response.shared.MudarDeGrupoDTOResponse;
@@ -121,9 +122,9 @@ public class IngredienteService {
 						List<Ingrediente> ingredientes = this.ingredienteRepository.listarPorGrupo(grupo.get().getId());
 						if (!ingredientes.isEmpty()) {
 								// transforma as ingredientes em dto especifico
-								List<IngredienteDTOResponse> ingredientesDTO = new ArrayList<>();
+								List<IngredienteSemGrupoDTOResponse> ingredientesDTO = new ArrayList<>();
 								for (Ingrediente ingrediente : ingredientes) {
-										IngredienteDTOResponse temp = new IngredienteDTOResponse();
+										IngredienteSemGrupoDTOResponse temp = new IngredienteSemGrupoDTOResponse();
 										temp.setId(ingrediente.getId());
 										temp.setNome(ingrediente.getNome());
                     temp.setUnidadeMedida(ingrediente.getUnidadeMedida());
