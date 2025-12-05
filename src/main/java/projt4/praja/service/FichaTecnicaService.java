@@ -208,18 +208,18 @@ public class FichaTecnicaService {
 	}
 
     /**
-     * Altera Status de Ficha Tecnica
+     * Altera Status de Ficha Tecnica para colocala no cardapio ativo do dia.
+     * Essa função também altera o status do grupo que ela pertence
      * @param fichaId
-     * @param dtoRequest
      * @return
      */
   @Transactional
-  public AlterarStatusDTOResponse alterarStatus(Integer fichaId, AlterarStatusDTORequest dtoRequest){
+  public AlterarStatusDTOResponse selecionarParaCardapioDia(Integer fichaId){
       Optional<FichaTecnica> ficha = this.fichaTecnicaRepository.buscarPorId(fichaId); // busca por ficha tecnica
 
 		  if(ficha.isPresent()) {
 
-          ficha.get().setStatus(dtoRequest.status());
+          ficha.get().setStatus(1);
 
           FichaTecnica save = this.fichaTecnicaRepository.save(ficha.get());
           AlterarStatusDTOResponse dtoResponse = new AlterarStatusDTOResponse();
@@ -228,6 +228,13 @@ public class FichaTecnicaService {
           return dtoResponse;
       } return null;
   }
+		/**
+		 * Trabalhar em logica para ativar grupo
+		 * Caso haja UMA ficha tecnica no grupo com status 1 o grupo ficará com status 1
+		 *
+		 */
+
+
 
     /**
      * Altera Ficha Tecnica de Grupo
