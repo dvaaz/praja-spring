@@ -124,12 +124,14 @@ public class IngredienteService {
 								// transforma as ingredientes em dto especifico
 								List<IngredienteSemGrupoDTOResponse> ingredientesDTO = new ArrayList<>();
 								for (Ingrediente ingrediente : ingredientes) {
-										IngredienteSemGrupoDTOResponse temp = new IngredienteSemGrupoDTOResponse();
-										temp.setId(ingrediente.getId());
-										temp.setNome(ingrediente.getNome());
-                    temp.setUnidadeMedida(ingrediente.getUnidadeMedida());
-										temp.setDescricao(ingrediente.getDescricao());
-										ingredientesDTO.add(temp);
+										if(ingrediente.getStatus() >= 0) {
+												IngredienteSemGrupoDTOResponse temp = new IngredienteSemGrupoDTOResponse();
+												temp.setId(ingrediente.getId());
+												temp.setNome(ingrediente.getNome());
+												temp.setUnidadeMedida(ingrediente.getUnidadeMedida());
+												temp.setDescricao(ingrediente.getDescricao());
+												ingredientesDTO.add(temp);
+										}
 								}
 
 								ListaIngredienteDeGrupoDTO dtoResponse = new ListaIngredienteDeGrupoDTO();
@@ -195,19 +197,23 @@ public class IngredienteService {
 		 * @return
 		 */
 		@Transactional
-		public MudarDeGrupoDTOResponse alterarGrupo(Integer ingredienteId, MudarDeGrupoDTORequest dtoRequest) {
+		public IngredienteDTOResponse alterarGrupo(Integer ingredienteId, MudarDeGrupoDTORequest dtoRequest) {
 				Integer grupoId = dtoRequest.grupo();
 				Optional<Grupo> grupo = this.grupoRepository.buscarPorId(grupoId); // busca pelo grupo
+				if (grupo.isEmpty()) {return null;}
 
 				Optional<Ingrediente> ingrediente	= this.ingredienteRepository.buscarPorId(ingredienteId);
 
-				if (ingrediente.isEmpty() || grupo.isEmpty()) { return null; }
+				if (ingrediente.isEmpty()) { return null; }
 
 				ingrediente.get().setGrupo(grupo.get());
 				Ingrediente salvo = this.ingredienteRepository.save(ingrediente.get());
 
-				MudarDeGrupoDTOResponse dtoResponse = new MudarDeGrupoDTOResponse();
+				IngredienteDTOResponse dtoResponse = new IngredienteDTOResponse();
 				dtoResponse.setId(salvo.getId());
+				dtoResponse.setNome(salvo.getNome());
+				dtoResponse.setDescricao(salvo.getDescricao());
+				dtoResponse.setStatus(salvo.getStatus());
 				dtoResponse.setIdGrupo(salvo.getGrupo().getId());
 				dtoResponse.setNomeGrupo(salvo.getGrupo().getNome());
 

@@ -10,12 +10,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import projt4.praja.entity.dto.request.ingrediente.IngredienteDTORequest;
+import projt4.praja.entity.dto.request.shared.MudarDeGrupoDTORequest;
 import projt4.praja.entity.dto.response.ingrediente.IngredienteDTOResponse;
 import projt4.praja.entity.dto.response.ingrediente.ListaIngredienteDeGrupoDTO;
+import projt4.praja.entity.dto.response.shared.MudarDeGrupoDTOResponse;
 import projt4.praja.service.IngredienteService;
 
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -43,6 +46,17 @@ public class IngredienteController {
         List<IngredienteDTOResponse> dtoResponse = this.service.listar();
         return ResponseEntity.status(HttpStatus.OK).body(dtoResponse);
     }
+
+		@PatchMapping("/alterar/grupo/{id}")
+		@Operation(summary = "Alterar Grupo do Ingrediente", description = "Altera o grupo do Ingrediente")
+		public ResponseEntity<IngredienteDTOResponse> alterarGrupo(
+				@PathVariable Integer id, @RequestBody MudarDeGrupoDTORequest dtoRequest
+		) {
+				IngredienteDTOResponse dtoResponse = this.service.alterarGrupo(id, dtoRequest);
+				if (dtoResponse != null) {
+						return ResponseEntity.status(HttpStatus.OK).body(dtoResponse);
+				} else return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+		}
 
     @GetMapping("/listar/grupo/{id}")
     @Operation(summary ="Listar Ingrediente de um grupo", description = "Endpoint para listar ingredientes tecnicas de um grupo")

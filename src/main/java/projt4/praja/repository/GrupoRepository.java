@@ -18,6 +18,7 @@ public interface GrupoRepository extends JpaRepository<Grupo, Integer> {
 	@Query("SELECT g FROM Grupo g WHERE g.status >=0")
 	List<Grupo> listar();
 
+
 	@Query("SELECT g FROM Grupo g WHERE g.tipo=:tipo AND g.status>=0 ")
 	List<Grupo> listarPorTipo(@Param("tipo") Integer tipo);
 
@@ -25,9 +26,11 @@ public interface GrupoRepository extends JpaRepository<Grupo, Integer> {
 			"WHERE g.status>=0 AND g.tipo=:tipo AND g.nome =:nome")
 	Optional<Grupo> buscarGrupoPadrao(@Param("tipo") Integer tipo, @Param("nome") String nome);
 
+	// Busca grupo por id
 	@Query("SELECT g FROM Grupo g WHERE g.id =:id AND g.status>=0")
 	Optional<Grupo> buscarPorId(@Param("id") Integer id);
 
+	// busca grupo por tipo
 	@Query("SELECT g FROM Grupo g WHERE g.id =:id AND g.tipo=:tipo AND g.status>=0")
 	Optional<Grupo> buscarPorIdETipo(@Param("id") Integer id, @Param("tipo") Integer tipo);
 

@@ -19,4 +19,8 @@ public class AlterarStatusDTOResponse {
     public void setStatus(Integer status) {
         this.status = status;
     }
+
+		public boolean isEmpty(){
+			return this.id == null && this.status == null;
+		}
 }

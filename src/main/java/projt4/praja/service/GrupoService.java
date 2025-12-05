@@ -231,17 +231,15 @@ public class GrupoService {
     /**
      * Apaga o grupo. Caso haja elementos no grupo eles serão alocados para o grupo padrao devido.
      *
-     * @param id
+     * @param grupo
      */
     @Transactional
-    public void apagarGrupo(Integer id) {
-        Optional<Grupo> grupo = this.grupoRepository.buscarPorId(id);
-
-				if (grupo.isEmpty()) { return; }
+    public void apagarGrupo(Optional<Grupo> grupo) {
 
         // Remaneja os itens presentes nos grupos para seus devidos grupos padrões.
         if (grupo.get().getTipo().equals(grupoIngrNum) ) { // busca ingredientes de um grupo
-            List<Ingrediente> listaIngredientes = this.ingredienteRepository.listarPorGrupo(id);
+            List<Ingrediente> listaIngredientes = this.ingredienteRepository.listarPorGrupo(
+								grupo.get().getId());
             if (!listaIngredientes.isEmpty()) {
                 Grupo grupoPadrao = this.buscarOuCriarGrupoIngrediente();
 
@@ -250,7 +248,8 @@ public class GrupoService {
                 }
             }
         } else if (grupo.get().getTipo().equals(grupoFichaNum) ) {
-            List<FichaTecnica> listaFichasTecnicas = this.fichaTecnicaRepository.listarPorGrupo(id);
+            List<FichaTecnica> listaFichasTecnicas = this.fichaTecnicaRepository.listarPorGrupo(
+								grupo.get().getId());
             if (!listaFichasTecnicas.isEmpty()) {
                 Grupo grupoPadrao = this.buscarOuCriarGrupoFichaTecnica();
 
@@ -261,32 +260,39 @@ public class GrupoService {
         }
     }
 
+		// Incluir lógica para remanejar os itens que estejam dentro do grupo
+		@Transactional
+		public boolean apagar(Integer id){
+				Optional<Grupo> grupo = this.grupoRepository.buscarPorId(id);
+				grupo.ifPresent(apaga -> {
+						this.apagarGrupo(grupo);
+						this.grupoRepository.updateStatus(id, apagado);
+				});
+				return grupo.isPresent();
+		}
+
     @Transactional
     public AlterarStatusDTOResponse atualizarStatus(Integer id, AlterarStatusDTORequest dtoRequest) {
-        Integer novoStatus = dtoRequest.status();
+        if(dtoRequest.status() >=0 && dtoRequest.status() <=2) {
+		        Integer novoStatus = dtoRequest.status();
 
-        Optional<Grupo>  grupo = this.grupoRepository.buscarPorId(id);
+		        Optional<Grupo> grupo = this.grupoRepository.buscarPorId(id);
 
-				if (grupo.isEmpty()) { return null; }
+		        if (grupo.isEmpty()) {
+				        return null;
+		        }
 
-        grupo.get().setStatus(dtoRequest.status());
-        Grupo save = grupoRepository.save(grupo.get());
+		        grupo.get().setStatus(dtoRequest.status());
+		        Grupo save = grupoRepository.save(grupo.get());
 
-				AlterarStatusDTOResponse dtoResponse = new AlterarStatusDTOResponse();
-				dtoResponse.setId(save.getId());
-				dtoResponse.setStatus(save.getStatus());
-				return dtoResponse;
+		        AlterarStatusDTOResponse dtoResponse = new AlterarStatusDTOResponse();
+		        dtoResponse.setId(save.getId());
+		        dtoResponse.setStatus(save.getStatus());
+		        return dtoResponse;
+        }
+				return new AlterarStatusDTOResponse();
     }
 
-    // Incluir lógica para remanejar os itens que estejam dentro do grupo
-    @Transactional
-    public boolean apagar(Integer id){
-        Optional<Grupo> grupo = this.grupoRepository.buscarPorId(id);
-        grupo.ifPresent(apaga -> {
-		        this.grupoRepository.updateStatus(id, apagado);
-        });
-        return grupo.isPresent();
-    }
 
     /**
      * Destroi objeto que tenha sido apagado

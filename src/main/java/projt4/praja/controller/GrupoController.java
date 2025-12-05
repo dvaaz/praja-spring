@@ -94,9 +94,9 @@ public class GrupoController {
         @RequestBody AlterarStatusDTORequest dtoRequest
     ) {
         AlterarStatusDTOResponse statusResponse = this.service.atualizarStatus(id, dtoRequest);
-        if (statusResponse != null){
+        if (statusResponse != null || !statusResponse.isEmpty() ){
             return ResponseEntity.ok(statusResponse);
-        } else return ResponseEntity.notFound().build();
+        } else return ResponseEntity.notFound().build(); // consertar a resposta
     }
 
     @DeleteMapping("/apagar/{id}")
