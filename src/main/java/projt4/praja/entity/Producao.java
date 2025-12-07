@@ -11,7 +11,7 @@ public class Producao {
 	@Column(name = "producao_id")
 	private Integer id;
 	@Column(name = "producao_qtd", nullable=false)
-	private Integer qtd;
+	private Integer quantidade;
 	@Column(name = "producao_status", nullable=false)
 	private Integer status;
 
@@ -24,4 +24,44 @@ public class Producao {
 	@ManyToOne
 	@JoinColumn(name = "estoque_id", nullable=false)
 	private Estoque estoque;
+
+		public Integer getId() {
+				return id;
+		}
+
+		public void setId(Integer id) {
+				this.id = id;
+		}
+
+		public Integer getQuantidade() {
+				return quantidade;
+		}
+
+		public void setQuantidade(Integer quantidade) {
+				this.quantidade = quantidade;
+		}
+
+		public Integer getStatus() {
+				return status;
+		}
+
+		public void setStatus(Integer status) {
+				this.status = status;
+		}
+
+		public ProducaoDia getProducaoDia() {
+				return producaoDia;
+		}
+
+		public void setProducaoDia(ProducaoDia producaoDia) {
+				this.producaoDia = producaoDia;
+		}
+
+		public Estoque getEstoque() {
+				return estoque;
+		}
+
+		public void setEstoque(Estoque estoque) {
+				this.estoque = estoque;
+		}
 }

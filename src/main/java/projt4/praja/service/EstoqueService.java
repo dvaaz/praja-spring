@@ -48,7 +48,7 @@ public class EstoqueService {
 				Estoque estoque = new Estoque();
 				estoque.setEntrada(agora);
 				estoque.setValidade(dtoRequest.validade());
-				estoque.setQtd(dtoRequest.qtd());
+				estoque.setQuantidade(dtoRequest.quantidade());
 				estoque.setIngrediente(ingrediente);
 				estoque.setStatus(disponivel);
 
@@ -58,7 +58,7 @@ public class EstoqueService {
 				dtoResponse.setId(estoqueSalvo.getId());
 				dtoResponse.setEntrada(estoqueSalvo.getEntrada());
 				dtoResponse.setValidade(estoqueSalvo.getValidade());
-				dtoResponse.setQtd(estoqueSalvo.getQtd());
+				dtoResponse.setQtd(estoqueSalvo.getQuantidade());
 				dtoResponse.setIngrediente(estoqueSalvo.getIngrediente().getId());
 
 				return dtoResponse;
@@ -80,7 +80,7 @@ public class EstoqueService {
 				Estoque estoque = new Estoque();
 				estoque.setEntrada(dtoRequest.entrada());
 				estoque.setValidade(dtoRequest.validade());
-				estoque.setQtd(dtoRequest.qtd());
+				estoque.setQuantidade(dtoRequest.quantidade());
 				estoque.setIngrediente(ingrediente);
 				estoque.setStatus(disponivel);
 
@@ -90,7 +90,7 @@ public class EstoqueService {
 				dtoResponse.setId(estoqueSalvo.getId());
 				dtoResponse.setEntrada(estoqueSalvo.getEntrada());
 				dtoResponse.setValidade(estoqueSalvo.getValidade());
-				dtoResponse.setQtd(estoqueSalvo.getQtd());
+				dtoResponse.setQtd(estoqueSalvo.getQuantidade());
 				dtoResponse.setIngrediente(estoqueSalvo.getIngrediente().getId());
 
 				return dtoResponse;
@@ -105,13 +105,13 @@ public class EstoqueService {
 		public EstoqueQtdDTOResponse alterarQtd(Integer estoqueId, EstoqueDTORequest dtoRequest) {
 				Estoque estoque = estoqueRepository.buscarPorId(estoqueId)
 						.orElseThrow(() -> new RuntimeException("Estoque de Id: " +  estoqueId+" não encontrado"));
-				estoque.setQtd(dtoRequest.qtd());
+				estoque.setQuantidade(dtoRequest.quantidade());
 
 				Estoque estoqueSalvo = this.estoqueRepository.save(estoque);
 
 				EstoqueQtdDTOResponse dtoResponse = new EstoqueQtdDTOResponse();
 				dtoResponse.setId(estoqueSalvo.getId());
-				dtoResponse.setQtd(estoqueSalvo.getQtd());
+				dtoResponse.setQtd(estoqueSalvo.getQuantidade());
 
 				return dtoResponse;
 		}
@@ -124,7 +124,7 @@ public class EstoqueService {
 				Estoque estoque = this.estoqueRepository.buscarPorId(estoqueId)
 						.orElseThrow(() -> new RuntimeException("Estoque de Id: "+ estoqueId +" não encontrado"));
 				
-				if(estoque.getQtd() <= 0) {
+				if(estoque.getQuantidade() <= 0) {
 							estoqueRepository.updateStatus(estoque.getId(), apagado);
 					}
 				}
@@ -138,7 +138,7 @@ public class EstoqueService {
 				Estoque estoque = this.estoqueRepository.buscarPorId(estoqueId)
 						.orElseThrow(() -> new RuntimeException("Estoque de Id: "+ estoqueId +" não encontrado"));
 
-				if(estoque.getQtd() == 0) {
+				if(estoque.getQuantidade() == 0) {
 						estoqueRepository.updateStatus(estoque.getId(), indisponivel);
 				}
 		}

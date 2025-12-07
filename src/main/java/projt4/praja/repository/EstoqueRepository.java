@@ -20,7 +20,7 @@ public interface EstoqueRepository extends JpaRepository<Estoque, Integer> {
 		 */
 		@Modifying
 		@Transactional
-		@Query("Update Estoque e SET e.qtd = :qtd " +
+		@Query("Update Estoque e SET e.quantidade = :qtd " +
 				"WHERE e.id = :estoqueId")
 		void updateQtd(@Param("estoqueId") int id, @Param("qtd") int qtd);
 

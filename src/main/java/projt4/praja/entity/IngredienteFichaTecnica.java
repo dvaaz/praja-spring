@@ -11,7 +11,7 @@ public class IngredienteFichaTecnica {
 	@Column(name = "ingrediente_ficha_tecnica_id")
 	private Integer id;
 	@Column(name= "ingrediente_ficha_tecnica_qtd", nullable=false)
-	private Integer qtd;
+	private Integer quantidade;
 	@Column(name="ingrediente_ficha_tecnica_unidade_medida", nullable=false)
 	private Integer unidadeMedida;
     @Column(name="ingrediente_ficha_tecnica_detalhe")
@@ -36,12 +36,12 @@ public class IngredienteFichaTecnica {
         this.id = id;
     }
 
-    public Integer getQtd() {
-        return qtd;
+    public Integer getQuantidade() {
+        return quantidade;
     }
 
-    public void setQtd(Integer qtd) {
-        this.qtd = qtd;
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = this.quantidade;
     }
 
     public Integer getUnidadeMedida() {

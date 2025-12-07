@@ -8,7 +8,7 @@ import org.springframework.validation.annotation.Validated;
 public record IngredienteFichaTecnicaDTORequest (
 
 		@Min(0) @Max(2) Integer unidadeMedida,
-    @Min(1) Integer qtd,
+    @Min(1) Integer quantidade,
     @NotNull String detalhe,
     @NotNull Integer ingrediente,
     @NotNull Integer fichaTecnica

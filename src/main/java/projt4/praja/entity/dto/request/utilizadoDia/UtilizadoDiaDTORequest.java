@@ -1,13 +1,13 @@
 package projt4.praja.entity.dto.request.utilizadoDia;
 
 public class UtilizadoDiaDTORequest {
-    private Integer qtd;
+    private Integer quantidade;
 
-    public Integer getQtd() {
-        return qtd;
+    public Integer getQuantidade() {
+        return quantidade;
     }
 
-    public void setQtd(Integer qtd) {
-        this.qtd = qtd;
+    public void setQuantidade(Integer quantidade) {
+        this.quantidade = quantidade;
     }
 }

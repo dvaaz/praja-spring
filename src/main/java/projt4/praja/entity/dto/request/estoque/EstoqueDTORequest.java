@@ -16,7 +16,7 @@ public record EstoqueDTORequest (
 		 @FutureOrPresent(message = "A data de validade tem de ser presente ou futura")
     LocalDate validade,
 		 @Min(1)
-     Integer qtd,
+     Integer quantidade,
 		 @NotBlank
      Integer ingrediente
 ){}

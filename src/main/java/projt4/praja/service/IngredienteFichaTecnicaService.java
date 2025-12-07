@@ -2,7 +2,6 @@ package projt4.praja.service;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
-import projt4.praja.Enum.StatusEnum;
 import projt4.praja.Enum.UnidadeMedidaEnum;
 import projt4.praja.entity.FichaTecnica;
 import projt4.praja.entity.Ingrediente;
@@ -11,7 +10,6 @@ import projt4.praja.entity.dto.request.shared.AlterarUnidadeMedidaDTORequest;
 import projt4.praja.entity.dto.request.ingredienteFichaTecnica.IngredienteFichaTecnicaDTORequest;
 import projt4.praja.entity.dto.response.ingredienteFichaTecnica.AlterarUnidadeMedidaIngredienteFichaDTOResponse;
 import projt4.praja.entity.dto.response.ingredienteFichaTecnica.IngredienteEMFichaTecnicaDTOResponse;
-import projt4.praja.entity.dto.response.ingredienteFichaTecnica.IngredienteFichaTecnicaDTOResponse;
 import projt4.praja.repository.FichaTecnicaRepository;
 import projt4.praja.repository.IngredienteFichaTecnicaRepository;
 import projt4.praja.repository.IngredienteRepository;
@@ -69,7 +67,7 @@ public class IngredienteFichaTecnicaService {
 				  IngredienteFichaTecnica existente = buscaDeEntrada.get();
 				  IngredienteEMFichaTecnicaDTOResponse dtoResponse = new IngredienteEMFichaTecnicaDTOResponse();
 				  dtoResponse.setId(existente.getId());
-				  dtoResponse.setQtd(existente.getQtd());
+				  dtoResponse.setQtd(existente.getQuantidade());
 				  dtoResponse.setUnidadeMedida(existente.getUnidadeMedida());
 				  dtoResponse.setDetalhe(existente.getDetalhe());
 				  dtoResponse.setIdIngrediente(existente.getIngrediente().getId());
@@ -78,7 +76,7 @@ public class IngredienteFichaTecnicaService {
 		  }
 		  // Se não existe, cria nova entrada
 				IngredienteFichaTecnica ingredienteFicha = new IngredienteFichaTecnica();
-				ingredienteFicha.setQtd(dtoRequestRequest.qtd());
+				ingredienteFicha.setQuantidade(dtoRequestRequest.quantidade());
 				ingredienteFicha.setUnidadeMedida(dtoRequestRequest.unidadeMedida());
 				ingredienteFicha.setIngrediente(ingrediente.get());
 		    ingredienteFicha.setDetalhe(ingredienteFicha.getDetalhe());
@@ -90,7 +88,7 @@ public class IngredienteFichaTecnicaService {
 
 				IngredienteEMFichaTecnicaDTOResponse dtoResponse = new IngredienteEMFichaTecnicaDTOResponse();
 				dtoResponse.setId(ingredienteFichaSave.getId());
-				dtoResponse.setQtd(ingredienteFichaSave.getQtd());
+				dtoResponse.setQtd(ingredienteFichaSave.getQuantidade());
 				dtoResponse.setUnidadeMedida(ingredienteFichaSave.getUnidadeMedida());
 		    dtoResponse.setDetalhe(ingredienteFichaSave.getDetalhe());
 				dtoResponse.setIdIngrediente(ingredienteFichaSave.getIngrediente().getId());
@@ -132,7 +130,7 @@ public class IngredienteFichaTecnicaService {
 									UnidadeMedidaEnum.getString(ingrediente.getUnidadeMedida())
 											.orElse("N/A"));
               dto.setDetalhe(ingrediente.getDetalhe());
-              dto.setQtd(ingrediente.getQtd());
+              dto.setQtd(ingrediente.getQuantidade());
               responseListaIngredientesEmFicha.add(dto);
           }
           return responseListaIngredientesEmFicha;

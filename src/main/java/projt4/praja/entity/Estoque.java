@@ -18,7 +18,7 @@ public class Estoque {
 	@Column(name = "estoque_validade")
 	private LocalDate validade;
 	@Column(name = "estoque_qtd", nullable=false)
-	private Integer qtd;
+	private Integer quantidade;
 	@Column(name="estoque_status", nullable=false)
 	private Integer status;
 
@@ -54,12 +54,12 @@ public class Estoque {
 		this.validade = validade;
 	}
 
-	public Integer getQtd() {
-		return qtd;
+	public Integer getQuantidade() {
+		return quantidade;
 	}
 
-	public void setQtd(Integer qtd) {
-		this.qtd = qtd;
+	public void setQuantidade(Integer qtd) {
+		this.quantidade = quantidade;
 	}
 
 	public Integer getStatus() {
