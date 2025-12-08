@@ -3,11 +3,11 @@ package projt4.praja.entity.dto.response.ingredienteFichaTecnica;
 
 public class IngredienteEMFichaTecnicaDTOResponse {
     private Integer id;
-    private String detalhe;
-    private Integer unidadeMedida;
-    private Integer quantidade;
     private Integer idIngrediente;
     private String nomeIngrediente;
+    private String detalhe;
+    private Integer quantidade;
+    private Integer unidadeMedida;
 
 		public Integer getId() {
 				return id;
