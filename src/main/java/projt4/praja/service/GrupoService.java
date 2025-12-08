@@ -323,6 +323,6 @@ public class GrupoService {
 
     }
 
-    public
+ // Logica para buscar os grupos que estejam presentes em uma ficha tecnica
 
 }
