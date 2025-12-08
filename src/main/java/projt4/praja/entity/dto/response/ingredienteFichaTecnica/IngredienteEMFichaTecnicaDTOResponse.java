@@ -5,8 +5,7 @@ public class IngredienteEMFichaTecnicaDTOResponse {
     private Integer id;
     private String detalhe;
     private Integer unidadeMedida;
-		private String unidadeMedidaString;
-    private Integer qtd;
+    private Integer quantidade;
     private Integer idIngrediente;
     private String nomeIngrediente;
 
@@ -34,20 +33,13 @@ public class IngredienteEMFichaTecnicaDTOResponse {
 				this.unidadeMedida = unidadeMedida;
 		}
 
-		public String getUnidadeMedidaString() {
-				return unidadeMedidaString;
+
+		public Integer getsetQuantidade() {
+				return quantidade;
 		}
 
-		public void setUnidadeMedidaString(String unidadeMedidaString) {
-				this.unidadeMedidaString = unidadeMedidaString;
-		}
-
-		public Integer getQtd() {
-				return qtd;
-		}
-
-		public void setQtd(Integer qtd) {
-				this.qtd = qtd;
+		public void setQuantidade(Integer quantidade) {
+				this.quantidade = quantidade;
 		}
 
 		public Integer getIdIngrediente() {

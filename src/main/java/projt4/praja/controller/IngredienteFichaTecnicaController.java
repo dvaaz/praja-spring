@@ -14,6 +14,7 @@ import projt4.praja.entity.dto.request.shared.AlterarUnidadeMedidaDTORequest;
 import projt4.praja.entity.dto.response.ingredienteFichaTecnica.AlterarUnidadeMedidaIngredienteFichaDTOResponse;
 import projt4.praja.entity.dto.response.ingredienteFichaTecnica.IngredienteEMFichaTecnicaDTOResponse;
 import projt4.praja.entity.dto.response.ingredienteFichaTecnica.IngredienteFichaTecnicaDTOResponse;
+import projt4.praja.entity.dto.response.ingredienteFichaTecnica.ListaIngredientesEmFichaDTOResponse;
 import projt4.praja.service.IngredienteFichaTecnicaService;
 
 import java.util.ArrayList;
@@ -35,24 +36,13 @@ public class IngredienteFichaTecnicaController {
   public ResponseEntity<List<IngredienteEMFichaTecnicaDTOResponse>> criarRelacaoIngredienteFichaTecnica(
       @RequestBody IngredienteEmFichaWrapperDTORequest dto
   ) {
-//			List<IngredienteEMFichaTecnicaDTOResponse> dtoResponse = service.criar(dto);
-//      for ( IngredienteFichaTecnicaDTORequest ingrediente : dto ) {
-//          IngredienteEMFichaTecnicaDTOResponse ingredienteAdicionado = service.adicionarItem(ingrediente);
-//          dtoResponse.add(ingredienteAdicionado);
-//      }
-//			if(dtoResponse.isEmpty()) {
-//					return ResponseEntity.noContent().build();
-//			} else return ResponseEntity.status(HttpStatus.CREATED).body(dtoResponse);
         List<IngredienteEMFichaTecnicaDTOResponse> dtoResponse= new ArrayList<IngredienteEMFichaTecnicaDTOResponse>();
       for (IngredienteFichaTecnicaDTORequest ingrediente : dto.getIngredienteFichaTecnicaDTORequest()) {
           System.out.println("Recebido: " + ingrediente.ingrediente());
-//          dtoResponse.add(service.adicionarItem(ingrediente));
+
       }
-//
-//      if (dtoResponse.isEmpty()){
           return ResponseEntity.badRequest().build();
-//
-//      }          return ResponseEntity.ok().body(dtoResponse);
+
   }
 	// teste
 		@PostMapping("/teste")
@@ -65,15 +55,15 @@ public class IngredienteFichaTecnicaController {
 				return ResponseEntity.status(HttpStatus.CREATED).body(dtoResponse);
 		}
 
-	@GetMapping("/buscar/{id}")
+	@GetMapping("/buscar/{fichaId}")
 	@Operation(summary = "Busca dados de uma Ficha Tecnica", description = "Endpoint que lista todos os ingredientes de uma ficha tecnica")
-	public ResponseEntity<List<IngredienteEMFichaTecnicaDTOResponse>> listarIngredientesEmFichaTecnica(
-			@PathVariable("id") Integer id
+	public ResponseEntity<ListaIngredientesEmFichaDTOResponse> listarIngredientesEmFichaTecnica(
+			@PathVariable("fichaId") Integer fichaId
 	){
-			List<IngredienteEMFichaTecnicaDTOResponse> dtoResponses = this.service.listarIngredientesEmFichaTecnica(id);
-			if(dtoResponses==null){
+			ListaIngredientesEmFichaDTOResponse dtoResponse = this.service.listarIngredientesEmFichaTecnica(fichaId);
+			if(dtoResponse==null){
 					return ResponseEntity.noContent().build();
-			} else return ResponseEntity.ok(dtoResponses);
+			} else return ResponseEntity.ok(dtoResponse);
 	}
 
 
