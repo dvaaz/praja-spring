@@ -214,25 +214,28 @@ public class FichaTecnicaService {
      * @return
      */
   @Transactional
-  public AlterarStatusDTOResponse selecionarParaCardapioDia(Integer fichaId){
+  public AlterarStatusDTOResponse ativarOuDesativar(Integer fichaId){
       Optional<FichaTecnica> ficha = this.fichaTecnicaRepository.buscarPorId(fichaId); // busca por ficha tecnica
 
-		  if(ficha.isPresent()) {
+		  if(!ficha.isPresent()) { return null;}
 
-          ficha.get().setStatus(1);
+          int ativa = ficha.get().getStatus();
+// "liga ou "desliga" a ficha
+          if (ativa ==1) { ficha.get().setStatus(0); }
+          else if (ativa ==0) {
+              ficha.get().setStatus(1);
+              grupoService.ativarGrupoFicha(ficha.get().getGrupo().getId());
+          }
 
           FichaTecnica save = this.fichaTecnicaRepository.save(ficha.get());
           AlterarStatusDTOResponse dtoResponse = new AlterarStatusDTOResponse();
           dtoResponse.setId(ficha.get().getId());
           dtoResponse.setStatus(ficha.get().getStatus());
+
           return dtoResponse;
-      } return null;
-  }
-		/**
-		 * Trabalhar em logica para ativar grupo
-		 * Caso haja UMA ficha tecnica no grupo com status 1 o grupo ficará com status 1
-		 *
-		 */
+//		 * Trabalhar em logica para ativar grupo
+//		 * Caso haja UMA ficha tecnica no grupo com status 1 o grupo ficará com status 1
+      }
 
 
 

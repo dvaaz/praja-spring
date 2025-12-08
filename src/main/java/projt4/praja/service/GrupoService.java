@@ -1,7 +1,6 @@
 package projt4.praja.service;
 
 import projt4.praja.Enum.GrupoEnum;
-import projt4.praja.Enum.StatusEnum;
 import projt4.praja.entity.FichaTecnica;
 import projt4.praja.entity.Grupo;
 import projt4.praja.entity.Ingrediente;
@@ -9,6 +8,7 @@ import projt4.praja.entity.dto.request.grupo.AlterarCorDTORequest;
 import projt4.praja.entity.dto.request.grupo.GrupoDTORequest;
 import projt4.praja.entity.dto.request.shared.AlterarNomeDTORequest;
 import projt4.praja.entity.dto.request.shared.AlterarStatusDTORequest;
+import projt4.praja.entity.dto.response.grupo.GrupoAtivoDTOResponse;
 import projt4.praja.entity.dto.response.grupo.GrupoAtualizarDTOResponse;
 import projt4.praja.entity.dto.response.grupo.GrupoDTOResponse;
 import projt4.praja.entity.dto.response.shared.AlterarStatusDTOResponse;
@@ -313,5 +313,16 @@ public class GrupoService {
 
     }
 
+    @Transactional
+    public void ativarGrupoFicha(Integer id) {
+        this.grupoRepository.buscarPorId(id)
+                .ifPresent(novoStatusGrupo ->{
+                    novoStatusGrupo.setStatus(1);
+                    grupoRepository.save(novoStatusGrupo);
+                    });
+
+    }
+
+    public
 
 }

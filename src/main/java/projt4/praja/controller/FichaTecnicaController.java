@@ -12,6 +12,7 @@ import projt4.praja.entity.dto.request.shared.AlterarDescricaoDTORequest;
 import projt4.praja.entity.dto.request.shared.MudarDeGrupoDTORequest;
 import projt4.praja.entity.dto.response.fichaTecnica.FichaTecnicaDTOResponse;
 import projt4.praja.entity.dto.response.fichaTecnica.ListaFichasDeGrupoDTO;
+import projt4.praja.entity.dto.response.shared.AlterarStatusDTOResponse;
 import projt4.praja.entity.dto.response.shared.MudarDeGrupoDTOResponse;
 import projt4.praja.service.FichaTecnicaService;
 
@@ -89,5 +90,19 @@ public class FichaTecnicaController {
     ){
         MudarDeGrupoDTOResponse dtoResponse = this.service.alterarGrupo(id, dtoRequest);
         return ResponseEntity.ok(dtoResponse);
+    }
+
+    // Alterar status automaticamente
+    @PatchMapping("/ativaroudesativar/{id}")
+    @Operation(summary= "Liga e desliga ficha do dia", description="Ativa ou desativa a ficha para o cardapio do dia")
+    public ResponseEntity<AlterarStatusDTOResponse> ativarOuDesativar(
+            @PathVariable Integer id
+    ){
+        AlterarStatusDTOResponse dtoResponse = this.service.ativarOuDesativar(id);
+        if (dtoResponse != null){
+            return ResponseEntity.status(HttpStatus.OK).body(dtoResponse);
+        } else  {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
     }
 }
