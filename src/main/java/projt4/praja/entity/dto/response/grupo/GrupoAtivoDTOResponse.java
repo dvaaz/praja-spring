@@ -8,16 +8,16 @@ public class GrupoAtivoDTOResponse {
     private Integer id;
     private String nome;
     private String cor;
-    private List<FichaDTOResponse>  fichas;
+    private List<FichaDTOResponse> pratos;
 
     public GrupoAtivoDTOResponse() {
     }
 
-    public GrupoAtivoDTOResponse(Integer id, String nome, String cor, List<FichaDTOResponse> fichas) {
+    public GrupoAtivoDTOResponse(Integer id, String nome, String cor, List<FichaDTOResponse> pratos) {
         this.id = id;
         this.nome = nome;
         this.cor = cor;
-        this.fichas = fichas;
+        this.pratos = pratos;
     }
 
     public Integer getId() {
@@ -44,11 +44,11 @@ public class GrupoAtivoDTOResponse {
         this.cor = cor;
     }
 
-    public List<FichaDTOResponse> getFichas() {
-        return fichas;
+    public List<FichaDTOResponse> getPratos() {
+        return pratos;
     }
 
-    public void setFichas(List<FichaDTOResponse> fichas) {
-        this.fichas = fichas;
+    public void setPratos(List<FichaDTOResponse> pratos) {
+        this.pratos = pratos;
     }
 }

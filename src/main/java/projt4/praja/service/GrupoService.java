@@ -13,7 +13,6 @@ import projt4.praja.entity.dto.response.grupo.GrupoAtivoDTOResponse;
 import projt4.praja.entity.dto.response.grupo.GrupoAtualizarDTOResponse;
 import projt4.praja.entity.dto.response.grupo.GrupoDTOResponse;
 import projt4.praja.entity.dto.response.shared.AlterarStatusDTOResponse;
-import projt4.praja.entity.mapper.GrupoMapper;
 import projt4.praja.repository.FichaTecnicaRepository;
 import projt4.praja.repository.GrupoRepository;
 import projt4.praja.repository.IngredienteRepository;
@@ -22,7 +21,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 public class GrupoService {
@@ -357,7 +355,7 @@ public class GrupoService {
                     fichasAtivas.add(ficha);
                 }
             }
-            grupoFichas.setFichas(fichasAtivas);
+            grupoFichas.setPratos(fichasAtivas);
             dtoResponses.add(grupoFichas);
         }
         return dtoResponses;
