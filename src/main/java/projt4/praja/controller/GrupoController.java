@@ -1,5 +1,6 @@
 package projt4.praja.controller;
 
+import org.apache.coyote.Response;
 import projt4.praja.Enum.GrupoEnum;
 import projt4.praja.entity.dto.request.grupo.AlterarCorDTORequest;
 import projt4.praja.entity.dto.request.grupo.GrupoDTORequest;
@@ -124,4 +125,7 @@ public class GrupoController {
            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Não foi possivel remover o grupo");
        }
     }
+
+//    @GetMapping("/listar/ativos")
+//    public ResponseEntity<GrupoAtivoDTO>
 }

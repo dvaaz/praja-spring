@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -323,6 +324,44 @@ public class GrupoService {
 
     }
 
- // Logica para buscar os grupos que estejam presentes em uma ficha tecnica
+  // Logica para buscar os grupos que estejam presentes em uma ficha tecnica
+  /**
+   * Pega as fichas tecnicas e agrupa seus grupos para emitir apenas os grupos
+   */
+//  public List<GrupoAtivoDTOResponse> listarAtivos() {
+//    // Lista de fichas ativas
+//    List<FichaTecnica> ativos = this.fichaTecnicaRepository.listarAtivas();
+//    // Lista de grupos do tipo 2
+//    List<Grupo> grupos = grupoRepository.listarPorTipo(2);
+//
+//    // Mapa para agrupar fichas por grupo
+//    Map<Grupo, List<FichaTecnica>> mapaGrupoFichas = new HashMap<>();
+//
+//    for (FichaTecnica ficha : ativos) {
+//      Grupo grupo = ficha.getGrupo();
+//      // só considera se o grupo está na lista de grupos buscados
+//      if (grupos.contains(grupo)) {
+//        mapaGrupoFichas
+//            .computeIfAbsent(grupo, g -> new ArrayList<>())
+//            .add(ficha);
+//      }
+//    }
+//
+//    // Monta a lista de DTOs
+//    List<GrupoAtivoDTOResponse> resposta = new ArrayList<>();
+//    for (Map.Entry<Grupo, List<FichaTecnica>> entry : mapaGrupoFichas.entrySet()) {
+//      Grupo grupo = entry.getKey();
+//      List<FichaTecnica> fichasDoGrupo = entry.getValue();
+//
+//      // Só adiciona se houver fichas
+//      if (!fichasDoGrupo.isEmpty()) {
+//        GrupoAtivoDTOResponse dto = new GrupoAtivoDTOResponse();
+//        dto.setGrupo(grupo);
+//        dto.setFichas(fichasDoGrupo);
+//        resposta.add(dto);
+//      }
+//    }
+//
+//    return resposta;
 
 }
