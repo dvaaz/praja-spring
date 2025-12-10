@@ -1,11 +1,12 @@
 package projt4.praja.controller;
 
-import org.apache.coyote.Response;
+import org.apache.catalina.connector.Response;
 import projt4.praja.Enum.GrupoEnum;
 import projt4.praja.entity.dto.request.grupo.AlterarCorDTORequest;
 import projt4.praja.entity.dto.request.grupo.GrupoDTORequest;
 import projt4.praja.entity.dto.request.shared.AlterarNomeDTORequest;
 import projt4.praja.entity.dto.request.shared.AlterarStatusDTORequest;
+import projt4.praja.entity.dto.response.grupo.GrupoAtivoDTOResponse;
 import projt4.praja.entity.dto.response.grupo.GrupoAtualizarDTOResponse;
 import projt4.praja.entity.dto.response.grupo.GrupoDTOResponse;
 import projt4.praja.entity.dto.response.shared.AlterarStatusDTOResponse;
@@ -126,6 +127,12 @@ public class GrupoController {
        }
     }
 
-//    @GetMapping("/listar/ativos")
-//    public ResponseEntity<GrupoAtivoDTO>
+    @GetMapping("/listar/ativos")
+    public ResponseEntity<List<GrupoAtivoDTOResponse>> listarPratosDoDia(){
+        List<GrupoAtivoDTOResponse> dtoResponses = this.service.listarAtivos();
+        if (!dtoResponses.isEmpty()){
+            return ResponseEntity.ok(dtoResponses);
+        } else
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(dtoResponses);
+    }
 }

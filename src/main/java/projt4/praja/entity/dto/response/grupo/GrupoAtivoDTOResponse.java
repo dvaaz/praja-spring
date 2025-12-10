@@ -10,6 +10,16 @@ public class GrupoAtivoDTOResponse {
     private String cor;
     private List<FichaDTOResponse>  fichas;
 
+    public GrupoAtivoDTOResponse() {
+    }
+
+    public GrupoAtivoDTOResponse(Integer id, String nome, String cor, List<FichaDTOResponse> fichas) {
+        this.id = id;
+        this.nome = nome;
+        this.cor = cor;
+        this.fichas = fichas;
+    }
+
     public Integer getId() {
         return id;
     }

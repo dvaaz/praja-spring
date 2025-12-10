@@ -21,7 +21,7 @@ public interface FichaTecnicaRepository extends JpaRepository<FichaTecnica, Inte
 		@Query("SELECT f FROM FichaTecnica f WHERE f.status >= 0")
 		List<FichaTecnica> listar();
 
-		@Query("SELECT f FROM FichaTecnica f WHERE f.status = 1")
+		@Query("SELECT f FROM FichaTecnica f WHERE f.status >= 1")
 		List<FichaTecnica> listarAtivas();
 
 		@Query("SELECT f FROM FichaTecnica f WHERE f.id = :id AND f.status >= 0")

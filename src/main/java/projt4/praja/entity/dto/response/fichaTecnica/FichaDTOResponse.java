@@ -5,6 +5,15 @@ public class FichaDTOResponse {
     private String nome;
     private String descricao;
 
+    public FichaDTOResponse() {
+    }
+
+    public FichaDTOResponse(Integer id, String nome, String descricao) {
+        this.id = id;
+        this.nome = nome;
+        this.descricao = descricao;
+    }
+
     public Integer getId() {
         return id;
     }

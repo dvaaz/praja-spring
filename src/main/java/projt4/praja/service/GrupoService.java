@@ -8,10 +8,12 @@ import projt4.praja.entity.dto.request.grupo.AlterarCorDTORequest;
 import projt4.praja.entity.dto.request.grupo.GrupoDTORequest;
 import projt4.praja.entity.dto.request.shared.AlterarNomeDTORequest;
 import projt4.praja.entity.dto.request.shared.AlterarStatusDTORequest;
+import projt4.praja.entity.dto.response.fichaTecnica.FichaDTOResponse;
 import projt4.praja.entity.dto.response.grupo.GrupoAtivoDTOResponse;
 import projt4.praja.entity.dto.response.grupo.GrupoAtualizarDTOResponse;
 import projt4.praja.entity.dto.response.grupo.GrupoDTOResponse;
 import projt4.praja.entity.dto.response.shared.AlterarStatusDTOResponse;
+import projt4.praja.entity.mapper.GrupoMapper;
 import projt4.praja.repository.FichaTecnicaRepository;
 import projt4.praja.repository.GrupoRepository;
 import projt4.praja.repository.IngredienteRepository;
@@ -19,9 +21,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class GrupoService {
@@ -324,44 +325,46 @@ public class GrupoService {
 
     }
 
-  // Logica para buscar os grupos que estejam presentes em uma ficha tecnica
+    // Logica para buscar os grupos que estejam presentes em uma ficha tecnica
   /**
    * Pega as fichas tecnicas e agrupa seus grupos para emitir apenas os grupos
    */
-//  public List<GrupoAtivoDTOResponse> listarAtivos() {
-//    // Lista de fichas ativas
-//    List<FichaTecnica> ativos = this.fichaTecnicaRepository.listarAtivas();
-//    // Lista de grupos do tipo 2
-//    List<Grupo> grupos = grupoRepository.listarPorTipo(2);
-//
-//    // Mapa para agrupar fichas por grupo
-//    Map<Grupo, List<FichaTecnica>> mapaGrupoFichas = new HashMap<>();
-//
-//    for (FichaTecnica ficha : ativos) {
-//      Grupo grupo = ficha.getGrupo();
-//      // só considera se o grupo está na lista de grupos buscados
-//      if (grupos.contains(grupo)) {
-//        mapaGrupoFichas
-//            .computeIfAbsent(grupo, g -> new ArrayList<>())
-//            .add(ficha);
-//      }
-//    }
-//
-//    // Monta a lista de DTOs
-//    List<GrupoAtivoDTOResponse> resposta = new ArrayList<>();
-//    for (Map.Entry<Grupo, List<FichaTecnica>> entry : mapaGrupoFichas.entrySet()) {
-//      Grupo grupo = entry.getKey();
-//      List<FichaTecnica> fichasDoGrupo = entry.getValue();
-//
-//      // Só adiciona se houver fichas
-//      if (!fichasDoGrupo.isEmpty()) {
-//        GrupoAtivoDTOResponse dto = new GrupoAtivoDTOResponse();
-//        dto.setGrupo(grupo);
-//        dto.setFichas(fichasDoGrupo);
-//        resposta.add(dto);
-//      }
-//    }
-//
-//    return resposta;
+  // no momento pegamos todos os grupos.
+    public List<GrupoAtivoDTOResponse> listarAtivos() {
+        List<Grupo> gruposFichas = this.grupoRepository.listarPorTipo(2); // captura A TODOS os grupos de ficha
+
+        List<FichaTecnica> fichas = this.fichaTecnicaRepository.listarAtivas(); // pega as fichas ativas
+
+        List<GrupoAtivoDTOResponse> dtoResponses = new ArrayList<GrupoAtivoDTOResponse>();
+
+        // Cria o objeto de descriçao do grupo
+        for(Grupo g : gruposFichas){
+            GrupoAtivoDTOResponse grupoFichas = new GrupoAtivoDTOResponse();
+            grupoFichas.setId(g.getId());
+            grupoFichas.setNome(g.getNome());
+            grupoFichas.setCor(g.getCor());
+
+            List<FichaDTOResponse> fichasAtivas = new ArrayList<>(); // cria lista do grupo
+
+            // verifica ficha a ficha
+            for (FichaTecnica f: fichas){
+                if (f.getGrupo().getId() == g.getId()){
+                    FichaDTOResponse ficha = new FichaDTOResponse();
+                    ficha.setId(f.getId());
+                    ficha.setNome(f.getNome());
+                    ficha.setDescricao(f.getDescricao());
+
+                    fichasAtivas.add(ficha);
+                }
+            }
+            grupoFichas.setFichas(fichasAtivas);
+            dtoResponses.add(grupoFichas);
+        }
+        return dtoResponses;
+
+    }
+
+
+
 
 }
